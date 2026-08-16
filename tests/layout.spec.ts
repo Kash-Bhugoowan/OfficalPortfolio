@@ -65,6 +65,32 @@ test.describe("spacing invariants", () => {
     expect(clipDiv!.width).toBeCloseTo(desc!.width, 0);
   });
 
+  test("photo gallery is 32px below the roles marquee", async ({ page }) => {
+    const marquee = await page.locator(".animate-marquee").first().boundingBox();
+    const gallery = await page
+      .locator(".animate-marquee-reverse")
+      .first()
+      .boundingBox();
+    expect(gallery!.y - (marquee!.y + marquee!.height)).toBe(32);
+  });
+
+  test("photo gallery breaks out wider than the hero text column", async ({
+    page,
+  }) => {
+    const desc = await page
+      .locator("p", { hasText: "I take complex problems" })
+      .boundingBox();
+    const galleryClip = await page
+      .locator(".animate-marquee-reverse")
+      .first()
+      .locator("..")
+      .boundingBox();
+    // Figma's max-w-[1800px] window should be at least as wide as the 896px
+    // hero text column — equal only when the viewport itself is the limiting
+    // factor (e.g. mobile), strictly wider once the viewport exceeds 896px.
+    expect(galleryClip!.width).toBeGreaterThanOrEqual(desc!.width);
+  });
+
   test("no horizontal overflow on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(300);
@@ -130,5 +156,31 @@ test.describe("behavior invariants", () => {
     }
     // every 1s interval should show meaningful, roughly consistent movement
     for (const d of deltas) expect(d).toBeGreaterThan(5);
+  });
+
+  test("photo gallery scrolls continuously in the opposite direction from roles", async ({
+    page,
+  }) => {
+    const readX = (selector: string) =>
+      page.locator(selector).first().evaluate((el) => {
+        const m = getComputedStyle(el).transform;
+        const match = m.match(/matrix\(([^)]+)\)/);
+        return match ? parseFloat(match[1].split(",")[4]) : 0;
+      });
+
+    const rolesStart = await readX(".animate-marquee");
+    const galleryStart = await readX(".animate-marquee-reverse");
+    await page.waitForTimeout(2000);
+    const rolesEnd = await readX(".animate-marquee");
+    const galleryEnd = await readX(".animate-marquee-reverse");
+
+    const rolesDelta = rolesEnd - rolesStart;
+    const galleryDelta = galleryEnd - galleryStart;
+
+    expect(Math.abs(rolesDelta)).toBeGreaterThan(5);
+    expect(Math.abs(galleryDelta)).toBeGreaterThan(5);
+    // roles moves left (negative), gallery moves right (positive)
+    expect(rolesDelta).toBeLessThan(0);
+    expect(galleryDelta).toBeGreaterThan(0);
   });
 });

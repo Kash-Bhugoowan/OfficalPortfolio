@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { linkHoverTransition } from "@/lib/motion";
 import RolesMarquee from "@/components/RolesMarquee";
+import PhotoGallery from "@/components/PhotoGallery";
 
 const container = {
   hidden: {},
@@ -78,6 +79,9 @@ export default function Hero() {
           <RolesMarquee />
         </motion.div>
       </div>
+      <motion.div variants={item} className="-mt-4 w-full">
+        <PhotoGallery />
+      </motion.div>
     </motion.section>
   );
 }
