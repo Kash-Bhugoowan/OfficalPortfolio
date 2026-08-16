@@ -1,26 +1,49 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf9f5;
+  --foreground: #241f2b;
+  --color-text-secondary: #444444;
+  --color-accent: #595af0;
+  --color-border: #e8dfec;
+  --color-nav-muted: #625a6d;
+  --color-nav-hover: #6757e8;
+  --gradient-background: linear-gradient(
+    145deg,
+    #f0eaf8 6.17%,
+    #f6eaf1 41.23%,
+    #eaf1ea 76.3%,
+    #f7f2fa 93.83%
+  );
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-accent: var(--color-accent);
+  --color-border: var(--color-border);
+  --color-nav-muted: var(--color-nav-muted);
+  --color-nav-hover: var(--color-nav-hover);
+  --font-sans: var(--font-manrope);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  background: var(--gradient-background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-marquee {
+  animation: marquee 120s linear infinite;
 }
