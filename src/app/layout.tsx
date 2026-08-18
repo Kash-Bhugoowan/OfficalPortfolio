@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Manrope, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
   weight: ["300", "400", "600"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -16,7 +22,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${manrope.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${dmSans.variable} antialiased`}
+    >
       <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );

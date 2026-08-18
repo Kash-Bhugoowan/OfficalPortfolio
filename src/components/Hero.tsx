@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { linkHoverTransition } from "@/lib/motion";
+import { linkHoverTransition, fadeInUp } from "@/lib/motion";
 import RolesMarquee from "@/components/RolesMarquee";
 import PhotoGallery from "@/components/PhotoGallery";
 
@@ -13,14 +13,7 @@ const container = {
   },
 };
 
-const item = {
-  hidden: { opacity: 0, y: 14 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
+const item = fadeInUp;
 
 export default function Hero() {
   return (

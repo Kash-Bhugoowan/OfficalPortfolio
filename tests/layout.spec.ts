@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { waitForEntrance } from "./helpers";
+import { waitForEntrance, scrollToProjectsCheckpoint } from "./helpers";
 
 test.describe("spacing invariants", () => {
   test.beforeEach(async ({ page }) => {
@@ -182,5 +182,143 @@ test.describe("behavior invariants", () => {
     // roles moves left (negative), gallery moves right (positive)
     expect(rolesDelta).toBeLessThan(0);
     expect(galleryDelta).toBeGreaterThan(0);
+  });
+});
+
+test.describe("projects sticky stack", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await waitForEntrance(page);
+  });
+
+  test("card z-index ascends with DOM order", async ({ page }) => {
+    const zIndexes = await page.evaluate(() =>
+      Array.from(document.querySelectorAll("[data-sticky-card]")).map((el) =>
+        Number(getComputedStyle(el).zIndex),
+      ),
+    );
+    expect(zIndexes).toEqual([1, 2, 3]);
+  });
+
+  test("each card pins at its own configured offset (188, 220, 252px) while scrolling through its range", async ({
+    page,
+  }) => {
+    // Checkpoints empirically correspond to each card's mid-pin window,
+    // well before the synchronized release near the end of the section.
+    const cases: [number, string, number][] = [
+      [0.06, "0", 188],
+      [0.3, "1", 220],
+      [0.55, "2", 252],
+    ];
+    for (const [fraction, index, expectedTop] of cases) {
+      await scrollToProjectsCheckpoint(page, fraction);
+      const box = await page.locator(`[data-sticky-card="${index}"]`).boundingBox();
+      expect(box!.y).toBe(expectedTop);
+    }
+  });
+
+  test("covered card shrinks slightly but stays fully opaque (solid, no see-through)", async ({
+    page,
+  }) => {
+    // Card 1 has landed and is covering card 0 at this checkpoint.
+    await scrollToProjectsCheckpoint(page, 0.3);
+    await page.waitForTimeout(1500); // let the entrance fade-in fully settle
+    const inner = page.locator('[data-sticky-card="0"] > *').first();
+    const innerOpacity = await inner.evaluate((el) => getComputedStyle(el).opacity);
+    const transform = await inner.evaluate((el) => getComputedStyle(el).transform);
+    expect(parseFloat(innerOpacity)).toBeCloseTo(1, 1);
+    expect(transform).not.toBe("none"); // scale is still applied
+  });
+
+  test("tag outlines are white on cards 1 & 2, unchanged on card 3", async ({
+    page,
+  }) => {
+    const outlineOf = (index: number) =>
+      page
+        .locator(`[data-sticky-card="${index}"] span.rounded-full.bg-stone-50\\/90`)
+        .first()
+        .evaluate((el) => getComputedStyle(el).outlineColor);
+    expect(await outlineOf(0)).toBe("rgb(255, 255, 255)");
+    expect(await outlineOf(1)).toBe("rgb(255, 255, 255)");
+    expect(await outlineOf(2)).not.toBe("rgb(255, 255, 255)");
+  });
+
+  test("heading block internal spacing is 8px eyebrow-to-title, 8px title-to-description", async ({
+    page,
+  }) => {
+    const eyebrow = await page.getByText("Selected Work").boundingBox();
+    const heading = await page.locator("h2").boundingBox();
+    const description = await page
+      .locator("p", { hasText: "A selection of client work" })
+      .boundingBox();
+
+    expect(heading!.y - (eyebrow!.y + eyebrow!.height)).toBe(8);
+    expect(description!.y - (heading!.y + heading!.height)).toBe(8);
+  });
+
+  test("header pins through cards landing, then releases in sync with the whole stack", async ({
+    page,
+  }) => {
+    const header = () => page.locator("[data-sticky-header]").boundingBox();
+    const card2 = () => page.locator('[data-sticky-card="2"]').boundingBox();
+
+    // Pinned at a fixed, small offset through card 0, 1, and 2 all landing
+    // (not flush at 0 — there's a deliberate top offset).
+    for (const fraction of [0.06, 0.3, 0.55]) {
+      await scrollToProjectsCheckpoint(page, fraction);
+      const box = await header();
+      expect(box!.y).toBeGreaterThan(0);
+      expect(box!.y).toBeLessThan(100);
+    }
+
+    // Header sits above every card in the stacking order (never covered)
+    // while pinned.
+    const headerZ = await page
+      .locator("[data-sticky-header]")
+      .evaluate((el) => Number(getComputedStyle(el).zIndex));
+    const cardZs = await page.evaluate(() =>
+      Array.from(document.querySelectorAll("[data-sticky-card]")).map((el) =>
+        Number(getComputedStyle(el).zIndex),
+      ),
+    );
+    expect(headerZ).toBeGreaterThan(Math.max(...cardZs));
+
+    // Once card 3 has landed and dwelled for a while, continuing to scroll
+    // releases the header AND the cards together — neither is left behind,
+    // so there's no gap where the header used to sit.
+    await scrollToProjectsCheckpoint(page, 0.66);
+    const releasedHeader = await header();
+    const releasedCard2 = await card2();
+    expect(releasedHeader!.y).toBeLessThan(32); // moved from its pinned offset
+    expect(releasedCard2!.y).toBeLessThan(252); // moved from its pinned offset
+  });
+
+  test("no horizontal overflow on mobile and cards do not overlap", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForTimeout(300);
+
+    const { scrollWidth, innerWidth } = await page.evaluate(() => ({
+      scrollWidth: document.body.scrollWidth,
+      innerWidth: window.innerWidth,
+    }));
+    expect(scrollWidth).toBe(innerWidth);
+
+    await scrollToProjectsCheckpoint(page, 0.5);
+    const boxes = await page.evaluate(() =>
+      Array.from(document.querySelectorAll("[data-sticky-card]")).map((el) => {
+        const r = el.getBoundingClientRect();
+        return { top: r.top, bottom: r.bottom, position: getComputedStyle(el).position };
+      }),
+    );
+    for (const box of boxes) expect(box.position).toBe("static");
+    expect(boxes[1].top).toBeGreaterThanOrEqual(boxes[0].bottom);
+    expect(boxes[2].top).toBeGreaterThanOrEqual(boxes[1].bottom);
+
+    const headerPosition = await page
+      .locator("[data-sticky-header]")
+      .evaluate((el) => getComputedStyle(el).position);
+    expect(headerPosition).toBe("static");
   });
 });
