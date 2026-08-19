@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Manrope, DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -18,20 +18,6 @@ export const metadata: Metadata = {
   title: "Karishma Bhugoowan — Product Designer",
   description:
     "Product Designer portfolio of Karishma Bhugoowan — crafting innovative solutions that meet real user needs and deliver business value.",
-};
-
-// viewportFit lets the page's gradient background extend under iOS
-// Safari's status-bar/chrome area instead of leaving it plain white.
-// themeColor is given as light/dark media-scoped entries (Apple's
-// documented pattern) rather than one plain value — a single unscoped
-// tag was already tried and didn't stop Safari from dynamically
-// resampling the chrome color from page content while scrolling.
-export const viewport: Viewport = {
-  viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f0eaf8" },
-    { media: "(prefers-color-scheme: dark)", color: "#f0eaf8" },
-  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
