@@ -67,6 +67,14 @@ function StickyCard({
           "--card-top-mobile": `${ownFinalTopMobile}px`,
           "--card-top": `${ownFinalTop}px`,
           zIndex: index + 1,
+          // iOS 26 Safari tints its status bar/toolbar by sampling the
+          // background-color of position:sticky elements near the
+          // viewport edge — this sticky wrapper had none of its own (the
+          // card's visible color lives two levels deeper), so Safari was
+          // picking up a stale/undefined value. Giving it the page's own
+          // neutral tone here is invisible (the opaque card fully covers
+          // it) and doesn't touch position, offsets, or timing at all.
+          backgroundColor: "#f0eaf8",
         } as CSSProperties
       }
     >
