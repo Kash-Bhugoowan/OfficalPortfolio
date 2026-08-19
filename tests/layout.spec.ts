@@ -304,31 +304,89 @@ test.describe("projects sticky stack", () => {
     expect(scrollWidth).toBe(innerWidth);
   });
 
-  test("mobile gets its own independent full-card stacking effect (16, 40, 64px), header stays static", async ({
+  test("mobile cards scroll in normal document flow (no sticky pinning), header stays static", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(300);
 
-    // The header never goes sticky on mobile — unaffected by this feature.
+    // The header never goes sticky on mobile.
     const headerPosition = await page
       .locator("[data-sticky-header]")
       .evaluate((el) => getComputedStyle(el).position);
     expect(headerPosition).toBe("static");
 
-    // Cards ARE sticky on mobile now, at their own (smaller) offsets —
-    // independent constants from desktop's 188/220/252.
-    const cases: [number, string, number][] = [
-      [0.06, "0", 16],
-      [0.34, "1", 40],
-      [0.7, "2", 64],
-    ];
-    for (const [fraction, index, expectedTop] of cases) {
-      await scrollToProjectsCheckpoint(page, fraction);
-      const card = page.locator(`[data-sticky-card="${index}"]`);
-      expect(await card.evaluate((el) => getComputedStyle(el).position)).toBe("sticky");
-      const box = await card.boundingBox();
-      expect(box!.y).toBe(expectedTop);
+    // Desktop's sticky-card markup is hidden entirely on mobile — the
+    // mobile-only natural-flow cards render instead.
+    const stickyCardCount = await page.locator("[data-sticky-card]").count();
+    for (let i = 0; i < stickyCardCount; i++) {
+      const visible = await page.locator(`[data-sticky-card="${i}"]`).isVisible();
+      expect(visible).toBe(false);
     }
+
+    const mobileCards = page.locator("[data-mobile-card]");
+    await expect(mobileCards).toHaveCount(3);
+    for (let i = 0; i < 3; i++) {
+      const position = await mobileCards.nth(i).evaluate((el) => getComputedStyle(el).position);
+      expect(position).not.toBe("sticky");
+    }
+
+    // Cards appear top-to-bottom in normal flow, each strictly below the
+    // previous one (real gap, not stacked/overlapping).
+    const boxes = [
+      await mobileCards.nth(0).boundingBox(),
+      await mobileCards.nth(1).boundingBox(),
+      await mobileCards.nth(2).boundingBox(),
+    ];
+    expect(boxes[1]!.y).toBeGreaterThan(boxes[0]!.y + boxes[0]!.height);
+    expect(boxes[2]!.y).toBeGreaterThan(boxes[1]!.y + boxes[1]!.height);
+
+    // Glow is visible on mobile again (previously hidden while full-card
+    // sticky pinning was in place). Mobile uses ProjectCard's `compact`
+    // mode: no tags, no stats, and the CTA button sits directly under the
+    // image instead of in the text column — desktop keeps all of these
+    // unchanged (covered by the "tag outlines" test above, which targets
+    // [data-sticky-card] exclusively).
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const firstCard = mobileCards.first();
+    await firstCard.scrollIntoViewIfNeeded();
+    const glow = firstCard.locator(".blur-2xl");
+    await expect(glow).toBeVisible();
+
+    await expect(firstCard.locator("span.rounded-full.bg-stone-50\\/90")).toHaveCount(0);
+    await expect(firstCard.getByText("Reduced error")).toHaveCount(0);
+
+    const button = firstCard.getByText("View Case Study");
+    await expect(button).toBeVisible();
+    const image = firstCard.locator("img");
+    const [imageBox, buttonBox] = [await image.boundingBox(), await button.boundingBox()];
+    expect(buttonBox!.y).toBeGreaterThan(imageBox!.y + imageBox!.height);
+  });
+
+  test("all four corners of the card are uniformly rounded (32px), on mobile and desktop", async ({
+    page,
+  }) => {
+    const checkUniformRadius = async (viewport: { width: number; height: number }) => {
+      await page.setViewportSize(viewport);
+      await page.waitForTimeout(200);
+      const card = viewport.width < 768
+        ? page.locator('[data-mobile-card] [class*="rounded-[32px]"]').first()
+        : page.locator('[data-sticky-card="0"] [class*="rounded-[32px]"]').first();
+      const radii = await card.evaluate((el) => {
+        const cs = getComputedStyle(el);
+        return {
+          tl: cs.borderTopLeftRadius,
+          tr: cs.borderTopRightRadius,
+          bl: cs.borderBottomLeftRadius,
+          br: cs.borderBottomRightRadius,
+        };
+      });
+      expect(radii.tl).toBe("32px");
+      expect(radii.tr).toBe("32px");
+      expect(radii.bl).toBe("32px");
+      expect(radii.br).toBe("32px");
+    };
+    await checkUniformRadius({ width: 390, height: 844 });
+    await checkUniformRadius({ width: 1400, height: 1200 });
   });
 });

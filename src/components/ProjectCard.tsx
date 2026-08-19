@@ -17,7 +17,16 @@ export type Project = {
   tagOutlineClass?: string;
 };
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({
+  project,
+  compact = false,
+}: {
+  project: Project;
+  // Mobile-only simplified layout (used by MobileProjectCard): no tags,
+  // no stats, CTA button moves under the image. Desktop's usage never
+  // passes this, so its layout/content is completely unaffected.
+  compact?: boolean;
+}) {
   const {
     category,
     title,
@@ -45,7 +54,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         style={{ transform: "translateZ(0)" }}
       >
         <div
-          className={`pointer-events-none absolute -top-24 right-0 hidden size-[500px] rounded-full opacity-20 blur-2xl md:block ${glowClass}`}
+          className={`pointer-events-none absolute -top-24 right-0 size-[500px] rounded-full opacity-20 blur-2xl ${glowClass}`}
         />
 
         <div className="relative flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
@@ -58,25 +67,29 @@ export default function ProjectCard({ project }: { project: Project }) {
               {title}
             </h3>
 
-            <div className="flex flex-wrap gap-1.5">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className={`rounded-full bg-stone-50/90 px-3 py-1 text-xs font-medium tracking-wide text-text-secondary uppercase outline outline-1 -outline-offset-1 font-[family-name:var(--font-dm-sans)] ${tagOutlineClass}`}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {!compact && (
+              <div className="flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className={`rounded-full bg-stone-50/90 px-3 py-1 text-xs font-medium tracking-wide text-text-secondary uppercase outline outline-1 -outline-offset-1 font-[family-name:var(--font-dm-sans)] ${tagOutlineClass}`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <p className="text-lg leading-7 text-zinc-800">{description}</p>
 
-            <a
-              href={href} // TODO: replace with real case study link
-              className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white"
-            >
-              View Case Study
-            </a>
+            {!compact && (
+              <a
+                href={href} // TODO: replace with real case study link
+                className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white"
+              >
+                View Case Study
+              </a>
+            )}
           </div>
 
           <div className="flex flex-col gap-6 md:w-[45%] md:shrink-0">
@@ -90,19 +103,28 @@ export default function ProjectCard({ project }: { project: Project }) {
               <Image src={image} alt={title} fill className="object-cover" unoptimized />
             </div>
 
-            {stats && (
-              <div className="hidden items-center gap-14 md:flex">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="flex flex-col gap-4">
-                    <span className="text-xl leading-8 text-text-secondary">
-                      {stat.label}
-                    </span>
-                    <span className="text-3xl leading-10 font-light text-foreground">
-                      {stat.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            {compact ? (
+              <a
+                href={href} // TODO: replace with real case study link
+                className="rounded-full bg-accent px-8 py-3 text-center text-sm font-semibold text-white"
+              >
+                View Case Study
+              </a>
+            ) : (
+              stats && (
+                <div className="flex items-center gap-14">
+                  {stats.map((stat) => (
+                    <div key={stat.label} className="flex flex-col gap-4">
+                      <span className="text-xl leading-8 text-text-secondary">
+                        {stat.label}
+                      </span>
+                      <span className="text-3xl leading-10 font-light text-foreground">
+                        {stat.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )
             )}
           </div>
         </div>

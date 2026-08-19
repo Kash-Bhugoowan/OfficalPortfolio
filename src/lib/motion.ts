@@ -43,31 +43,12 @@ export const stackDimTransform = {
 // before the next one begins its approach.
 export const STACK_CARD_VIEW_SPACER_PX = 400;
 
-// --- Mobile-only stacking values, entirely independent of the desktop
-// ones above (STACK_BASE_OFFSET_PX / STACK_CARD_OFFSET_PX). Same full-card
-// pin-and-overlap mechanic as desktop, matching the Athos mobile
-// reference, just tuned to mobile's own viewport and card proportions
-// rather than reusing desktop's numbers.
-export const STACK_CARD_OFFSET_PX_MOBILE = 24;
-export const STACK_BASE_OFFSET_PX_MOBILE = 16;
-
-// Real gap in document flow between consecutive cards on mobile — the
-// mobile equivalent of STACK_CARD_VIEW_SPACER_PX above, which only ever
-// applied on desktop (`hidden md:block`). Without this, mobile cards sit
-// flush against each other with zero gap, so the next card starts sliding
-// over and covering the previous one almost immediately once scrolled
-// into the section — there's no stretch of scroll where a card is shown
-// alone before the next begins its approach. Same absolute pixel amount
-// as desktop's spacer, since dwell time is a function of scroll distance,
-// not viewport height.
-export const STACK_CARD_VIEW_SPACER_PX_MOBILE = 400;
-
-// Explicit height for the mobile cards' shared containing block. Without
-// this, the container's height is just the natural sum of the three (very
-// tall) cards, with zero slack — meaning by the time the last card's own
-// natural position reaches its sticky threshold, the shared container has
-// already run out of room to hold it there, so it approaches but never
-// actually locks in. This adds genuine budget (well beyond the natural
-// content height) so every card, including the last, gets its own turn to
-// hold. Reverts to desktop's own explicit height at the md breakpoint.
-export const STACK_CONTAINER_HEIGHT_PX_MOBILE = 4800;
+// --- Mobile project cards scroll in normal document flow (no sticky
+// pinning — full-card sticky pinning was tried and dropped: mobile cards
+// are taller than the mobile viewport, so once pinned, their bottom
+// content is permanently below the fold no matter how offsets/spacers are
+// tuned). Instead, each card gets a one-time reveal as it scrolls into
+// view, plus a subtle continuous "focus" scale while it travels through
+// the viewport — peaking at full size when centered.
+export const MOBILE_CARD_ENTRANCE_Y_PX = 40;
+export const MOBILE_CARD_FOCUS_SCALE = [0.94, 1, 0.94] as [number, number, number];

@@ -3,15 +3,12 @@
 import { Fragment, type CSSProperties, type ReactNode, useRef, type RefObject } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import ProjectCard, { type Project } from "@/components/ProjectCard";
+import MobileProjectCard from "@/components/MobileProjectCard";
 import {
   STACK_CARD_OFFSET_PX,
   STACK_BASE_OFFSET_PX,
-  STACK_CARD_OFFSET_PX_MOBILE,
-  STACK_BASE_OFFSET_PX_MOBILE,
-  STACK_CONTAINER_HEIGHT_PX_MOBILE,
   STACK_HEADER_TOP_PX,
   STACK_CARD_VIEW_SPACER_PX,
-  STACK_CARD_VIEW_SPACER_PX_MOBILE,
   stackDimTransform,
 } from "@/lib/motion";
 
@@ -52,20 +49,17 @@ function StickyCard({
   const entranceY = useTransform(ownEntranceProgress, [0, 1], [14, 0]);
 
   const ownFinalTop = STACK_BASE_OFFSET_PX + index * STACK_CARD_OFFSET_PX;
-  const ownFinalTopMobile = STACK_BASE_OFFSET_PX_MOBILE + index * STACK_CARD_OFFSET_PX_MOBILE;
 
   return (
     <div
       ref={cardRef}
-      // Sticky at every breakpoint now (was `static` below md): mobile
-      // gets the same full-card pin-and-overlap mechanic as desktop, just
-      // with its own independently-tuned offset (--card-top-mobile) so
-      // retuning one breakpoint can never shift the other.
-      className="sticky top-[var(--card-top-mobile)] md:top-[var(--card-top)]"
+      // Desktop-only now — mobile renders cards in normal document flow
+      // via MobileProjectCard instead (see below), so this never needs a
+      // mobile top-offset variant.
+      className="sticky top-[var(--card-top)]"
       data-sticky-card={index}
       style={
         {
-          "--card-top-mobile": `${ownFinalTopMobile}px`,
           "--card-top": `${ownFinalTop}px`,
           zIndex: index + 1,
         } as CSSProperties
@@ -144,45 +138,20 @@ export default function StickyCardStack({
       )}
       {header && <div className="h-8" aria-hidden />}
       {/*
-        A second height-bounded containing block, this time for the cards
-        (and their spacers), separate from the header's above. Cards must
-        remain DIRECT children of THIS wrapper (a Fragment, not a per-card
-        div) so they share one containing block, rather than each getting
-        its own short-lived box and desynchronizing from each other.
-
-        On mobile (base height, via the CSS var below): the natural sum of
-        three very-tall cards leaves zero slack, so without an explicit
-        push past that, the last card's own position reaches its sticky
-        threshold at the exact moment the container is already exhausted —
-        it approaches but never actually locks in. This adds real budget
-        beyond the natural content height so every card gets its own turn
-        to hold.
-
-        At md+, the desktop value below takes over instead (unrelated
-        number, tuned entirely separately — see its own comment): desktop
-        additionally needs this sized so release is reachable in sync with
-        the header, which doesn't apply on mobile since the header never
-        leaves there.
+        Desktop only: the height-bounded containing block for the sticky
+        cards (and their spacers). Cards must remain DIRECT children of
+        THIS wrapper (a Fragment, not a per-card div) so they share one
+        containing block, rather than each getting its own short-lived box
+        and desynchronizing from each other. Untouched by the mobile
+        redesign below — same offsets/spacers/timing as before.
       */}
-      <div
-        className="relative h-[var(--container-height-mobile)] md:h-[2883px]"
-        style={
-          {
-            "--container-height-mobile": `${STACK_CONTAINER_HEIGHT_PX_MOBILE}px`,
-          } as CSSProperties
-        }
-      >
+      <div className="relative hidden md:block md:h-[2883px]">
         {projects.map((project, i) => (
           <Fragment key={project.id}>
             {i > 0 && (
               <div
-                className="h-[var(--card-spacer-mobile)] md:h-[var(--card-spacer)]"
-                style={
-                  {
-                    "--card-spacer-mobile": `${STACK_CARD_VIEW_SPACER_PX_MOBILE}px`,
-                    "--card-spacer": `${STACK_CARD_VIEW_SPACER_PX}px`,
-                  } as CSSProperties
-                }
+                className="hidden md:block"
+                style={{ height: STACK_CARD_VIEW_SPACER_PX }}
                 aria-hidden
               />
             )}
@@ -196,12 +165,27 @@ export default function StickyCardStack({
         ))}
       </div>
       {/*
-        Real (uncanceled) trailing room, required for the cards' release
-        above to be reachable at all — see the comment there. Kept modest;
-        it's only ever seen briefly while the stack is already scrolling
-        away, not as a static gap.
+        Real (uncanceled) trailing room, required for the desktop cards'
+        release above to be reachable at all — see the comment there. Kept
+        modest; it's only ever seen briefly while the stack is already
+        scrolling away, not as a static gap.
       */}
       <div className="hidden md:block md:h-[450px]" aria-hidden />
+
+      {/*
+        Mobile only: no sticky pinning at all. Cards are taller than the
+        mobile viewport, so pinning them (as tried previously) permanently
+        hides each card's bottom content once locked — no offset/spacer
+        tuning can fix that, since it's a fixed relationship between card
+        height, viewport height, and sticky offset. Cards just scroll in
+        normal document flow instead; MobileProjectCard adds a reveal +
+        focus-scale interaction on top of that natural scroll.
+      */}
+      <div className="flex flex-col gap-6 md:hidden">
+        {projects.map((project) => (
+          <MobileProjectCard key={project.id} project={project} />
+        ))}
+      </div>
     </div>
   );
 }
