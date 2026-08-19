@@ -243,7 +243,7 @@ test.describe("projects sticky stack", () => {
     expect(await outlineOf(2)).not.toBe("rgb(255, 255, 255)");
   });
 
-  test("heading block internal spacing is 8px eyebrow-to-title, 8px title-to-description", async ({
+  test("heading block internal spacing is 4px eyebrow-to-title, 8px title-to-description", async ({
     page,
   }) => {
     const eyebrow = await page.getByText("Selected Work").boundingBox();
@@ -252,7 +252,7 @@ test.describe("projects sticky stack", () => {
       .locator("p", { hasText: "A selection of client work" })
       .boundingBox();
 
-    expect(heading!.y - (eyebrow!.y + eyebrow!.height)).toBe(8);
+    expect(heading!.y - (eyebrow!.y + eyebrow!.height)).toBe(4);
     expect(description!.y - (heading!.y + heading!.height)).toBe(8);
   });
 

@@ -18,7 +18,9 @@ const item = fadeInUp;
 export default function Hero() {
   return (
     <motion.section
-      className="flex flex-col items-center gap-12 px-6 pt-12 pb-24 text-center"
+      // Standard section vertical padding across the site: 74px top and
+      // bottom (left/right unaffected). Match this on any new section.
+      className="flex flex-col items-center gap-12 px-6 py-[74px] text-center"
       variants={container}
       initial="hidden"
       animate="visible"
@@ -29,12 +31,20 @@ export default function Hero() {
           alt="Portrait of Karishma Bhugoowan"
           width={260}
           height={260}
-          className="rounded-full object-cover"
+          className="rounded-full border border-accent object-cover shadow-[0px_8px_32px_0px_rgba(103,87,232,0.22)]"
           unoptimized
           priority
         />
       </motion.div>
-      <div className="flex w-full max-w-4xl flex-col items-center gap-8">
+      {/*
+        Deliberate, escalating spacing rhythm (24 / 24 / 32 / 48px) reflecting
+        actual content grouping, rather than a uniform gap patched with
+        one-off px nudges: title+description+"Financial Times" form one
+        tightly-related intro-text block (24px apart), the pills are a
+        distinct UI element getting a clearer break (32px), and the photo
+        carousel is a full section boundary getting the largest gap (48px).
+      */}
+      <div className="flex w-full max-w-4xl flex-col items-center">
         <motion.h1
           variants={item}
           className="text-[40px] leading-[60px] text-foreground"
@@ -44,7 +54,7 @@ export default function Hero() {
         </motion.h1>
         <motion.p
           variants={item}
-          className="text-[22px] leading-8 font-light text-text-secondary"
+          className="mt-6 text-[22px] leading-8 font-light text-text-secondary"
         >
           I take complex problems and reframe them into opportunities,
           focusing on crafting innovative solutions that meet real user needs
@@ -52,7 +62,7 @@ export default function Hero() {
         </motion.p>
         <motion.p
           variants={item}
-          className="text-[18px] leading-[35px] text-text-secondary"
+          className="mt-6 text-[18px] leading-[35px] text-text-secondary"
         >
           Interviewed by the{" "}
           <motion.a
@@ -68,11 +78,11 @@ export default function Hero() {
           </motion.a>{" "}
           on putting people first whilst working with AI.
         </motion.p>
-        <motion.div variants={item} className="w-full">
+        <motion.div variants={item} className="mt-[27px] w-full">
           <RolesMarquee />
         </motion.div>
       </div>
-      <motion.div variants={item} className="-mt-4 w-full">
+      <motion.div variants={item} className="-mt-2 w-full">
         <PhotoGallery />
       </motion.div>
     </motion.section>

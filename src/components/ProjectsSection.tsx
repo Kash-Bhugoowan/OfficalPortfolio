@@ -89,10 +89,17 @@ export default function ProjectsSection() {
           projects={projects}
           header={
             <div className="flex w-full flex-col items-center gap-2 text-center">
+              {/*
+                Site-wide "eyebrow + title" spacing standard: 4px between
+                the small uppercase eyebrow label and the title beneath it
+                (tighter than the 8px used between title and body text
+                below it, via the parent's gap-2) — reuse this -mt-1 on the
+                title wherever this eyebrow+title pattern appears again.
+              */}
               <span className="text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]">
                 Selected Work
               </span>
-              <h2 className="text-4xl leading-[60px] text-accent">
+              <h2 className="-mt-1 text-4xl leading-[60px] text-accent">
                 Projects that matter
               </h2>
               <p className="max-w-[867px] text-xl leading-8 text-text-secondary">
