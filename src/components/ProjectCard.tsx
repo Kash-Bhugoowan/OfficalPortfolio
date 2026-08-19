@@ -38,6 +38,11 @@ export default function ProjectCard({ project }: { project: Project }) {
     <div className={`mx-auto ${widthClass}`}>
       <div
         className={`relative overflow-hidden rounded-[32px] ${bgClass} ${shadowClass} p-8 sm:p-10`}
+        // Forces Safari to composite this element on its own GPU layer.
+        // Without it, a `position: sticky` ancestor that's actively
+        // stuck can leave Safari's border-radius clip mask stale on one
+        // corner (a known WebKit bug), rendering it square.
+        style={{ transform: "translateZ(0)" }}
       >
         <div
           className={`pointer-events-none absolute -top-24 right-0 size-[500px] rounded-full opacity-20 blur-2xl ${glowClass}`}
