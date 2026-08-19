@@ -12,7 +12,6 @@ import {
   STACK_HEADER_TOP_PX,
   STACK_CARD_VIEW_SPACER_PX,
   stackDimTransform,
-  fadeInUp,
 } from "@/lib/motion";
 
 function StickyCard({
@@ -32,6 +31,25 @@ function StickyCard({
     offset: ["start end", "start start"],
   });
   const scale = useTransform(scrollYProgress, [0, 1], stackDimTransform.scale);
+
+  // Scroll-progress-driven entrance (own card reaching the viewport),
+  // rather than Framer's IntersectionObserver-based `whileInView`. For a
+  // `position: sticky` element, the box IntersectionObserver measures can
+  // desync from the box actually rendered on screen — most visibly in the
+  // frame(s) where the shared containing block runs out of "stuck" room
+  // and every card's in-flow position has to reconcile with its pinned
+  // one. That reconciliation moment (the stack's release transition) was
+  // making `whileInView` re-fire for every card at once, flashing them
+  // all semi-transparent and letting their content bleed through each
+  // other. Driving off scroll position instead sidesteps the observer
+  // entirely.
+  const { scrollYProgress: ownEntranceProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "start 0.7"],
+  });
+  const entranceOpacity = useTransform(ownEntranceProgress, [0, 1], [0, 1]);
+  const entranceY = useTransform(ownEntranceProgress, [0, 1], [14, 0]);
+
   const ownFinalTop = STACK_BASE_OFFSET_PX + index * STACK_CARD_OFFSET_PX;
   const ownFinalTopMobile = STACK_BASE_OFFSET_PX_MOBILE + index * STACK_CARD_OFFSET_PX_MOBILE;
 
@@ -54,14 +72,14 @@ function StickyCard({
     >
       <motion.div
         style={
-          nextCardRef && !reduceMotion
-            ? { scale, transformOrigin: "top" }
-            : undefined
+          reduceMotion
+            ? undefined
+            : {
+                opacity: entranceOpacity,
+                y: entranceY,
+                ...(nextCardRef ? { scale, transformOrigin: "top" } : null),
+              }
         }
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={fadeInUp}
       >
         <ProjectCard project={project} />
       </motion.div>
