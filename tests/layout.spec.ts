@@ -321,7 +321,7 @@ test.describe("projects sticky stack", () => {
     const cases: [number, string, number][] = [
       [0.06, "0", 16],
       [0.34, "1", 40],
-      [0.6, "2", 64],
+      [0.7, "2", 64],
     ];
     for (const [fraction, index, expectedTop] of cases) {
       await scrollToProjectsCheckpoint(page, fraction);

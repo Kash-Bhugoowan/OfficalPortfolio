@@ -45,7 +45,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         style={{ transform: "translateZ(0)" }}
       >
         <div
-          className={`pointer-events-none absolute -top-24 right-0 size-[500px] rounded-full opacity-20 blur-2xl ${glowClass}`}
+          className={`pointer-events-none absolute -top-24 right-0 hidden size-[500px] rounded-full opacity-20 blur-2xl md:block ${glowClass}`}
         />
 
         <div className="relative flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
@@ -91,7 +91,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             </div>
 
             {stats && (
-              <div className="flex items-center gap-14">
+              <div className="hidden items-center gap-14 md:flex">
                 {stats.map((stat) => (
                   <div key={stat.label} className="flex flex-col gap-4">
                     <span className="text-xl leading-8 text-text-secondary">

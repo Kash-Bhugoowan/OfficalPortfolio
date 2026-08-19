@@ -51,6 +51,17 @@ export const STACK_CARD_VIEW_SPACER_PX = 400;
 export const STACK_CARD_OFFSET_PX_MOBILE = 24;
 export const STACK_BASE_OFFSET_PX_MOBILE = 16;
 
+// Real gap in document flow between consecutive cards on mobile — the
+// mobile equivalent of STACK_CARD_VIEW_SPACER_PX above, which only ever
+// applied on desktop (`hidden md:block`). Without this, mobile cards sit
+// flush against each other with zero gap, so the next card starts sliding
+// over and covering the previous one almost immediately once scrolled
+// into the section — there's no stretch of scroll where a card is shown
+// alone before the next begins its approach. Same absolute pixel amount
+// as desktop's spacer, since dwell time is a function of scroll distance,
+// not viewport height.
+export const STACK_CARD_VIEW_SPACER_PX_MOBILE = 400;
+
 // Explicit height for the mobile cards' shared containing block. Without
 // this, the container's height is just the natural sum of the three (very
 // tall) cards, with zero slack — meaning by the time the last card's own
@@ -59,4 +70,4 @@ export const STACK_BASE_OFFSET_PX_MOBILE = 16;
 // actually locks in. This adds genuine budget (well beyond the natural
 // content height) so every card, including the last, gets its own turn to
 // hold. Reverts to desktop's own explicit height at the md breakpoint.
-export const STACK_CONTAINER_HEIGHT_PX_MOBILE = 4000;
+export const STACK_CONTAINER_HEIGHT_PX_MOBILE = 4800;

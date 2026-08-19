@@ -11,6 +11,7 @@ import {
   STACK_CONTAINER_HEIGHT_PX_MOBILE,
   STACK_HEADER_TOP_PX,
   STACK_CARD_VIEW_SPACER_PX,
+  STACK_CARD_VIEW_SPACER_PX_MOBILE,
   stackDimTransform,
 } from "@/lib/motion";
 
@@ -67,14 +68,6 @@ function StickyCard({
           "--card-top-mobile": `${ownFinalTopMobile}px`,
           "--card-top": `${ownFinalTop}px`,
           zIndex: index + 1,
-          // iOS 26 Safari tints its status bar/toolbar by sampling the
-          // background-color of position:sticky elements near the
-          // viewport edge — this sticky wrapper had none of its own (the
-          // card's visible color lives two levels deeper), so Safari was
-          // picking up a stale/undefined value. Giving it the page's own
-          // neutral tone here is invisible (the opaque card fully covers
-          // it) and doesn't touch position, offsets, or timing at all.
-          backgroundColor: "#f0eaf8",
         } as CSSProperties
       }
     >
@@ -183,8 +176,13 @@ export default function StickyCardStack({
           <Fragment key={project.id}>
             {i > 0 && (
               <div
-                className="hidden md:block"
-                style={{ height: STACK_CARD_VIEW_SPACER_PX }}
+                className="h-[var(--card-spacer-mobile)] md:h-[var(--card-spacer)]"
+                style={
+                  {
+                    "--card-spacer-mobile": `${STACK_CARD_VIEW_SPACER_PX_MOBILE}px`,
+                    "--card-spacer": `${STACK_CARD_VIEW_SPACER_PX}px`,
+                  } as CSSProperties
+                }
                 aria-hidden
               />
             )}
