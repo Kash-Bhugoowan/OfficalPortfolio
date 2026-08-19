@@ -8,19 +8,23 @@ const projects: Project[] = [
     title: "Project Minerva: Fighting Intelligently",
     description:
       "A tool to support soldiers in planning high-stakes activity across time, resources, dependencies, and operational scenarios. I led the service-design and UX direction: translating complex handbooks and rules into an intuitive experience for the soldiers, whilst guiding the team through delivery.",
-    image: "https://placehold.co/529x350",
-    imageAspect: "landscape",
+    image: "/images/home_gallery/home_usecases/minvera2.png",
+    imageAspectRatio: "1643/957",
     tags: ["Automation", "Complex Systems", "UX & UI Design", "Workshop Facilitation"],
     stats: [
       { label: "Reduced error", value: "20%" },
       { label: "Increased efficiency", value: "80%" },
     ],
-    bgClass: "bg-[#DFEFD7]",
-    glowClass: "bg-lime-400",
+    // Mobile-only colors (base classes) override to the original desktop
+    // ones at md+ — same pattern used elsewhere for mobile-vs-desktop
+    // values that must never cross-contaminate.
+    bgClass: "bg-[#CBEEA6] md:bg-[#DFEFD7]",
+    glowClass: "bg-[#C6EB9E] md:bg-lime-400",
     href: "#", // TODO: replace with real case study link
     widthClass: "w-full max-w-[93%]",
     shadowClass: "shadow-[0_8px_24px_0_rgba(36,31,43,0.08)]",
     tagOutlineClass: "outline-white",
+    imageColumnOffsetClass: "mt-[60px]",
   },
   {
     id: "gail",
@@ -28,8 +32,8 @@ const projects: Project[] = [
     title: "Operation GAiL: Generative AI Learning & Development",
     description:
       "From dense policy to accessible learning content in minutes: designing an end-to-end generative AI tool for the UK Department for Work and Pensions' learning designers.",
-    image: "https://placehold.co/529x350",
-    imageAspect: "landscape",
+    image: "/images/home_gallery/home_usecases/gail2.png",
+    imageAspectRatio: "1570/1002",
     tags: [
       "Generative AI",
       "Workshop Facilitation",
@@ -41,8 +45,8 @@ const projects: Project[] = [
       { label: "Time reduced", value: "99.74%" },
       { label: "Successful content created", value: "99.8%" },
     ],
-    bgClass: "bg-orange-100",
-    glowClass: "bg-orange-400",
+    bgClass: "bg-[#FFD8A5] md:bg-orange-100",
+    glowClass: "bg-[#FFD399] md:bg-orange-400",
     href: "#", // TODO: replace with real case study link
     widthClass: "w-full max-w-[98%]",
     shadowClass: "shadow-[0_8px_24px_0_rgba(36,31,43,0.08)]",
@@ -54,8 +58,8 @@ const projects: Project[] = [
     title: "Rewiring Trust: A Reimagined Banking App for Gen Z",
     description:
       "Financial Coach was a design-led initiative between HSBC and IBM to make banking feel relevant, intuitive, and confidence-building for a generation underserved by traditional finance.",
-    image: "https://placehold.co/489x472",
-    imageAspect: "portrait",
+    image: "/images/home_gallery/home_usecases/hsbc2.png",
+    imageAspectRatio: "1279/1230",
     tags: [
       "Design Strategy",
       "Mobile UI",
@@ -63,8 +67,8 @@ const projects: Project[] = [
       "Design Thinking",
       "Senior C-Suite Stakeholder",
     ],
-    bgClass: "bg-[#EAD9F3]",
-    glowClass: "bg-purple-400",
+    bgClass: "bg-[#E8C5F9] md:bg-[#EAD9F3]",
+    glowClass: "bg-[#E2C2F1] md:bg-purple-400",
     href: "#", // TODO: replace with real case study link
     widthClass: "w-full",
     shadowClass: "shadow-[0_8px_24px_0_rgba(36,31,43,0.08)]",

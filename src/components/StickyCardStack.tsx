@@ -181,7 +181,7 @@ export default function StickyCardStack({
         normal document flow instead; MobileProjectCard adds a reveal +
         focus-scale interaction on top of that natural scroll.
       */}
-      <div className="flex flex-col gap-6 md:hidden">
+      <div className="flex flex-col gap-4 md:hidden">
         {projects.map((project) => (
           <MobileProjectCard key={project.id} project={project} />
         ))}

@@ -6,7 +6,10 @@ export type Project = {
   title: string;
   description: string;
   image: string;
-  imageAspect: "landscape" | "portrait";
+  // Exact width/height ratio of the source image (e.g. "1643/957") — the
+  // bounding box is sized to match it precisely, so the image fills it
+  // completely with no cropping and no letterboxing.
+  imageAspectRatio: string;
   tags: string[];
   stats?: { label: string; value: string }[];
   bgClass: string;
@@ -15,6 +18,9 @@ export type Project = {
   widthClass: string;
   shadowClass: string;
   tagOutlineClass?: string;
+  // Optional extra offset for the image+stats column, when a specific
+  // card needs its image pushed down relative to the text column.
+  imageColumnOffsetClass?: string;
 };
 
 export default function ProjectCard({
@@ -32,7 +38,7 @@ export default function ProjectCard({
     title,
     description,
     image,
-    imageAspect,
+    imageAspectRatio,
     tags,
     stats,
     bgClass,
@@ -41,21 +47,45 @@ export default function ProjectCard({
     widthClass,
     shadowClass,
     tagOutlineClass = "outline-border",
+    imageColumnOffsetClass = "",
   } = project;
 
   return (
     <div className={`mx-auto ${widthClass}`}>
       <div
         className={`relative overflow-hidden rounded-[32px] ${bgClass} ${shadowClass} p-8 sm:p-10`}
-        // Forces Safari to composite this element on its own GPU layer.
-        // Without it, a `position: sticky` ancestor that's actively
-        // stuck can leave Safari's border-radius clip mask stale on one
-        // corner (a known WebKit bug), rendering it square.
+        // On mobile, an ancestor (MobileProjectCard's wrapper) applies a
+        // continuous scroll-linked `scale` transform, which promotes it to
+        // its own GPU compositing layer every frame while scrolling. If
+        // this card doesn't have a stable layer of its own, its rounded
+        // clip mask can get recomposited incorrectly as the ancestor's
+        // layer changes — losing the curve at a corner. `translateZ(0)`
+        // gives the card a fixed, persistent layer that isn't at the
+        // mercy of the ancestor's constantly-changing one.
         style={{ transform: "translateZ(0)" }}
       >
-        <div
-          className={`pointer-events-none absolute -top-24 right-0 size-[500px] rounded-full opacity-20 blur-2xl ${glowClass}`}
-        />
+        {/*
+          The glow is a fixed-size box regardless of viewport, but mobile
+          cards are much narrower than desktop ones — at a ~390px-wide
+          card, a 500px glow overhangs the left edge dramatically, meaning
+          the browser has to correctly clip a large amount of blurred
+          content just past the boundary. Confirmed empirically that the
+          corner bug is width-dependent (fine at 552px viewport, broken at
+          narrower ones) — shrinking the glow on mobile so it doesn't
+          overhang nearly as much directly reduces how much clipping the
+          renderer has to get right, independent of the compositing-layer
+          mitigations below. Desktop's cards are wide enough that 500px
+          was never dramatically oversized, so it's untouched there.
+
+          Also given its own dedicated overflow-hidden + matching
+          border-radius boundary at the same level it's rasterized on,
+          rather than relying solely on the outer element's clip.
+        */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[32px]">
+          <div
+            className={`absolute -top-24 right-0 size-[280px] rounded-full opacity-20 blur-2xl md:size-[500px] ${glowClass}`}
+          />
+        </div>
 
         <div className="relative flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
           <div className="flex flex-col items-start gap-6 md:max-w-sm">
@@ -92,13 +122,10 @@ export default function ProjectCard({
             )}
           </div>
 
-          <div className="flex flex-col gap-6 md:w-[45%] md:shrink-0">
+          <div className={`flex flex-col gap-6 md:w-[45%] md:shrink-0 ${imageColumnOffsetClass}`}>
             <div
-              className={
-                imageAspect === "portrait"
-                  ? "relative aspect-[489/472] w-full overflow-hidden rounded-lg"
-                  : "relative aspect-[529/350] w-full overflow-hidden rounded-lg"
-              }
+              className="relative w-full overflow-hidden rounded-2xl"
+              style={{ aspectRatio: imageAspectRatio.replace("/", " / ") }}
             >
               <Image src={image} alt={title} fill className="object-cover" unoptimized />
             </div>
