@@ -63,7 +63,7 @@ const projects: Project[] = [
       "Design Thinking",
       "Senior C-Suite Stakeholder",
     ],
-    bgClass: "bg-[#E7E0EB]",
+    bgClass: "bg-[#EAD9F3]",
     glowClass: "bg-purple-400",
     href: "#", // TODO: replace with real case study link
     widthClass: "w-full",

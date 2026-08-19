@@ -42,3 +42,21 @@ export const stackDimTransform = {
 // giving each card a stretch of scroll where it's shown alone, uncovered,
 // before the next one begins its approach.
 export const STACK_CARD_VIEW_SPACER_PX = 400;
+
+// --- Mobile-only stacking values, entirely independent of the desktop
+// ones above (STACK_BASE_OFFSET_PX / STACK_CARD_OFFSET_PX). Same full-card
+// pin-and-overlap mechanic as desktop, matching the Athos mobile
+// reference, just tuned to mobile's own viewport and card proportions
+// rather than reusing desktop's numbers.
+export const STACK_CARD_OFFSET_PX_MOBILE = 24;
+export const STACK_BASE_OFFSET_PX_MOBILE = 16;
+
+// Explicit height for the mobile cards' shared containing block. Without
+// this, the container's height is just the natural sum of the three (very
+// tall) cards, with zero slack — meaning by the time the last card's own
+// natural position reaches its sticky threshold, the shared container has
+// already run out of room to hold it there, so it approaches but never
+// actually locks in. This adds genuine budget (well beyond the natural
+// content height) so every card, including the last, gets its own turn to
+// hold. Reverts to desktop's own explicit height at the md breakpoint.
+export const STACK_CONTAINER_HEIGHT_PX_MOBILE = 4000;

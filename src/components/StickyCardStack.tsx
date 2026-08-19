@@ -1,11 +1,14 @@
 "use client";
 
-import { Fragment, type ReactNode, useRef, type RefObject } from "react";
+import { Fragment, type CSSProperties, type ReactNode, useRef, type RefObject } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import ProjectCard, { type Project } from "@/components/ProjectCard";
 import {
   STACK_CARD_OFFSET_PX,
   STACK_BASE_OFFSET_PX,
+  STACK_CARD_OFFSET_PX_MOBILE,
+  STACK_BASE_OFFSET_PX_MOBILE,
+  STACK_CONTAINER_HEIGHT_PX_MOBILE,
   STACK_HEADER_TOP_PX,
   STACK_CARD_VIEW_SPACER_PX,
   stackDimTransform,
@@ -30,13 +33,24 @@ function StickyCard({
   });
   const scale = useTransform(scrollYProgress, [0, 1], stackDimTransform.scale);
   const ownFinalTop = STACK_BASE_OFFSET_PX + index * STACK_CARD_OFFSET_PX;
+  const ownFinalTopMobile = STACK_BASE_OFFSET_PX_MOBILE + index * STACK_CARD_OFFSET_PX_MOBILE;
 
   return (
     <div
       ref={cardRef}
-      className="static md:sticky"
+      // Sticky at every breakpoint now (was `static` below md): mobile
+      // gets the same full-card pin-and-overlap mechanic as desktop, just
+      // with its own independently-tuned offset (--card-top-mobile) so
+      // retuning one breakpoint can never shift the other.
+      className="sticky top-[var(--card-top-mobile)] md:top-[var(--card-top)]"
       data-sticky-card={index}
-      style={{ top: ownFinalTop, zIndex: index + 1 }}
+      style={
+        {
+          "--card-top-mobile": `${ownFinalTopMobile}px`,
+          "--card-top": `${ownFinalTop}px`,
+          zIndex: index + 1,
+        } as CSSProperties
+      }
     >
       <motion.div
         style={
@@ -114,24 +128,31 @@ export default function StickyCardStack({
         A second height-bounded containing block, this time for the cards
         (and their spacers), separate from the header's above. Cards must
         remain DIRECT children of THIS wrapper (a Fragment, not a per-card
-        div) so they share one containing block and release together,
-        maintaining their relative sliver offsets, rather than each getting
+        div) so they share one containing block, rather than each getting
         its own short-lived box and desynchronizing from each other.
-        Sized (empirically) to hold through card 3 landing plus some dwell
-        time, then release in sync with the header above.
 
-        Unlike the header, this one uses NO negative margin: a card's
-        sticky-release timing depends only on its own containing block's
-        height, completely independent of whatever real content follows
-        that block — so a canceled (net-zero) extra height here would
-        change WHEN release could happen but never WHETHER it happens at
-        all. Release genuinely requires real, uncanceled scroll room after
-        this wrapper closes (the spacer right below) big enough to fit
-        the last card's own height — otherwise, at this viewport, there is
-        always leftover room at the true end of the page and the browser
-        never has a reason to un-stick it.
+        On mobile (base height, via the CSS var below): the natural sum of
+        three very-tall cards leaves zero slack, so without an explicit
+        push past that, the last card's own position reaches its sticky
+        threshold at the exact moment the container is already exhausted —
+        it approaches but never actually locks in. This adds real budget
+        beyond the natural content height so every card gets its own turn
+        to hold.
+
+        At md+, the desktop value below takes over instead (unrelated
+        number, tuned entirely separately — see its own comment): desktop
+        additionally needs this sized so release is reachable in sync with
+        the header, which doesn't apply on mobile since the header never
+        leaves there.
       */}
-      <div className="relative md:h-[2883px]">
+      <div
+        className="relative h-[var(--container-height-mobile)] md:h-[2883px]"
+        style={
+          {
+            "--container-height-mobile": `${STACK_CONTAINER_HEIGHT_PX_MOBILE}px`,
+          } as CSSProperties
+        }
+      >
         {projects.map((project, i) => (
           <Fragment key={project.id}>
             {i > 0 && (

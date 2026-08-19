@@ -293,9 +293,7 @@ test.describe("projects sticky stack", () => {
     expect(releasedCard2!.y).toBeLessThan(252); // moved from its pinned offset
   });
 
-  test("no horizontal overflow on mobile and cards do not overlap", async ({
-    page,
-  }) => {
+  test("no horizontal overflow on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(300);
 
@@ -304,21 +302,33 @@ test.describe("projects sticky stack", () => {
       innerWidth: window.innerWidth,
     }));
     expect(scrollWidth).toBe(innerWidth);
+  });
 
-    await scrollToProjectsCheckpoint(page, 0.5);
-    const boxes = await page.evaluate(() =>
-      Array.from(document.querySelectorAll("[data-sticky-card]")).map((el) => {
-        const r = el.getBoundingClientRect();
-        return { top: r.top, bottom: r.bottom, position: getComputedStyle(el).position };
-      }),
-    );
-    for (const box of boxes) expect(box.position).toBe("static");
-    expect(boxes[1].top).toBeGreaterThanOrEqual(boxes[0].bottom);
-    expect(boxes[2].top).toBeGreaterThanOrEqual(boxes[1].bottom);
+  test("mobile gets its own independent full-card stacking effect (16, 40, 64px), header stays static", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForTimeout(300);
 
+    // The header never goes sticky on mobile — unaffected by this feature.
     const headerPosition = await page
       .locator("[data-sticky-header]")
       .evaluate((el) => getComputedStyle(el).position);
     expect(headerPosition).toBe("static");
+
+    // Cards ARE sticky on mobile now, at their own (smaller) offsets —
+    // independent constants from desktop's 188/220/252.
+    const cases: [number, string, number][] = [
+      [0.06, "0", 16],
+      [0.34, "1", 40],
+      [0.6, "2", 64],
+    ];
+    for (const [fraction, index, expectedTop] of cases) {
+      await scrollToProjectsCheckpoint(page, fraction);
+      const card = page.locator(`[data-sticky-card="${index}"]`);
+      expect(await card.evaluate((el) => getComputedStyle(el).position)).toBe("sticky");
+      const box = await card.boundingBox();
+      expect(box!.y).toBe(expectedTop);
+    }
   });
 });
