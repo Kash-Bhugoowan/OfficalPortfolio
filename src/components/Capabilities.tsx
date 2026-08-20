@@ -1,28 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useRef, useState, useEffect, type RefObject } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { fadeInUp, linkHoverTransition, CAPABILITY_CARD_FOCUS_SCALE } from "@/lib/motion";
-
-// Mirrors Tailwind's `md` breakpoint in JS — the scroll-linked focus
-// scale below is mobile-only (it's what makes swiping between cards feel
-// alive on touch), but on desktop it made every card sit at a slightly
-// different scale at rest, which visually broke the otherwise-exact 16px
-// gap between cards (scaling shrinks a card toward its own center, so
-// two differently-scaled neighbors show different visual gaps even
-// though the underlying CSS gap never changes). Desktop stays a fixed,
-// evenly-spaced grid instead, matching Apple's own static card grid.
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 768px)");
-    setIsDesktop(query.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    query.addEventListener("change", handler);
-    return () => query.removeEventListener("change", handler);
-  }, []);
-  return isDesktop;
-}
+import { useIsDesktop } from "@/lib/useIsDesktop";
 
 type Capability = {
   icon: string;
