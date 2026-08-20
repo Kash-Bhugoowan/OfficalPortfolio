@@ -52,3 +52,12 @@ export const STACK_CARD_VIEW_SPACER_PX = 400;
 // the viewport — peaking at full size when centered.
 export const MOBILE_CARD_ENTRANCE_Y_PX = 40;
 export const MOBILE_CARD_FOCUS_SCALE = [0.94, 1, 0.94] as [number, number, number];
+
+// Same focus-scale concept, applied to the Capabilities carousel's cards
+// — kept as its own constant (not shared with MOBILE_CARD_FOCUS_SCALE
+// above) so retuning one can never shift the other. Kept close to 1: a
+// bigger dip (e.g. 0.85) shrinks off-center cards toward their own
+// center enough to visually blow the tight 2px carousel gap out to
+// 30-50px on screen, which reads as "cards not close together" even
+// though the underlying CSS gap is small.
+export const CAPABILITY_CARD_FOCUS_SCALE = [0.95, 1, 0.95] as [number, number, number];

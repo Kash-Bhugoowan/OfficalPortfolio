@@ -109,7 +109,7 @@ test.describe("behavior invariants", () => {
   });
 
   test("nav link hover turns accent purple", async ({ page }) => {
-    const link = page.getByRole("link", { name: "Work" });
+    const link = page.getByRole("link", { name: "Work", exact: true });
     const before = await link.evaluate((el) => getComputedStyle(el).color);
     await link.hover();
     await page.waitForTimeout(1500); // let the spring settle past its asymptote
@@ -208,7 +208,7 @@ test.describe("projects sticky stack", () => {
     const cases: [number, string, number][] = [
       [0.06, "0", 188],
       [0.3, "1", 220],
-      [0.55, "2", 252],
+      [0.5, "2", 252],
     ];
     for (const [fraction, index, expectedTop] of cases) {
       await scrollToProjectsCheckpoint(page, fraction);
@@ -247,7 +247,9 @@ test.describe("projects sticky stack", () => {
     page,
   }) => {
     const eyebrow = await page.getByText("Selected Work").boundingBox();
-    const heading = await page.locator("h2").boundingBox();
+    const heading = await page
+      .getByRole("heading", { name: "Projects that matter" })
+      .boundingBox();
     const description = await page
       .locator("p", { hasText: "A selection of client work" })
       .boundingBox();

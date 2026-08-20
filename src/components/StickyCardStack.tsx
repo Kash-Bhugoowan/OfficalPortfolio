@@ -166,11 +166,15 @@ export default function StickyCardStack({
       </div>
       {/*
         Real (uncanceled) trailing room, required for the desktop cards'
-        release above to be reachable at all — see the comment there. Kept
-        modest; it's only ever seen briefly while the stack is already
-        scrolling away, not as a static gap.
+        release above to be reachable at all — see the comment there. This
+        transition is deliberately wider than the site-wide 74px
+        section-to-section standard (Projects' sticky stack reads as a lot
+        of visual motion/weight, so it gets more breathing room before
+        Capabilities starts) — sized so, combined with this section's own
+        37px bottom padding, the released card sits 108px above
+        Capabilities.
       */}
-      <div className="hidden md:block md:h-[450px]" aria-hidden />
+      <div className="hidden md:block md:h-[71px]" aria-hidden />
 
       {/*
         Mobile only: no sticky pinning at all. Cards are taller than the
