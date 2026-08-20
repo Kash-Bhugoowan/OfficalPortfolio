@@ -79,11 +79,26 @@ const container = {
 
 const item = fadeInUp;
 
-function CardContent({ capability, isDesktop }: { capability: Capability; isDesktop: boolean }) {
+function CardContent({
+  capability,
+  isDesktop,
+  isActive,
+}: {
+  capability: Capability;
+  isDesktop: boolean;
+  isActive: boolean;
+}) {
   return (
     <>
       <motion.span
-        className="text-2xl leading-10 text-zinc-600 transition-colors duration-300 group-hover:text-accent"
+        // Desktop keeps CSS `:hover` (via the parent's `.group`, scoped to
+        // `md:` so it never fires from a mobile tap's sticky-hover quirk).
+        // Mobile has no hover at all, so it drives the same purple tint
+        // directly off the already-computed "centered card" active state
+        // instead.
+        className={`text-2xl leading-10 transition-colors duration-300 md:group-hover:text-accent ${
+          !isDesktop && isActive ? "text-accent" : "text-zinc-600"
+        }`}
         whileHover={{ scale: 1.2, rotate: 8 }}
         transition={{ type: "spring", stiffness: 400, damping: 15 }}
       >
@@ -193,7 +208,7 @@ function CapabilityCard({
         className="flex w-full flex-col items-start transition-opacity duration-300"
         style={{ opacity: activeIndex === null || activeIndex === index ? 1 : 0.6 }}
       >
-        <CardContent capability={capability} isDesktop={isDesktop} />
+        <CardContent capability={capability} isDesktop={isDesktop} isActive={activeIndex === index} />
       </div>
     </motion.div>
   );
