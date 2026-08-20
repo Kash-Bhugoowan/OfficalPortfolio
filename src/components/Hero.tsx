@@ -18,9 +18,12 @@ const item = fadeInUp;
 export default function Hero() {
   return (
     <motion.section
-      // Standard section vertical padding across the site: 74px top and
-      // bottom (left/right unaffected). Match this on any new section.
-      className="flex flex-col items-center gap-12 px-6 py-[74px] text-center"
+      // Standard section vertical padding across the site: 37px top and
+      // bottom on every section (left/right unaffected). Half of the
+      // intended 74px gap BETWEEN sections — two adjacent sections' own
+      // 37px bottom + 37px top combine to the full 74px. Match this on
+      // any new section.
+      className="flex flex-col items-center gap-12 px-6 py-[37px] text-center"
       variants={container}
       initial="hidden"
       animate="visible"

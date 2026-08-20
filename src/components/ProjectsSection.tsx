@@ -24,7 +24,10 @@ const projects: Project[] = [
     widthClass: "w-full max-w-[93%]",
     shadowClass: "shadow-[0_8px_24px_0_rgba(36,31,43,0.08)]",
     tagOutlineClass: "outline-white",
-    imageColumnOffsetClass: "mt-[60px]",
+    // Desktop-only: aligns Minerva's image column with its title. Must
+    // not apply on mobile (compact layout), where all three cards need
+    // identical, unmodified spacing between title/body/image.
+    imageColumnOffsetClass: "md:mt-[60px]",
   },
   {
     id: "gail",
@@ -77,13 +80,16 @@ const projects: Project[] = [
 
 export default function ProjectsSection() {
   return (
-    // 42px top and bottom padding (left/right unchanged at px-6). Bottom
-    // padding eats 1:1 into the sticky stack's available "stuck" room at
-    // the true end of the page (see StickyCardStack's trailing spacer
-    // comment), but the squeeze-compensation on each card reads its live
-    // position and actively corrects for exactly this kind of shortfall,
-    // so a modest, deliberate bottom padding is safe here.
-    <section className="flex flex-col items-center px-6 py-[42px]">
+    // Standard site-wide section padding: 37px top and bottom (left/right
+    // unchanged at px-6) — half of the intended 74px gap between
+    // sections, so this section's 37px top combines with Hero's 37px
+    // bottom above it to the full 74px. Bottom padding eats 1:1 into the
+    // sticky stack's available "stuck" room at the true end of the page
+    // (see StickyCardStack's trailing spacer comment), but the
+    // squeeze-compensation on each card reads its live position and
+    // actively corrects for exactly this kind of shortfall, so a modest,
+    // deliberate bottom padding is safe here.
+    <section className="flex flex-col items-center px-6 py-[37px]">
       <div className="mx-auto w-full max-w-[1227px]">
         <StickyCardStack
           projects={projects}

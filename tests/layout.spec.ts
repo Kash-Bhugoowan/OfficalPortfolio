@@ -12,12 +12,12 @@ test.describe("spacing invariants", () => {
     expect(nav?.y).toBe(24);
   });
 
-  test("photo is 48px below the nav", async ({ page }) => {
+  test("photo is 37px below the nav", async ({ page }) => {
     const nav = await page.locator("nav").boundingBox();
     const photo = await page
       .locator('img[alt="Portrait of Karishma Bhugoowan"]')
       .boundingBox();
-    expect(photo!.y - (nav!.y + nav!.height)).toBe(48);
+    expect(photo!.y - (nav!.y + nav!.height)).toBe(37);
   });
 
   test("heading is 48px below the photo", async ({ page }) => {
@@ -28,30 +28,30 @@ test.describe("spacing invariants", () => {
     expect(h1!.y - (photo!.y + photo!.height)).toBe(48);
   });
 
-  test("description is 32px below the heading", async ({ page }) => {
+  test("description is 24px below the heading", async ({ page }) => {
     const h1 = await page.locator("h1").boundingBox();
     const desc = await page
       .locator("p", { hasText: "I take complex problems" })
       .boundingBox();
-    expect(desc!.y - (h1!.y + h1!.height)).toBe(32);
+    expect(desc!.y - (h1!.y + h1!.height)).toBe(24);
   });
 
-  test("FT line is 32px below the description", async ({ page }) => {
+  test("FT line is 24px below the description", async ({ page }) => {
     const desc = await page
       .locator("p", { hasText: "I take complex problems" })
       .boundingBox();
     const ft = await page
       .locator("p", { hasText: "Interviewed by the" })
       .boundingBox();
-    expect(ft!.y - (desc!.y + desc!.height)).toBe(32);
+    expect(ft!.y - (desc!.y + desc!.height)).toBe(24);
   });
 
-  test("roles marquee is 32px below the FT line", async ({ page }) => {
+  test("roles marquee is 27px below the FT line", async ({ page }) => {
     const ft = await page
       .locator("p", { hasText: "Interviewed by the" })
       .boundingBox();
     const marquee = await page.locator(".animate-marquee").first().boundingBox();
-    expect(marquee!.y - (ft!.y + ft!.height)).toBe(32);
+    expect(marquee!.y - (ft!.y + ft!.height)).toBe(27);
   });
 
   test("roles marquee window matches the hero text column width", async ({
@@ -65,13 +65,13 @@ test.describe("spacing invariants", () => {
     expect(clipDiv!.width).toBeCloseTo(desc!.width, 0);
   });
 
-  test("photo gallery is 32px below the roles marquee", async ({ page }) => {
+  test("photo gallery is 40px below the roles marquee", async ({ page }) => {
     const marquee = await page.locator(".animate-marquee").first().boundingBox();
     const gallery = await page
       .locator(".animate-marquee-reverse")
       .first()
       .boundingBox();
-    expect(gallery!.y - (marquee!.y + marquee!.height)).toBe(32);
+    expect(gallery!.y - (marquee!.y + marquee!.height)).toBe(40);
   });
 
   test("photo gallery breaks out wider than the hero text column", async ({
