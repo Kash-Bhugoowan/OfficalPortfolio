@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { fadeInUp } from "@/lib/motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { fadeInUp, PHILOSOPHY_CARD_FOCUS_SCALE } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+
+// How far down the viewport the invisible "activation" line sits, as a
+// fraction of viewport height. A card becomes active the moment its top
+// edge crosses above this line, and stays active until the next card's
+// top edge crosses it too — so exactly one card is ever active,
+// regardless of how tall any individual card is.
+const TRIGGER_LINE_RATIO = 0.4;
 
 type Diagram = "venn" | "trinity" | "grid";
 
@@ -241,52 +248,54 @@ function GridDiagram({ assembled, accent }: { assembled: boolean; accent: string
   );
 }
 
-function PrincipleCard({ principle, isDesktop }: { principle: Principle; isDesktop: boolean }) {
+function PrincipleCard({
+  principle,
+  isDesktop,
+  active,
+  registerRef,
+}: {
+  principle: Principle;
+  isDesktop: boolean;
+  // Whether this card is the one active card under the trigger-line
+  // model — computed and lifted at the parent, since "exactly one card
+  // active at a time" is inherently a cross-card comparison, not
+  // something a single card can determine on its own.
+  active: boolean;
+  registerRef: (el: HTMLElement | null) => void;
+}) {
   const [hovered, setHovered] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
-  // Tracks the diagram box itself, not the whole card — cards run taller
-  // than the mobile viewport (title + two paragraphs below the diagram),
-  // so centering the *card* can leave the diagram already scrolled out of
-  // view by the time the card's own midpoint reaches the viewport's.
-  const diagramRef = useRef<HTMLDivElement>(null);
-  const [centered, setCentered] = useState(false);
-  const { scrollYProgress } = useScroll({
-    target: diagramRef,
-    offset: ["start end", "end start"],
-  });
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (isDesktop) return; // desktop uses hover instead
-    setCentered(latest > 0.4 && latest < 0.6);
-  });
+  const assembled = hovered || showPhoto || active;
 
-  // useMotionValueEvent's "change" handler only fires on a change after
-  // mount — it never reports the value already present at first paint, so
-  // a card that's already centered before any scroll happens would
-  // otherwise stay unassembled until the user's first scroll.
+  // Discrete two-state scale, toggled by the lifted `active` boolean
+  // rather than continuously mapped from scroll position — a continuous
+  // scroll-linked value can't express "stays scaled up for the card's
+  // entire length" for cards taller than the viewport. `useSpring(number,
+  // config)` only reads its number argument once, as the initial value —
+  // passing a changing plain number on later renders is silently ignored,
+  // not re-animated — so the target is tracked via its own motion value,
+  // which `.set()` on every change, and the spring (created once, following
+  // that source) animates toward it automatically. Uses the same spring
+  // signature as this file's diagram-assembly animations for a consistent
+  // feel.
+  const targetScale = isDesktop || active ? 1 : PHILOSOPHY_CARD_FOCUS_SCALE[0];
+  const targetScaleValue = useMotionValue(targetScale);
+  const scale = useSpring(targetScaleValue, { stiffness: 90, damping: 16 });
   useEffect(() => {
-    if (isDesktop) return;
-    const initial = scrollYProgress.get();
-    // A one-time read of the scroll motion value's already-current position
-    // at mount, not a derived-state anti-pattern — there's no render-time
-    // source for it (the motion value only reflects real layout after the
-    // ref attaches), so it can't be computed during render instead.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setCentered(initial > 0.4 && initial < 0.6);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const assembled = hovered || showPhoto || centered;
+    targetScaleValue.set(targetScale);
+  }, [targetScale, targetScaleValue]);
 
   return (
     <motion.article
+      ref={registerRef}
       variants={item}
       onHoverStart={isDesktop ? () => setHovered(true) : undefined}
       onHoverEnd={isDesktop ? () => setHovered(false) : undefined}
-      className="box-border flex w-full min-w-0 flex-col rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 lg:flex-1 lg:basis-0"
+      style={{ scale }}
+      className="box-border flex w-full min-w-0 flex-col rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
     >
       <div
-        ref={diagramRef}
         className="relative h-[241px] w-full overflow-hidden rounded-lg"
         style={{ backgroundColor: principle.fill }}
       >
@@ -349,6 +358,42 @@ function PrincipleCard({ principle, isDesktop }: { principle: Principle; isDeskt
 
 export default function DesignPhilosophy() {
   const isDesktop = useIsDesktop();
+  const reduceMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const { scrollY } = useScroll();
+
+  // The active card is the last one (highest index) whose top edge has
+  // crossed above the trigger line — recomputed from real layout on every
+  // call, so it's a pure function of current scroll position rather than
+  // incrementally-updated state. That's what makes "exactly one card
+  // active, instant handoff, no stuck mid-state during rapid scrolling"
+  // fall out for free: there's nothing to get out of sync, each call just
+  // derives the correct answer fresh.
+  const updateActiveIndex = useCallback(() => {
+    if (isDesktop || reduceMotion) {
+      setActiveIndex(null);
+      return;
+    }
+    const triggerY = window.innerHeight * TRIGGER_LINE_RATIO;
+    let next: number | null = null;
+    cardRefs.current.forEach((el, i) => {
+      if (el && el.getBoundingClientRect().top <= triggerY) next = i;
+    });
+    setActiveIndex(next);
+  }, [isDesktop, reduceMotion]);
+
+  useMotionValueEvent(scrollY, "change", updateActiveIndex);
+
+  // useMotionValueEvent's "change" only fires on a change after mount, and
+  // the trigger line itself depends on viewport height, which can change
+  // on resize/orientation change — both need an explicit recompute.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    updateActiveIndex();
+    window.addEventListener("resize", updateActiveIndex);
+    return () => window.removeEventListener("resize", updateActiveIndex);
+  }, [updateActiveIndex]);
 
   return (
     <section className="flex flex-col items-center gap-14 px-6 py-[37px]">
@@ -377,8 +422,16 @@ export default function DesignPhilosophy() {
         viewport={{ once: true, amount: 0.2 }}
         variants={container}
       >
-        {principles.map((principle) => (
-          <PrincipleCard key={principle.index} principle={principle} isDesktop={isDesktop} />
+        {principles.map((principle, i) => (
+          <PrincipleCard
+            key={principle.index}
+            principle={principle}
+            isDesktop={isDesktop}
+            active={activeIndex === i}
+            registerRef={(el) => {
+              cardRefs.current[i] = el;
+            }}
+          />
         ))}
       </motion.div>
     </section>

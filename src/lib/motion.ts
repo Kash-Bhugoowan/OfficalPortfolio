@@ -61,3 +61,9 @@ export const MOBILE_CARD_FOCUS_SCALE = [0.94, 1, 0.94] as [number, number, numbe
 // 30-50px on screen, which reads as "cards not close together" even
 // though the underlying CSS gap is small.
 export const CAPABILITY_CARD_FOCUS_SCALE = [0.95, 1, 0.95] as [number, number, number];
+
+// Same focus-scale concept as the two constants above, applied to the
+// Design Philosophy cards — kept as its own constant per that same
+// convention. Subtler than both: these cards are much larger, so a
+// bigger dip would be more visually jarring.
+export const PHILOSOPHY_CARD_FOCUS_SCALE = [0.96, 1, 0.96] as [number, number, number];
