@@ -1,7 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { useCallback, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 import { fadeInUp, PHILOSOPHY_CARD_FOCUS_SCALE } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 
@@ -250,23 +258,33 @@ function GridDiagram({ assembled, accent }: { assembled: boolean; accent: string
 
 function PrincipleCard({
   principle,
+  index,
   isDesktop,
   active,
+  hoveredIndex,
+  onHoverStart,
   registerRef,
 }: {
   principle: Principle;
+  index: number;
   isDesktop: boolean;
   // Whether this card is the one active card under the trigger-line
   // model — computed and lifted at the parent, since "exactly one card
   // active at a time" is inherently a cross-card comparison, not
   // something a single card can determine on its own.
   active: boolean;
+  // Which sibling (if any) is currently hovered — lifted to the parent
+  // for the same reason `active` is: dimming the *other* cards when one
+  // is hovered needs to compare across siblings, not just know about
+  // itself.
+  hoveredIndex: number | null;
+  onHoverStart: () => void;
   registerRef: (el: HTMLElement | null) => void;
 }) {
-  const [hovered, setHovered] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
+  const isHovered = hoveredIndex === index;
 
-  const assembled = hovered || showPhoto || active;
+  const assembled = isHovered || showPhoto || active;
 
   // Discrete two-state scale, toggled by the lifted `active` boolean
   // rather than continuously mapped from scroll position — a continuous
@@ -286,72 +304,109 @@ function PrincipleCard({
     targetScaleValue.set(targetScale);
   }, [targetScale, targetScaleValue]);
 
+  // Desktop-only cursor-tracking spotlight, within the hovered card itself
+  // — separate from the sibling-dim above, which handles the *other*
+  // cards. Position is tracked in motion values rather than React state
+  // so the gradient repaints every mouse move without re-rendering the
+  // component. Tinted with the card's own accent color (same
+  // `${accent}NN` hex-alpha suffix technique already used for the Venn
+  // circles) so each card's spotlight matches its diagram's theme.
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const spotlightBackground = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, ${principle.accent}26, transparent 70%)`;
+  const handleMouseMove = (e: ReactMouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
   return (
     <motion.article
       ref={registerRef}
       variants={item}
-      onHoverStart={isDesktop ? () => setHovered(true) : undefined}
-      onHoverEnd={isDesktop ? () => setHovered(false) : undefined}
+      onHoverStart={isDesktop ? onHoverStart : undefined}
+      onMouseMove={isDesktop ? handleMouseMove : undefined}
       style={{ scale }}
-      className="box-border flex w-full min-w-0 flex-col rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
+      className="relative box-border flex w-full min-w-0 flex-col overflow-hidden rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
     >
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-10"
+        style={{ background: spotlightBackground }}
+        animate={{ opacity: isDesktop && isHovered ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      />
+      {/*
+        Plain (non-motion) wrapper for the sibling-dim opacity, same
+        rationale as Capabilities.tsx's identical pattern: the parent
+        motion.article's opacity is already owned by the `variants`
+        entrance animation — a second framer-controlled opacity on that
+        same element fights that ownership and gets silently overridden.
+        A completely separate DOM node with a vanilla CSS transition
+        avoids the conflict entirely.
+      */}
       <div
-        className="relative h-[241px] w-full overflow-hidden rounded-lg"
-        style={{ backgroundColor: principle.fill }}
+        className="flex w-full flex-col items-start transition-opacity duration-300"
+        style={{ opacity: hoveredIndex === null || isHovered ? 1 : 0.6 }}
       >
-        <motion.div
-          className="absolute inset-0"
-          animate={{ opacity: showPhoto ? 0 : 1 }}
-          transition={{ duration: 0.38, ease: "easeInOut" }}
+        <div
+          className="relative h-[241px] w-full overflow-hidden rounded-lg"
+          style={{ backgroundColor: principle.fill }}
         >
-          {principle.diagram === "venn" && (
-            <VennDiagram
-              assembled={assembled}
-              accent={principle.accent}
-              label={principle.label}
-              labelColor={principle.labelColor}
-            />
-          )}
-          {principle.diagram === "trinity" && <TrinityDiagram assembled={assembled} accent={principle.accent} />}
-          {principle.diagram === "grid" && <GridDiagram assembled={assembled} accent={principle.accent} />}
-          {principle.diagram === "grid" && principle.label && (
-            <div
-              className="absolute right-0 bottom-[18px] left-0 text-center font-[family-name:var(--font-dm-sans)] text-[11px] font-semibold tracking-wider uppercase"
-              style={{ color: principle.labelColor }}
-            >
-              {principle.label}
-            </div>
-          )}
-        </motion.div>
-        <motion.img
-          src={principle.photo}
-          alt={principle.photoAlt}
-          className="absolute inset-0 size-full object-cover"
-          animate={{ opacity: showPhoto ? 1 : 0 }}
-          transition={{ duration: 0.38, ease: "easeInOut" }}
-        />
-      </div>
+          <motion.div
+            className="absolute inset-0"
+            animate={{ opacity: showPhoto ? 0 : 1 }}
+            transition={{ duration: 0.38, ease: "easeInOut" }}
+          >
+            {principle.diagram === "venn" && (
+              <VennDiagram
+                assembled={assembled}
+                accent={principle.accent}
+                label={principle.label}
+                labelColor={principle.labelColor}
+              />
+            )}
+            {principle.diagram === "trinity" && <TrinityDiagram assembled={assembled} accent={principle.accent} />}
+            {principle.diagram === "grid" && <GridDiagram assembled={assembled} accent={principle.accent} />}
+            {principle.diagram === "grid" && principle.label && (
+              <div
+                className="absolute right-0 bottom-[18px] left-0 text-center font-[family-name:var(--font-dm-sans)] text-[11px] font-semibold tracking-wider uppercase"
+                style={{ color: principle.labelColor }}
+              >
+                {principle.label}
+              </div>
+            )}
+          </motion.div>
+          <motion.img
+            src={principle.photo}
+            alt={principle.photoAlt}
+            className="absolute inset-0 size-full object-cover"
+            animate={{ opacity: showPhoto ? 1 : 0 }}
+            transition={{ duration: 0.38, ease: "easeInOut" }}
+          />
+        </div>
 
-      <button
-        type="button"
-        onClick={() => setShowPhoto((s) => !s)}
-        className="mt-4 inline-flex w-fit rounded-full border border-border bg-[#faf8f5] px-[18px] py-[9px] text-sm font-medium whitespace-nowrap text-nav-muted transition-colors duration-200 hover:bg-[#eeeafd] hover:text-nav-hover"
-      >
-        {showPhoto ? "Show the diagram" : "See it in the room"}
-      </button>
-
-      <div className="mt-[22px] font-[family-name:var(--font-dm-sans)] text-[11.52px] font-semibold tracking-wider text-[#887c98]">
-        {principle.index}
-      </div>
-      <h3 className="mt-2.5 mb-5 text-[30px] leading-10 tracking-[-0.4px] text-foreground">{principle.title}</h3>
-      {principle.body.map((paragraph, i) => (
-        <p
-          key={i}
-          className={`text-[16.5px] leading-7 font-light text-text-secondary ${i === 0 ? "mb-4" : ""}`}
+        <button
+          type="button"
+          onClick={() => setShowPhoto((s) => !s)}
+          className="mt-4 inline-flex w-fit rounded-full border border-border bg-[#faf8f5] px-[18px] py-[9px] text-sm font-medium whitespace-nowrap text-nav-muted transition-colors duration-200 hover:bg-[#eeeafd] hover:text-nav-hover"
         >
-          {paragraph}
-        </p>
-      ))}
+          {showPhoto ? "Show the diagram" : "See it in the room"}
+        </button>
+
+        <div className="mt-[22px] font-[family-name:var(--font-dm-sans)] text-[11.52px] font-semibold tracking-wider text-[#887c98]">
+          {principle.index}
+        </div>
+        <h3 className="mt-2.5 mb-5 text-[30px] leading-10 tracking-[-0.4px] text-foreground">{principle.title}</h3>
+        {principle.body.map((paragraph, i) => (
+          <p
+            key={i}
+            className={`text-[16.5px] leading-7 font-light text-text-secondary ${i === 0 ? "mb-4" : ""}`}
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
     </motion.article>
   );
 }
@@ -360,6 +415,7 @@ export default function DesignPhilosophy() {
   const isDesktop = useIsDesktop();
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const { scrollY } = useScroll();
 
@@ -421,13 +477,17 @@ export default function DesignPhilosophy() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={container}
+        onHoverEnd={isDesktop ? () => setHoveredIndex(null) : undefined}
       >
         {principles.map((principle, i) => (
           <PrincipleCard
             key={principle.index}
             principle={principle}
+            index={i}
             isDesktop={isDesktop}
             active={activeIndex === i}
+            hoveredIndex={hoveredIndex}
+            onHoverStart={() => setHoveredIndex(i)}
             registerRef={(el) => {
               cardRefs.current[i] = el;
             }}
