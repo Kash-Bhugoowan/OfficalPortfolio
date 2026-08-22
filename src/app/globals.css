@@ -60,3 +60,63 @@ body {
 .animate-marquee-reverse {
   animation: marquee-reverse 205s linear infinite;
 }
+
+/* Design Philosophy cards: hovering a specific card darkens the *other*
+   cards via a black scrim (::after), rather than fading them toward the
+   white page background with opacity on the card itself. Pure CSS, no JS
+   — the hovered card is untouched by this rule (`:not(:hover)` on the
+   card itself) and keeps its own separate hover behavior (diagram
+   assembly, cursor spotlight) driven by React/Framer state.
+   Uses `:has(.philosophy-card:hover)` rather than plain
+   `.philosophy-cards-row:hover` — the row's own box includes the gaps
+   and padding between cards, so a plain `:hover` on the row matched as
+   soon as the cursor was anywhere inside that box, even over a gap
+   between cards or just passing through while scrolling. At that point
+   no single card was `:hover`, so `:not(:hover)` matched all three and
+   every card scrimmed at once — reading as "the whole section dims
+   whenever it's in view" rather than a per-card hover effect. `:has()`
+   requires an actual card to be hovered before anything dims, and
+   nothing dims once the cursor leaves every card, even while still
+   inside the row.
+   Contrast check: --color-text-secondary (#444) on white, scrimmed by
+   10% black, composites to ~#3d3d3d on ~#e6e6e6 — ~8.7:1, comfortably
+   past the 4.5:1 AA floor, so no need to drop to 0.08.
+   Contrast check: --color-text-secondary (#444) on white, scrimmed by
+   10% black, composites to ~#3d3d3d on ~#e6e6e6 — ~8.7:1, comfortably
+   past the 4.5:1 AA floor, so no need to drop to 0.08.
+   The `min-width: 768px` matches useIsDesktop() (src/lib/useIsDesktop.ts)
+   — the same breakpoint every other desktop-only behavior in this
+   component (diagram assembly, spotlight, scale-up) is gated on. Without
+   it, `(hover: hover) and (pointer: fine)` alone only detects whether a
+   real pointer exists, not viewport width — a narrow desktop browser
+   window (or DevTools responsive mode without touch simulation) still
+   has a mouse, so the scrim would still fire there even though the
+   layout has switched to its mobile, single-column form. */
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+  .philosophy-card {
+    position: relative;
+  }
+
+  .philosophy-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    border-radius: inherit;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease-out;
+  }
+
+  .philosophy-cards-row:has(.philosophy-card:hover) .philosophy-card:not(:hover)::after,
+  .philosophy-cards-row:has(.philosophy-card:focus-within) .philosophy-card:not(:focus-within)::after {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .philosophy-card::after {
+      transition: none;
+    }
+  }
+}

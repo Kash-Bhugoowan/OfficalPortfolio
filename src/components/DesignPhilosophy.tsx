@@ -327,7 +327,7 @@ function PrincipleCard({
       onHoverStart={isDesktop ? onHoverStart : undefined}
       onMouseMove={isDesktop ? handleMouseMove : undefined}
       style={{ scale }}
-      className="relative box-border flex w-full min-w-0 flex-col overflow-hidden rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
+      className="philosophy-card relative box-border flex w-full min-w-0 flex-col overflow-hidden rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
     >
       <motion.div
         aria-hidden
@@ -336,19 +336,7 @@ function PrincipleCard({
         animate={{ opacity: isDesktop && isHovered ? 1 : 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       />
-      {/*
-        Plain (non-motion) wrapper for the sibling-dim opacity, same
-        rationale as Capabilities.tsx's identical pattern: the parent
-        motion.article's opacity is already owned by the `variants`
-        entrance animation — a second framer-controlled opacity on that
-        same element fights that ownership and gets silently overridden.
-        A completely separate DOM node with a vanilla CSS transition
-        avoids the conflict entirely.
-      */}
-      <div
-        className="flex w-full flex-col items-start transition-opacity duration-300"
-        style={{ opacity: hoveredIndex === null || isHovered ? 1 : 0.6 }}
-      >
+      <div className="flex w-full flex-col items-start">
         <div
           className="relative h-[241px] w-full overflow-hidden rounded-lg"
           style={{ backgroundColor: principle.fill }}
@@ -452,7 +440,7 @@ export default function DesignPhilosophy() {
   }, [updateActiveIndex]);
 
   return (
-    <section className="flex flex-col items-center gap-14 px-6 py-[37px]">
+    <section className="flex flex-col items-center gap-8 px-6 py-[37px]">
       <motion.div
         className="flex w-96 flex-col items-center gap-2 text-center"
         initial="hidden"
@@ -472,7 +460,7 @@ export default function DesignPhilosophy() {
       </motion.div>
 
       <motion.div
-        className="mx-auto flex w-full max-w-[1528px] flex-col items-stretch gap-8 lg:flex-row"
+        className="philosophy-cards-row mx-auto flex w-full max-w-[1528px] flex-col items-stretch gap-4 lg:flex-row lg:gap-8"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
