@@ -59,15 +59,15 @@ export default function Hero() {
           variants={item}
           className="mt-6 text-[22px] leading-8 font-light text-text-secondary"
         >
-          I take complex problems and reframe them into opportunities,
-          focusing on crafting innovative solutions that meet real user needs
-          and deliver business value.
+          I turn ambiguity into product direction by bringing user needs,
+          business goals and emerging technology together to create products
+          people can trust.
         </motion.p>
         <motion.p
           variants={item}
           className="mt-6 text-[18px] leading-[35px] text-text-secondary"
         >
-          Interviewed by the{" "}
+          Featured in the{" "}
           <motion.a
             href="https://www.ft.com/partnercontent/ibm/what-if-ai-s-greatest-superpower-is-people.html"
             target="_blank"
@@ -79,7 +79,7 @@ export default function Hero() {
           >
             Financial Times
           </motion.a>{" "}
-          on putting people first whilst working with AI.
+          for my perspective on keeping people at the centre of AI.
         </motion.p>
         <motion.div variants={item} className="mt-[27px] w-full">
           <RolesMarquee />

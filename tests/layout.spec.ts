@@ -31,24 +31,24 @@ test.describe("spacing invariants", () => {
   test("description is 24px below the heading", async ({ page }) => {
     const h1 = await page.locator("h1").boundingBox();
     const desc = await page
-      .locator("p", { hasText: "I take complex problems" })
+      .locator("p", { hasText: "I turn ambiguity into product direction" })
       .boundingBox();
     expect(desc!.y - (h1!.y + h1!.height)).toBe(24);
   });
 
   test("FT line is 24px below the description", async ({ page }) => {
     const desc = await page
-      .locator("p", { hasText: "I take complex problems" })
+      .locator("p", { hasText: "I turn ambiguity into product direction" })
       .boundingBox();
     const ft = await page
-      .locator("p", { hasText: "Interviewed by the" })
+      .locator("p", { hasText: "Featured in the" })
       .boundingBox();
     expect(ft!.y - (desc!.y + desc!.height)).toBe(24);
   });
 
   test("roles marquee is 27px below the FT line", async ({ page }) => {
     const ft = await page
-      .locator("p", { hasText: "Interviewed by the" })
+      .locator("p", { hasText: "Featured in the" })
       .boundingBox();
     const marquee = await page.locator(".animate-marquee").first().boundingBox();
     expect(marquee!.y - (ft!.y + ft!.height)).toBe(27);
@@ -58,7 +58,7 @@ test.describe("spacing invariants", () => {
     page,
   }) => {
     const desc = await page
-      .locator("p", { hasText: "I take complex problems" })
+      .locator("p", { hasText: "I turn ambiguity into product direction" })
       .boundingBox();
     const clipDiv = await page.locator(".overflow-hidden").first().boundingBox();
     expect(clipDiv!.x).toBeCloseTo(desc!.x, 0);
@@ -78,7 +78,7 @@ test.describe("spacing invariants", () => {
     page,
   }) => {
     const desc = await page
-      .locator("p", { hasText: "I take complex problems" })
+      .locator("p", { hasText: "I turn ambiguity into product direction" })
       .boundingBox();
     const galleryClip = await page
       .locator(".animate-marquee-reverse")
