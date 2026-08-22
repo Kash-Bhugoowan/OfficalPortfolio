@@ -170,6 +170,33 @@ function VennDiagram({
   );
 }
 
+// Single center axis + shared geometry — every coordinate below is
+// derived from TRINITY_CENTER_X/TRINITY_LINE_Y rather than hardcoded, so
+// the horizontal line, both diagonals, and all three dots can't drift
+// apart from each other even if the size changes later.
+const TRINITY_CENTER_X = 0; // the diagram's vertical center axis
+const TRINITY_LINE_Y = -46; // y of the Design–Product line (and the apex)
+const TRINITY_HALF_LINE = 84; // half the horizontal line's length
+const TRINITY_DESIGN_X = TRINITY_CENTER_X - TRINITY_HALF_LINE;
+const TRINITY_PRODUCT_X = TRINITY_CENTER_X + TRINITY_HALF_LINE;
+
+// The two diagonals are defined by their endpoints (apex → lower corner)
+// rather than an eyeballed anchor+rotation, so the apex is exactly on the
+// horizontal line and the legs are exact mirror images by construction.
+const TRINITY_LEG_LENGTH = TRINITY_HALF_LINE * 2; // 168, same as the full horizontal line
+const TRINITY_LEG_ANGLE_DEG = 60; // from horizontal
+const TRINITY_LEG_ANGLE_RAD = (TRINITY_LEG_ANGLE_DEG * Math.PI) / 180;
+const TRINITY_LEG_DX = TRINITY_LEG_LENGTH * Math.cos(TRINITY_LEG_ANGLE_RAD);
+const TRINITY_LEG_DY = TRINITY_LEG_LENGTH * Math.sin(TRINITY_LEG_ANGLE_RAD);
+// Each leg's div is anchored at its own midpoint (apex averaged with its
+// lower corner), matching TRINITY_LEG_DX exactly since the apex sits on
+// the center axis: midpoint x = (0 + ∓TRINITY_LEG_DX) / 2.
+const TRINITY_LEG_ANCHOR_X_OFFSET = TRINITY_LEG_DX / 2;
+const TRINITY_LEG_ANCHOR_Y = TRINITY_LINE_Y + TRINITY_LEG_DY / 2;
+
+const TRINITY_ENGINEERING_Y = 70;
+const TRINITY_DOT_DIAMETER = 12; // matches size-3
+
 // Each line pivots around its own anchor point, not the box center — the
 // outer div does the (static) translate-to-anchor + rotate, and only the
 // inner div's scaleX/opacity animate. Nesting it this way means the
@@ -180,18 +207,26 @@ function VennDiagram({
 // own default (translate, scale, rotate), which put scale on the wrong
 // side of a non-zero rotate and made the line's length shrink toward the
 // wrong axis, sending it past the box edge.
-const TRINITY_LINES: { anchor: [number, number]; rotate: number }[] = [
-  { anchor: [0, -46], rotate: 0 }, // Design–Product
-  { anchor: [-42, 24], rotate: -60 }, // apex to lower-left
-  { anchor: [42, 24], rotate: 60 }, // apex to lower-right
+const TRINITY_LINES: { anchor: [number, number]; rotate: number; length: number }[] = [
+  { anchor: [TRINITY_CENTER_X, TRINITY_LINE_Y], rotate: 0, length: TRINITY_HALF_LINE * 2 }, // Design–Product
+  {
+    anchor: [-TRINITY_LEG_ANCHOR_X_OFFSET, TRINITY_LEG_ANCHOR_Y],
+    rotate: -TRINITY_LEG_ANGLE_DEG,
+    length: TRINITY_LEG_LENGTH,
+  }, // apex to lower-left
+  {
+    anchor: [TRINITY_LEG_ANCHOR_X_OFFSET, TRINITY_LEG_ANCHOR_Y],
+    rotate: TRINITY_LEG_ANGLE_DEG,
+    length: TRINITY_LEG_LENGTH,
+  }, // apex to lower-right
 ];
 
 // [x, y, label, labelOffsetY] — Design/Product labels sit above their
 // dots, Engineering sits below (matches the source's asymmetric offsets).
 const TRINITY_DOTS: [number, number, string, number][] = [
-  [-84, -46, "Design", -28],
-  [84, -46, "Product", -28],
-  [0, 70, "Engineering", 26],
+  [TRINITY_DESIGN_X, TRINITY_LINE_Y, "Design", -28],
+  [TRINITY_PRODUCT_X, TRINITY_LINE_Y, "Product", -28],
+  [TRINITY_CENTER_X, TRINITY_ENGINEERING_Y, "Engineering", 26],
 ];
 
 function TrinityDiagram({ assembled, accent }: { assembled: boolean; accent: string }) {
@@ -199,11 +234,12 @@ function TrinityDiagram({ assembled, accent }: { assembled: boolean; accent: str
   const opacity = assembled ? 0.9 : 0.35;
   return (
     <>
-      {TRINITY_LINES.map(({ anchor: [ax, ay], rotate }) => (
+      {TRINITY_LINES.map(({ anchor: [ax, ay], rotate, length }) => (
         <div
           key={rotate}
-          className="absolute top-1/2 left-1/2 h-px w-[168px]"
+          className="absolute top-1/2 left-1/2 h-px"
           style={{
+            width: length,
             transform: `translate(-50%, -50%) translate(${ax}px, ${ay}px) rotate(${rotate}deg)`,
           }}
         >
@@ -217,9 +253,21 @@ function TrinityDiagram({ assembled, accent }: { assembled: boolean; accent: str
       ))}
       {TRINITY_DOTS.map(([x, y, label, labelDy]) => (
         <div key={label}>
+          {/*
+            No Tailwind translate-x/y utility classes here — in Tailwind
+            v4 those compile to the standalone CSS `translate` property,
+            which composes with (doesn't get overridden by) this inline
+            `transform`, double-applying the -50%/-50% centering and
+            shifting the dot up-left by half its own size. The inline
+            transform alone is sufficient.
+          */}
           <div
-            className="absolute top-1/2 left-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent"
-            style={{ transform: `translate(-50%, -50%) translate(${x}px, ${y}px)` }}
+            className="absolute top-1/2 left-1/2 rounded-full bg-accent"
+            style={{
+              width: TRINITY_DOT_DIAMETER,
+              height: TRINITY_DOT_DIAMETER,
+              transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+            }}
           />
           <div
             className="absolute top-1/2 left-1/2 font-[family-name:var(--font-dm-sans)] text-[11px] font-semibold tracking-wider whitespace-nowrap uppercase"
