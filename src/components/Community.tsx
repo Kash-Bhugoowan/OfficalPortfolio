@@ -31,7 +31,7 @@ export default function Community() {
         <motion.h2 variants={item} className="-mt-1 text-4xl leading-[60px] text-accent">
           My community & giveback
         </motion.h2>
-        <motion.p variants={item} className="max-w-[867px] text-xl leading-8 text-text-secondary">
+        <motion.p variants={item} className="max-w-[550px] text-xl leading-8 text-text-secondary md:max-w-[1200px]">
           Beyond my day-to-day work, I&apos;m passionate about giving back; whether that&apos;s
           running innovation days in schools, speaking at early professional events, or
           mentoring the next wave of talent into tech. Community isn&apos;t a side project;
