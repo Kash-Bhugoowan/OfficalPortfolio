@@ -8,6 +8,7 @@
   --color-border: #e8dfec;
   --color-nav-muted: #625a6d;
   --color-nav-hover: #6757e8;
+  --color-bg-inverse: #1c1726;
   --gradient-background: linear-gradient(
     145deg,
     #f0eaf8 6.17%,
@@ -25,6 +26,7 @@
   --color-border: var(--color-border);
   --color-nav-muted: var(--color-nav-muted);
   --color-nav-hover: var(--color-nav-hover);
+  --color-bg-inverse: var(--color-bg-inverse);
   --font-sans: var(--font-manrope);
 }
 

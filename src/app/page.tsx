@@ -4,6 +4,8 @@ import ProjectsSection from "@/components/ProjectsSection";
 import Capabilities from "@/components/Capabilities";
 import DesignPhilosophy from "@/components/DesignPhilosophy";
 import Community from "@/components/Community";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
       <Capabilities />
       <DesignPhilosophy />
       <Community />
+      <Contact />
+      <Footer />
     </>
   );
 }

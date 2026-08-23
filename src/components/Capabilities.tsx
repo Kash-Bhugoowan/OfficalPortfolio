@@ -14,6 +14,26 @@ type Capability = {
 
 const capabilities: Capability[] = [
   {
+    icon: "◑",
+    title: "AI & Conversational Design",
+    description:
+      "Designing for generative AI products with ethical frameworks, conversation design, explainability patterns, and human-in-the-loop UX.",
+    link: "#", // TODO: replace with real case study link
+  },
+  {
+    icon: "◎",
+    title: "Workshop Facilitation",
+    description:
+      "Designing and leading complex workshops for discovery, co-creation, ideation, and decision-making across multi-disciplinary teams.",
+    link: "#", // TODO: replace with real case study link
+  },
+  {
+    icon: "◐",
+    title: "Rapid Prototyping",
+    description:
+      "Vibe coding prototypes fast, from paper sketches to interactive flows to validate assumptions and communicate vision.",
+  },
+  {
     icon: "◈",
     title: "Strategic Design",
     description:
@@ -24,26 +44,6 @@ const capabilities: Capability[] = [
     title: "UX & Product Design",
     description:
       "End-to-end experience design from research synthesis to high-fidelity UI, interaction patterns, and design systems.",
-  },
-  {
-    icon: "◐",
-    title: "Rapid Prototyping",
-    description:
-      "Vibe coding prototypes fast, from paper sketches to interactive flows to validate assumptions and communicate vision.",
-  },
-  {
-    icon: "◎",
-    title: "Workshop Facilitation",
-    description:
-      "Designing and leading complex workshops for discovery, co-creation, ideation, and decision-making across multi-disciplinary teams.",
-    link: "#", // TODO: replace with real case study link
-  },
-  {
-    icon: "◑",
-    title: "AI & Conversational Design",
-    description:
-      "Designing for generative AI products with ethical frameworks, conversation design, explainability patterns, and human-in-the-loop UX.",
-    link: "#", // TODO: replace with real case study link
   },
 ];
 
@@ -210,7 +210,7 @@ export default function Capabilities() {
   };
 
   return (
-    <section className="flex flex-col items-center gap-8 px-6 py-[37px] md:py-[54px]">
+    <section id="process" className="flex flex-col items-center gap-8 px-6 py-[37px] md:py-[54px]">
       <motion.div
         className="flex w-96 flex-col items-center gap-2 text-center"
         initial="hidden"

@@ -24,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${dmSans.variable} antialiased`}
+      className={`${manrope.variable} ${dmSans.variable} scroll-smooth antialiased`}
     >
       <body className="flex min-h-dvh flex-col">{children}</body>
     </html>

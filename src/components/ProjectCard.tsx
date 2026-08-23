@@ -115,7 +115,7 @@ export default function ProjectCard({
             {!compact && (
               <a
                 href={href} // TODO: replace with real case study link
-                className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white"
+                className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white transition-all duration-200 hover:brightness-110 active:scale-95 active:brightness-95"
               >
                 View Case Study
               </a>
