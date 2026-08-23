@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { fadeInUp } from "@/lib/motion";
+import CommunityAccordion from "@/components/CommunityAccordion";
 
 const container = {
   hidden: {},
@@ -38,6 +39,8 @@ export default function Community() {
           it&apos;s how I measure the impact I want to have in the world.
         </motion.p>
       </motion.div>
+
+      <CommunityAccordion />
     </section>
   );
 }
