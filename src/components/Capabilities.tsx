@@ -242,7 +242,7 @@ export default function Capabilities() {
       */}
       <motion.div
         ref={carouselRef}
-        className="flex w-screen snap-x snap-mandatory gap-0.5 overflow-x-auto px-6 md:-my-8 md:gap-4 md:py-8"
+        className="flex w-screen snap-x snap-mandatory gap-0.5 overflow-x-auto px-6 md:-mt-8 md:justify-center md:gap-4 md:py-8"
         style={{ marginLeft: "calc(50% - 50vw)", marginRight: "calc(50% - 50vw)" }}
         initial="hidden"
         whileInView="visible"
