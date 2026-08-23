@@ -80,16 +80,17 @@ const projects: Project[] = [
 
 export default function ProjectsSection() {
   return (
-    // Standard site-wide section padding: 37px top and bottom (left/right
-    // unchanged at px-6) — half of the intended 74px gap between
-    // sections, so this section's 37px top combines with Hero's 37px
-    // bottom above it to the full 74px. Bottom padding eats 1:1 into the
-    // sticky stack's available "stuck" room at the true end of the page
-    // (see StickyCardStack's trailing spacer comment), but the
+    // Standard site-wide section padding: 37px top and bottom on mobile,
+    // 54px on desktop (left/right unchanged at px-6) — half of the
+    // intended inter-section gap, so this section's top padding combines
+    // with Hero's bottom padding above it to the full gap (74px mobile,
+    // 108px desktop). Bottom padding eats 1:1 into the sticky stack's
+    // available "stuck" room at the true end of the page (see
+    // StickyCardStack's trailing spacer comment), but the
     // squeeze-compensation on each card reads its live position and
     // actively corrects for exactly this kind of shortfall, so a modest,
     // deliberate bottom padding is safe here.
-    <section className="flex flex-col items-center px-6 py-[37px]">
+    <section className="flex flex-col items-center px-6 py-[37px] md:py-[54px]">
       <div className="mx-auto w-full max-w-[1227px]">
         <StickyCardStack
           projects={projects}

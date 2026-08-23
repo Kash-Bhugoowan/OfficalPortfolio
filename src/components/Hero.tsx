@@ -19,11 +19,11 @@ export default function Hero() {
   return (
     <motion.section
       // Standard section vertical padding across the site: 37px top and
-      // bottom on every section (left/right unaffected). Half of the
-      // intended 74px gap BETWEEN sections — two adjacent sections' own
-      // 37px bottom + 37px top combine to the full 74px. Match this on
-      // any new section.
-      className="flex flex-col items-center gap-12 px-6 py-[37px] text-center"
+      // bottom on mobile, 54px top and bottom on desktop (md: and up).
+      // Half of the intended inter-section gap — two adjacent sections'
+      // own bottom + top combine to the full gap: 74px on mobile, 108px
+      // on desktop. Match this on any new section.
+      className="flex flex-col items-center gap-12 px-6 py-[37px] text-center md:py-[54px]"
       variants={container}
       initial="hidden"
       animate="visible"

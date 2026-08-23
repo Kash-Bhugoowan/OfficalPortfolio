@@ -7,6 +7,13 @@ function ChevronDown({ className = "" }: { className?: string }) {
   return <span className={`block size-1.5 rotate-45 border-r-2 border-b-2 ${className}`} />;
 }
 
+// Shared timing so every part of the accordion — icon rotation, color
+// swaps, and the expand/collapse itself — moves at the same gentle pace
+// instead of each element animating on its own clock.
+const EASE = [0.22, 1, 0.36, 1] as const;
+const DURATION = 0.4;
+const colorTransitionClass = "transition-colors duration-[400ms] ease-out";
+
 function RowImage({ src, className }: { src: string; className: string }) {
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={src} alt="" className={`rounded-2xl object-cover ${className}`} />;
@@ -155,7 +162,7 @@ export default function CommunityAccordion() {
           <div key={item.index} className="border-b border-border">
             <div
               onClick={() => !isOpen && openRow(item.index)}
-              className={`group flex items-center justify-between gap-4 rounded-2xl px-4 py-6 transition-colors duration-200 -mx-4 ${
+              className={`group flex items-center justify-between gap-4 rounded-2xl px-4 py-6 -mx-4 ${colorTransitionClass} ${
                 isOpen ? "" : "cursor-pointer md:hover:bg-[#faf8ff]"
               }`}
             >
@@ -165,7 +172,7 @@ export default function CommunityAccordion() {
                 </span>
                 <div className="flex flex-col items-start gap-0.5">
                   <span
-                    className={`text-2xl font-light text-foreground transition-colors duration-200 ${
+                    className={`text-2xl font-light text-foreground ${colorTransitionClass} ${
                       isOpen ? "" : "md:group-hover:text-accent"
                     }`}
                   >
@@ -183,13 +190,15 @@ export default function CommunityAccordion() {
                 }}
                 className="flex cursor-pointer items-center gap-3"
               >
-                <span className={`text-sm font-medium ${isOpen ? "text-accent" : "text-text-secondary"}`}>
+                <span
+                  className={`text-sm font-medium ${colorTransitionClass} ${isOpen ? "text-accent" : "text-text-secondary"}`}
+                >
                   {isOpen ? "Collapse" : "Expand"}
                 </span>
                 <motion.span
                   animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className={`flex size-8 items-center justify-center rounded-full transition-colors duration-200 ${
+                  transition={{ duration: DURATION, ease: EASE }}
+                  className={`flex size-8 items-center justify-center rounded-full ${colorTransitionClass} ${
                     isOpen
                       ? "bg-gradient-to-br from-indigo-100 to-purple-100"
                       : "border-[1.5px] border-text-secondary"
@@ -206,7 +215,7 @@ export default function CommunityAccordion() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: DURATION, ease: EASE }}
                   className="overflow-hidden"
                 >
                   <div className="pb-8">{item.body}</div>
