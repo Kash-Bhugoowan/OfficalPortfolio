@@ -4,6 +4,18 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import {
+  CASE_STUDY_EYEBROW,
+  CASE_STUDY_TITLE,
+  CASE_STUDY_BODY,
+  CASE_STUDY_GAP_EYEBROW,
+  CASE_STUDY_GAP_CONTENT,
+  CASE_STUDY_GAP_BLOCK,
+  CASE_STUDY_REVEAL_HIDDEN,
+  CASE_STUDY_REVEAL_VISIBLE,
+  CASE_STUDY_REVEAL_VIEWPORT,
+  CASE_STUDY_REVEAL_TRANSITION,
+} from "@/lib/case-studies/styles";
 
 export type CoCreationSectionData = {
   eyebrow: string;
@@ -43,22 +55,17 @@ export default function CoCreationSection({ data }: { data: CoCreationSectionDat
       className="flex flex-col items-center px-6"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className="mx-auto grid w-full max-w-[1227px] grid-cols-1 items-end gap-8 md:grid-cols-2 md:gap-16">
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-6">
-            <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
-              {eyebrow}
-            </span>
-            <h2 className="text-2xl leading-9 text-zinc-800 md:text-3xl md:leading-[44px]">
-              {title}
-            </h2>
+      <div
+        className={`mx-auto grid w-full max-w-[1227px] grid-cols-1 items-end ${CASE_STUDY_GAP_BLOCK} md:grid-cols-2`}
+      >
+        <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+          <div className={`flex flex-col ${CASE_STUDY_GAP_EYEBROW}`}>
+            <span className={CASE_STUDY_EYEBROW}>{eyebrow}</span>
+            <h2 className={CASE_STUDY_TITLE}>{title}</h2>
           </div>
-          <div className="flex flex-col gap-8">
+          <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
             {paragraphs.map((paragraph) => (
-              <p
-                key={paragraph}
-                className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8"
-              >
+              <p key={paragraph} className={CASE_STUDY_BODY}>
                 {paragraph}
               </p>
             ))}
@@ -66,11 +73,11 @@ export default function CoCreationSection({ data }: { data: CoCreationSectionDat
         </div>
 
         <motion.div
-          initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col gap-6"
+          initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
+          whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
+          viewport={CASE_STUDY_REVEAL_VIEWPORT}
+          transition={CASE_STUDY_REVEAL_TRANSITION}
+          className={`flex flex-col ${CASE_STUDY_GAP_EYEBROW}`}
         >
           <div
             className="relative w-full overflow-hidden rounded-2xl border border-zinc-300 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)]"

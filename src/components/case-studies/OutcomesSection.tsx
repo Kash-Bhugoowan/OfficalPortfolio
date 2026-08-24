@@ -10,23 +10,26 @@ import {
   CASE_STUDY_IMAGE_FRAME,
   CASE_STUDY_GAP_EYEBROW,
   CASE_STUDY_GAP_CONTENT,
+  CASE_STUDY_GAP_BLOCK,
   CASE_STUDY_REVEAL_HIDDEN,
   CASE_STUDY_REVEAL_VISIBLE,
   CASE_STUDY_REVEAL_VIEWPORT,
   CASE_STUDY_REVEAL_TRANSITION,
 } from "@/lib/case-studies/styles";
 
-export type CoreUxSectionData = {
+export type OutcomesSectionData = {
   eyebrow: string;
   title: string;
-  image: { src: string; alt: string };
   intro: string;
+  results: string[];
+  closing: string;
   quote: string;
+  image: { src: string; alt: string };
 };
 
-export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
+export default function OutcomesSection({ data }: { data: OutcomesSectionData }) {
   const reduceMotion = useReducedMotion();
-  const { eyebrow, title, image, intro, quote } = data;
+  const { eyebrow, title, intro, results, closing, quote, image } = data;
 
   return (
     <section
@@ -39,25 +42,34 @@ export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
           <h2 className={CASE_STUDY_TITLE}>{title}</h2>
         </div>
 
-        <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+        <div className={`grid grid-cols-1 items-stretch ${CASE_STUDY_GAP_BLOCK} md:grid-cols-[1fr_420px]`}>
+          <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+            <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+              <p className={CASE_STUDY_BODY}>{intro}</p>
+              <ul className="list-disc space-y-1 pl-5 marker:text-zinc-800">
+                {results.map((result) => (
+                  <li key={result} className={`${CASE_STUDY_BODY} font-semibold`}>
+                    {result}
+                  </li>
+                ))}
+              </ul>
+              <p className={CASE_STUDY_BODY}>{closing}</p>
+            </div>
+            <div className="flex items-stretch gap-8 pl-8">
+              <div className="w-2 shrink-0 rounded-sm bg-[#DACCE2]" />
+              <p className={CASE_STUDY_BODY}>{quote}</p>
+            </div>
+          </div>
+
           <motion.div
             initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
             whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
             viewport={CASE_STUDY_REVEAL_VIEWPORT}
             transition={CASE_STUDY_REVEAL_TRANSITION}
-            className={`${CASE_STUDY_IMAGE_FRAME} max-w-[960px]`}
-            style={{ aspectRatio: "1169 / 732" }}
+            className={`${CASE_STUDY_IMAGE_FRAME} aspect-[533/688] md:aspect-auto md:h-full`}
           >
             <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
           </motion.div>
-
-          <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
-            <p className={CASE_STUDY_BODY}>{intro}</p>
-            <div className="flex items-stretch gap-8 pl-8">
-              <div className="w-2 shrink-0 rounded-sm bg-[#DACBE2]" />
-              <p className={CASE_STUDY_BODY}>{quote}</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

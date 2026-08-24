@@ -4,6 +4,7 @@ import type { ApproachSectionData } from "@/components/case-studies/ApproachSect
 import type { CoreUxSectionData } from "@/components/case-studies/CoreUxSection";
 import type { MainPrioritySectionData } from "@/components/case-studies/MainPrioritySection";
 import type { CoCreationSectionData } from "@/components/case-studies/CoCreationSection";
+import type { OutcomesSectionData } from "@/components/case-studies/OutcomesSection";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -133,4 +134,22 @@ export const minervaCoCreation: CoCreationSectionData = {
     { src: "https://placehold.co/737x512?text=Image+4", alt: "Design gallery placeholder 4" },
     { src: "https://placehold.co/737x512?text=Image+5", alt: "Design gallery placeholder 5" },
   ],
+};
+
+export const minervaOutcomes: OutcomesSectionData = {
+  eyebrow: "Outcomes",
+  title: "Results in a live military environment",
+  intro:
+    "The MVP was validated through live A/B testing on the military base, with engineers using the tool under real field conditions.",
+  results: [
+    "Generated confidence that the plan could be resourced and delivered",
+    "Reduced time to generate viable plan from 90 to 15 mins",
+    "Reduced planning errors by increasing the accuracy and quality of plans",
+    "Reduced the predictability of plans (through digitising choices and options available)",
+  ],
+  closing:
+    "These results validated more than the interface. They showed that a product designed around operational context could help engineers work faster and with greater confidence.",
+  quote:
+    "The measure of success was not whether the tool looked simpler. It was whether engineers could learn it quickly, use it confidently, and keep pace with live operational work.",
+  image: { src: "https://placehold.co/533x688", alt: "Outcomes placeholder" },
 };

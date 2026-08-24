@@ -3,6 +3,21 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import {
+  CASE_STUDY_EYEBROW,
+  CASE_STUDY_TITLE,
+  CASE_STUDY_BODY,
+  CASE_STUDY_SUBTITLE,
+  CASE_STUDY_IMAGE_FRAME,
+  CASE_STUDY_GAP_EYEBROW,
+  CASE_STUDY_GAP_TIGHT,
+  CASE_STUDY_GAP_CONTENT,
+  CASE_STUDY_GAP_BLOCK,
+  CASE_STUDY_REVEAL_HIDDEN,
+  CASE_STUDY_REVEAL_VISIBLE,
+  CASE_STUDY_REVEAL_VIEWPORT,
+  CASE_STUDY_REVEAL_TRANSITION,
+} from "@/lib/case-studies/styles";
 
 export type MainPrioritySectionData = {
   eyebrow: string;
@@ -28,11 +43,11 @@ function RevealImage({
   const reduceMotion = useReducedMotion();
   return (
     <motion.div
-      initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="relative w-full overflow-hidden rounded-2xl border border-zinc-300 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)]"
+      initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
+      whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
+      viewport={CASE_STUDY_REVEAL_VIEWPORT}
+      transition={CASE_STUDY_REVEAL_TRANSITION}
+      className={CASE_STUDY_IMAGE_FRAME}
       style={{ aspectRatio }}
     >
       <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
@@ -48,28 +63,19 @@ export default function MainPrioritySection({ data }: { data: MainPrioritySectio
       className="flex flex-col items-center px-6"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-8 md:gap-16">
-        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-16">
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-6">
-                <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
-                  {eyebrow}
-                </span>
-                <h2 className="text-2xl leading-9 text-zinc-800 md:text-3xl md:leading-[44px]">
-                  {title}
-                </h2>
+      <div className={`mx-auto flex w-full max-w-[1227px] flex-col ${CASE_STUDY_GAP_BLOCK}`}>
+        <div className={`grid grid-cols-1 items-start ${CASE_STUDY_GAP_BLOCK} md:grid-cols-2`}>
+          <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+            <div className={`flex flex-col ${CASE_STUDY_GAP_TIGHT}`}>
+              <div className={`flex flex-col ${CASE_STUDY_GAP_EYEBROW}`}>
+                <span className={CASE_STUDY_EYEBROW}>{eyebrow}</span>
+                <h2 className={CASE_STUDY_TITLE}>{title}</h2>
               </div>
-              <p className="text-base leading-7 font-semibold text-zinc-800 md:text-lg md:leading-8">
-                {subtitle}
-              </p>
+              <p className={CASE_STUDY_SUBTITLE}>{subtitle}</p>
             </div>
-            <div className="flex flex-col gap-8">
+            <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
               {paragraphs.map((paragraph) => (
-                <p
-                  key={paragraph}
-                  className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8"
-                >
+                <p key={paragraph} className={CASE_STUDY_BODY}>
                   {paragraph}
                 </p>
               ))}
@@ -78,19 +84,14 @@ export default function MainPrioritySection({ data }: { data: MainPrioritySectio
           <RevealImage image={image} aspectRatio="596 / 727" />
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-16">
+        <div className={`grid grid-cols-1 items-start ${CASE_STUDY_GAP_BLOCK} md:grid-cols-2`}>
           <RevealImage image={pushback.image} aspectRatio="732 / 494" />
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-8">
-              <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
-                {pushback.eyebrow}
-              </span>
-              <div className="flex flex-col gap-8">
+          <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+            <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+              <span className={CASE_STUDY_EYEBROW}>{pushback.eyebrow}</span>
+              <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
                 {pushback.paragraphs.map((paragraph) => (
-                  <p
-                    key={paragraph}
-                    className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8"
-                  >
+                  <p key={paragraph} className={CASE_STUDY_BODY}>
                     {paragraph}
                   </p>
                 ))}
@@ -98,9 +99,7 @@ export default function MainPrioritySection({ data }: { data: MainPrioritySectio
             </div>
             <div className="flex items-stretch gap-8 pl-8">
               <div className="w-2 shrink-0 rounded-sm bg-[#C1DAC1]" />
-              <p className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8">
-                {pushback.quote}
-              </p>
+              <p className={CASE_STUDY_BODY}>{pushback.quote}</p>
             </div>
           </div>
         </div>

@@ -3,6 +3,17 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeInUp } from "@/lib/motion";
+import {
+  CASE_STUDY_PAGE_EYEBROW,
+  CASE_STUDY_FIELD_LABEL,
+  CASE_STUDY_BODY,
+  CASE_STUDY_GAP_CONTENT,
+  CASE_STUDY_GAP_BLOCK,
+  CASE_STUDY_REVEAL_HIDDEN,
+  CASE_STUDY_REVEAL_VISIBLE,
+  CASE_STUDY_REVEAL_VIEWPORT,
+  CASE_STUDY_REVEAL_TRANSITION,
+} from "@/lib/case-studies/styles";
 
 export type CaseStudyStat = {
   label: string;
@@ -58,18 +69,15 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
   // fixed, consistent value regardless of either section's content height.
   return (
     <section className="flex flex-col items-center px-6 pt-[37px] md:pt-[54px]">
-      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-8 md:gap-16">
+      <div className={`mx-auto flex w-full max-w-[1227px] flex-col ${CASE_STUDY_GAP_BLOCK}`}>
         <motion.div
-          className="flex flex-col gap-8 md:gap-16"
+          className={`flex flex-col ${CASE_STUDY_GAP_BLOCK}`}
           variants={container}
           initial="hidden"
           animate="visible"
         >
-          <div className="flex flex-col gap-8">
-            <motion.span
-              variants={item}
-              className="text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]"
-            >
+          <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
+            <motion.span variants={item} className={CASE_STUDY_PAGE_EYEBROW}>
               {eyebrow}
             </motion.span>
 
@@ -88,7 +96,7 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
             </motion.div>
           </div>
 
-          <div className="flex flex-col gap-8">
+          <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
             <motion.h1
               variants={item}
               className="text-3xl leading-[38px] text-zinc-800 sm:text-4xl sm:leading-[44px] md:text-5xl md:leading-[56px]"
@@ -97,30 +105,23 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
               <br />
               <span className="font-semibold">{titleBold}</span>
             </motion.h1>
-            <motion.p
-              variants={item}
-              className="max-w-[960px] text-base leading-7 text-zinc-800 md:text-lg md:leading-8"
-            >
+            <motion.p variants={item} className={`max-w-[960px] ${CASE_STUDY_BODY}`}>
               {dek}
             </motion.p>
           </div>
 
           <motion.div variants={item} className="flex max-w-[960px] flex-col gap-2">
-            <span className="text-sm font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]">
-              {roleLabel}
-            </span>
-            <p className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8">
-              {roleSummary}
-            </p>
+            <span className={CASE_STUDY_FIELD_LABEL}>{roleLabel}</span>
+            <p className={CASE_STUDY_BODY}>{roleSummary}</p>
           </motion.div>
         </motion.div>
 
-        <div className="flex flex-col gap-8 md:gap-16">
+        <div className={`flex flex-col ${CASE_STUDY_GAP_BLOCK}`}>
           <motion.div
-            initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
+            whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
+            viewport={CASE_STUDY_REVEAL_VIEWPORT}
+            transition={CASE_STUDY_REVEAL_TRANSITION}
             className="relative w-full max-w-[960px] overflow-hidden rounded-xl border-[1.5px] border-text-secondary shadow-[0px_16px_48px_0px_rgba(36,31,43,0.12)]"
             style={{ aspectRatio: "1169 / 732" }}
           >
@@ -135,10 +136,10 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
           </motion.div>
 
           <motion.div
-            initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
+            whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
+            viewport={CASE_STUDY_REVEAL_VIEWPORT}
+            transition={CASE_STUDY_REVEAL_TRANSITION}
             className="grid grid-cols-1 gap-4 md:grid-cols-3"
           >
             {stats.map((stat) => (
