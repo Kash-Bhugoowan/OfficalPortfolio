@@ -31,11 +31,11 @@ export default function ChallengeSection({ data }: { data: ChallengeSectionData 
         <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
           {eyebrow}
         </span>
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-16">
+        <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-16">
           <h2 className="text-2xl leading-9 text-zinc-800 md:w-[35%] md:shrink-0 md:text-3xl md:leading-[44px]">
             {title}
           </h2>
-          <div className="flex flex-col gap-8 md:flex-1 md:gap-12">
+          <div className="flex flex-col gap-8 md:flex-1">
             <p className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8">{intro}</p>
             <p className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8">
               {askLabel}

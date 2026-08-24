@@ -21,7 +21,7 @@ export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
       className="flex flex-col items-center px-6"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-12">
+      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-8">
         <div className="flex flex-col gap-6">
           <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
             {eyebrow}
@@ -31,7 +31,7 @@ export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
           </h2>
         </div>
 
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-8">
           <motion.div
             initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -43,7 +43,7 @@ export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
             <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
           </motion.div>
 
-          <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-8">
             <p className="text-base leading-7 text-zinc-800 md:text-lg md:leading-8">{intro}</p>
             <div className="flex items-stretch gap-8 pl-8">
               <div className="w-2 shrink-0 rounded-sm bg-[#DACBE2]" />

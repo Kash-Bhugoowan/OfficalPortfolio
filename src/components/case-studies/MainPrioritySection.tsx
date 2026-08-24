@@ -48,10 +48,10 @@ export default function MainPrioritySection({ data }: { data: MainPrioritySectio
       className="flex flex-col items-center px-6"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-20">
-        <div className="grid grid-cols-1 items-start gap-16 md:grid-cols-2">
-          <div className="flex flex-col gap-16">
-            <div className="flex flex-col gap-6">
+      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-8 md:gap-16">
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-16">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-6">
                 <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
                   {eyebrow}
@@ -60,7 +60,7 @@ export default function MainPrioritySection({ data }: { data: MainPrioritySectio
                   {title}
                 </h2>
               </div>
-              <p className="text-base leading-7 text-text-secondary md:text-lg md:leading-8">
+              <p className="text-base leading-7 font-semibold text-zinc-800 md:text-lg md:leading-8">
                 {subtitle}
               </p>
             </div>
@@ -78,14 +78,14 @@ export default function MainPrioritySection({ data }: { data: MainPrioritySectio
           <RevealImage image={image} aspectRatio="596 / 727" />
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-16 md:grid-cols-2">
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-16">
           <RevealImage image={pushback.image} aspectRatio="732 / 494" />
-          <div className="flex flex-col gap-12">
-            <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8">
               <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
                 {pushback.eyebrow}
               </span>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-8">
                 {pushback.paragraphs.map((paragraph) => (
                   <p
                     key={paragraph}

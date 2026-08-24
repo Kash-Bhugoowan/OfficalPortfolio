@@ -45,7 +45,7 @@ export default function ApproachSection({ data }: { data: ApproachSectionData })
       className="flex flex-col items-center px-6"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-16">
+      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-8 md:gap-16">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-6">
             <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
@@ -55,7 +55,7 @@ export default function ApproachSection({ data }: { data: ApproachSectionData })
               {title}
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-16 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-16">
             {columns.map((column) => (
               <div key={column.paragraph} className="flex flex-col gap-8">
                 <RevealImage image={column.image} />
@@ -67,7 +67,7 @@ export default function ApproachSection({ data }: { data: ApproachSectionData })
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 md:gap-12">
+        <div className="flex flex-col gap-8">
           <span className="text-xs font-semibold tracking-wider text-accent uppercase font-[family-name:var(--font-dm-sans)]">
             {fieldObservation.eyebrow}
           </span>

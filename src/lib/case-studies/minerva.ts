@@ -3,6 +3,7 @@ import type { ChallengeSectionData } from "@/components/case-studies/ChallengeSe
 import type { ApproachSectionData } from "@/components/case-studies/ApproachSection";
 import type { CoreUxSectionData } from "@/components/case-studies/CoreUxSection";
 import type { MainPrioritySectionData } from "@/components/case-studies/MainPrioritySection";
+import type { CoCreationSectionData } from "@/components/case-studies/CoCreationSection";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -115,4 +116,21 @@ export const minervaMainPriority: MainPrioritySectionData = {
     quote:
       "I prototyped to protect an evidenced user need, while giving stakeholders a clear basis for the decision.",
   },
+};
+
+export const minervaCoCreation: CoCreationSectionData = {
+  eyebrow: "How I work with my design team & build team",
+  title: "Designing and delivering for the field",
+  paragraphs: [
+    "I led the UX and visual layout, while guiding two junior designers so the work remained coherent as the product developed. I delegated UI elements where appropriate, while retaining ownership of the core navigation and Add Task experience.",
+    "Dark mode and the visual direction were not cosmetic choices: they supported clarity in the environments where engineers would use the tool.",
+    "Throughout delivery, I worked closely with product, engineering, and Defence stakeholders to ensure the experience reflected real planning practice while working within the constraints of the technology and handbook guidance.",
+  ],
+  images: [
+    { src: "https://placehold.co/737x512?text=Image+1", alt: "Design gallery placeholder 1" },
+    { src: "https://placehold.co/737x512?text=Image+2", alt: "Design gallery placeholder 2" },
+    { src: "https://placehold.co/737x512?text=Image+3", alt: "Design gallery placeholder 3" },
+    { src: "https://placehold.co/737x512?text=Image+4", alt: "Design gallery placeholder 4" },
+    { src: "https://placehold.co/737x512?text=Image+5", alt: "Design gallery placeholder 5" },
+  ],
 };

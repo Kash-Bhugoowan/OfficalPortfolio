@@ -58,9 +58,9 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
   // fixed, consistent value regardless of either section's content height.
   return (
     <section className="flex flex-col items-center px-6 pt-[37px] md:pt-[54px]">
-      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-16">
+      <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-8 md:gap-16">
         <motion.div
-          className="flex flex-col gap-10"
+          className="flex flex-col gap-8 md:gap-16"
           variants={container}
           initial="hidden"
           animate="visible"
@@ -115,7 +115,7 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
           </motion.div>
         </motion.div>
 
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-8 md:gap-16">
           <motion.div
             initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
