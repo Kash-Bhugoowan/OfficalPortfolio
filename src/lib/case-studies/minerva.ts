@@ -1,5 +1,6 @@
 import type { CaseStudyHeaderData } from "@/components/case-studies/CaseStudyHeader";
 import type { ChallengeSectionData } from "@/components/case-studies/ChallengeSection";
+import type { ApproachSectionData } from "@/components/case-studies/ApproachSection";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -52,4 +53,32 @@ export const minervaChallenge: ChallengeSectionData = {
     "The challenge was not simply to make planning “easier.” The tool had to work within the reality of a war room: high cognitive load, established ways of working, complex rule logic, constrained environments, and decisions that depended on seeing the wider plan.",
   closingParagraph:
     "A simplified interface could still fail if it removed the context the soldiers needed to do their work safely and confidently.",
+};
+
+export const minervaApproach: ApproachSectionData = {
+  eyebrow: "My Approach",
+  title: "Starting with the work, not the interface",
+  columns: [
+    {
+      image: { src: "https://placehold.co/733x453", alt: "Service design workshop placeholder" },
+      paragraph:
+        "I facilitated workshops with military engineers and mapped how tasks, decisions, and guidance moved through the operational environment. This service-design work gave the team a shared view of the people, systems, handbooks, constraints, and handovers behind the screens.",
+    },
+    {
+      image: { src: "https://placehold.co/732x453", alt: "Research synthesis placeholder" },
+      paragraph:
+        "The research changed the product direction. Instead of attempting to automate every activity, we focused on the points where engineers most needed support: creating tasks, following structured guidance, and coordinating work without losing sight of the wider scenario.",
+    },
+  ],
+  fieldObservation: {
+    eyebrow: "Field observation",
+    image: { src: "https://placehold.co/733x453", alt: "Field observation placeholder" },
+    introPrefix: "Whilst observing the soldiers, a ",
+    introHighlight: "key insight",
+    introSuffix: " emerged: ",
+    quote:
+      "Engineers already plan through timelines. Tasks are not isolated entries; they sit within a live operational picture. Their sequence, dependencies, timing, and resourcing all matter.",
+    closing:
+      "That insight shaped the product direction. Rather than designing a generic task-management tool, we set out to create an experience that could support live operational planning while preserving the context engineers relied on.",
+  },
 };
