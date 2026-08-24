@@ -1,4 +1,5 @@
 import type { CaseStudyHeaderData } from "@/components/case-studies/CaseStudyHeader";
+import type { ChallengeSectionData } from "@/components/case-studies/ChallengeSection";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -37,4 +38,18 @@ export const minervaCaseStudy: CaseStudyHeaderData = {
       glowClass: "bg-orange-500",
     },
   ],
+};
+
+export const minervaChallenge: ChallengeSectionData = {
+  eyebrow: "The Challenge",
+  title: "Designing for the reality of operational planning",
+  intro:
+    "Battle Group Engineers plan and coordinate activity in demanding operational environments. Their work involves time-critical tasks, specialist handbook guidance, briefings, resource allocation, and changing dependencies.",
+  askLabel: "The ask for IBM: ",
+  askHighlight:
+    "Demonstrate how technology could support this work without flattening its complexity.",
+  challengeParagraph:
+    "The challenge was not simply to make planning “easier.” The tool had to work within the reality of a war room: high cognitive load, established ways of working, complex rule logic, constrained environments, and decisions that depended on seeing the wider plan.",
+  closingParagraph:
+    "A simplified interface could still fail if it removed the context the soldiers needed to do their work safely and confidently.",
 };

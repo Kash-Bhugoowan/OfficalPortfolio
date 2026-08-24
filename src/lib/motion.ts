@@ -67,3 +67,10 @@ export const CAPABILITY_CARD_FOCUS_SCALE = [0.95, 1, 0.95] as [number, number, n
 // convention. Subtler than both: these cards are much larger, so a
 // bigger dip would be more visually jarring.
 export const PHILOSOPHY_CARD_FOCUS_SCALE = [0.96, 1, 0.96] as [number, number, number];
+
+// Fixed gap between consecutive sections on a case-study page (measured
+// from the header's hero image / stat cards to the Challenge section).
+// Unlike the homepage's responsive py-[37px]/md:py-[54px] rhythm, this is
+// a single fixed value at all breakpoints, applied as each section's own
+// top margin.
+export const CASE_STUDY_SECTION_GAP_PX = 100;

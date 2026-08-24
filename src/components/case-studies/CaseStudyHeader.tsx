@@ -52,8 +52,12 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
     stats,
   } = data;
 
+  // No bottom padding here — the gap to the next case-study section comes
+  // from that section's own top margin (see CASE_STUDY_SECTION_GAP_PX in
+  // src/lib/motion.ts), not this section's bottom, so the gap stays a
+  // fixed, consistent value regardless of either section's content height.
   return (
-    <section className="flex flex-col items-center px-6 py-[37px] md:py-[54px]">
+    <section className="flex flex-col items-center px-6 pt-[37px] md:pt-[54px]">
       <div className="mx-auto flex w-full max-w-[1227px] flex-col gap-16">
         <motion.div
           className="flex flex-col gap-10"
