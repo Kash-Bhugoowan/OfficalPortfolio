@@ -7,6 +7,9 @@ import CoreUxSection from "@/components/case-studies/CoreUxSection";
 import MainPrioritySection from "@/components/case-studies/MainPrioritySection";
 import CoCreationSection from "@/components/case-studies/CoCreationSection";
 import OutcomesSection from "@/components/case-studies/OutcomesSection";
+import WhatsNextSection from "@/components/case-studies/WhatsNextSection";
+import ReflectionsSection from "@/components/case-studies/ReflectionsSection";
+import NextProjectNav from "@/components/case-studies/NextProjectNav";
 import {
   minervaCaseStudy,
   minervaChallenge,
@@ -15,6 +18,9 @@ import {
   minervaMainPriority,
   minervaCoCreation,
   minervaOutcomes,
+  minervaWhatsNext,
+  minervaReflections,
+  minervaNextProject,
 } from "@/lib/case-studies/minerva";
 
 export default function MinervaCaseStudyPage() {
@@ -28,6 +34,9 @@ export default function MinervaCaseStudyPage() {
       <MainPrioritySection data={minervaMainPriority} />
       <CoCreationSection data={minervaCoCreation} />
       <OutcomesSection data={minervaOutcomes} />
+      <WhatsNextSection data={minervaWhatsNext} />
+      <ReflectionsSection data={minervaReflections} />
+      <NextProjectNav data={minervaNextProject} />
       <Footer />
     </>
   );

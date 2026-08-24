@@ -5,6 +5,9 @@ import type { CoreUxSectionData } from "@/components/case-studies/CoreUxSection"
 import type { MainPrioritySectionData } from "@/components/case-studies/MainPrioritySection";
 import type { CoCreationSectionData } from "@/components/case-studies/CoCreationSection";
 import type { OutcomesSectionData } from "@/components/case-studies/OutcomesSection";
+import type { WhatsNextSectionData } from "@/components/case-studies/WhatsNextSection";
+import type { ReflectionsSectionData } from "@/components/case-studies/ReflectionsSection";
+import type { NextProjectNavData } from "@/components/case-studies/NextProjectNav";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -152,4 +155,30 @@ export const minervaOutcomes: OutcomesSectionData = {
   quote:
     "The measure of success was not whether the tool looked simpler. It was whether engineers could learn it quickly, use it confidently, and keep pace with live operational work.",
   image: { src: "https://placehold.co/533x688", alt: "Outcomes placeholder" },
+};
+
+export const minervaWhatsNext: WhatsNextSectionData = {
+  eyebrow: "What happened next?",
+  title: "From proof of concept to production",
+  paragraphs: [
+    "Project Minerva did not end as a beta. Defence bought the product, and it became a successful production system.",
+    "That outcome confirmed the value of designing around the operational system—not just the immediate screen. It also opened discussion about taking the capability into humanitarian-aid contexts, where teams similarly need to coordinate complex activity, work under pressure, and retain a shared view of the situation.",
+    "The project showed how a focused design decision, keeping the wider plan visible while users make changes, can contribute to a product capable of succeeding beyond its original proof of concept.",
+  ],
+};
+
+export const minervaReflections: ReflectionsSectionData = {
+  image: { src: "https://placehold.co/1169x732", alt: "Reflections placeholder" },
+  label: "Reflection",
+  quote:
+    "This project reinforced that even in a highly structured, rule-bound environment, empathy, facilitation, and co-creation remain essential design tools.",
+  supporting:
+    "My role was not simply to make a complex process look simpler; it was to understand what people needed to keep hold of, then design a product that respected that reality.",
+};
+
+export const minervaNextProject: NextProjectNavData = {
+  label: "Next project",
+  title: "Operation GAiL: Learning & Development",
+  href: "#", // TODO: replace with real case study link once it exists
+  ctaLabel: "View case study →",
 };

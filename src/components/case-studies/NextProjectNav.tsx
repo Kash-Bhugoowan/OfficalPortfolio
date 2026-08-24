@@ -1,0 +1,83 @@
+"use client";
+
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { CASE_STUDY_SECTION_GAP_PX, linkHoverTransition } from "@/lib/motion";
+import {
+  CASE_STUDY_FIELD_LABEL,
+  CASE_STUDY_REVEAL_HIDDEN,
+  CASE_STUDY_REVEAL_VISIBLE,
+  CASE_STUDY_REVEAL_VIEWPORT,
+  CASE_STUDY_REVEAL_TRANSITION,
+} from "@/lib/case-studies/styles";
+
+// Shared across every case-study page (not Minerva-specific) — sits above
+// the Footer and links to the next project in the sequence. Only the data
+// (label/title/href) differs per page.
+export type NextProjectNavData = {
+  label: string;
+  title: string;
+  href: string;
+  ctaLabel: string;
+};
+
+export default function NextProjectNav({ data }: { data: NextProjectNavData }) {
+  const reduceMotion = useReducedMotion();
+  const [buttonHovered, setButtonHovered] = useState(false);
+  const { label, title, href, ctaLabel } = data;
+
+  return (
+    // -mb-[140px] cancels Footer.tsx's own mt-[140px] (built for the
+    // homepage's Contact -> Footer rhythm) via CSS margin collapsing —
+    // adjacent sibling margins where one is positive and one negative sum
+    // algebraically, so 140px + (-140px) nets to 0. Living here rather
+    // than as a per-page override means every future case study gets a
+    // flush transition into the Footer automatically, without Footer.tsx
+    // (used on the homepage too) ever needing to change. No background
+    // color of its own — it's plain page background, not a distinct
+    // decorative band, so it reads as a continuation of the page rather
+    // than a separate block sitting on top of it.
+    <motion.section
+      initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
+      whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
+      viewport={CASE_STUDY_REVEAL_VIEWPORT}
+      transition={CASE_STUDY_REVEAL_TRANSITION}
+      className="-mb-[140px] flex flex-col items-center px-6 pb-16 md:pb-24"
+      style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
+    >
+      <a
+        href={href} // TODO: replace with the real next case study once it exists
+        className="flex w-full max-w-[1227px] flex-col gap-4 border-t border-border pt-12 md:flex-row md:items-center md:justify-between md:gap-8"
+      >
+        <div className="flex flex-col gap-2">
+          <span className={CASE_STUDY_FIELD_LABEL}>{label}</span>
+          {/* Tied to buttonHovered state (not CSS group-hover on the row)
+              so the title only recolors when the button itself is
+              hovered, not anywhere else on the row. */}
+          <span
+            className={`text-2xl leading-10 transition-colors duration-[400ms] ease-out ${
+              buttonHovered ? "text-accent" : "text-foreground"
+            }`}
+          >
+            {title}
+          </span>
+        </div>
+        {/* The site's standard primary-button interaction (see Contact.tsx's
+            "Get in touch" button): scales up and shifts to the brand's
+            hover-purple on hover, then scales down to a darker purple on
+            press — kept identical here rather than inventing a new variant,
+            so every primary CTA on the site behaves the same way. */}
+        <motion.span
+          onHoverStart={() => setButtonHovered(true)}
+          onHoverEnd={() => setButtonHovered(false)}
+          whileHover={{ scale: 1.05, backgroundColor: "#6757e8" }}
+          whileTap={{ scale: 0.97, backgroundColor: "#4434B8" }}
+          transition={linkHoverTransition}
+          className="inline-flex w-fit items-center justify-center rounded-full bg-accent px-9 py-3.5 text-sm font-semibold text-white shadow-[0px_4px_8px_0px_rgba(36,31,43,0.12)] font-[family-name:var(--font-dm-sans)]"
+        >
+          {ctaLabel}
+        </motion.span>
+      </a>
+    </motion.section>
+  );
+}
