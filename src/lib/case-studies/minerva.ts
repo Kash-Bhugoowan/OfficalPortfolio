@@ -2,6 +2,7 @@ import type { CaseStudyHeaderData } from "@/components/case-studies/CaseStudyHea
 import type { ChallengeSectionData } from "@/components/case-studies/ChallengeSection";
 import type { ApproachSectionData } from "@/components/case-studies/ApproachSection";
 import type { CoreUxSectionData } from "@/components/case-studies/CoreUxSection";
+import type { MainPrioritySectionData } from "@/components/case-studies/MainPrioritySection";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -92,4 +93,26 @@ export const minervaCoreUx: CoreUxSectionData = {
     "The solution needed to make handbook-led guidance easier to use while keeping it connected to the work it informed. The most difficult part of the experience was the right-hand navigation and “Add Task flow”. This was where the soldiers needed to turn complex handbook guidance into practical tasks.",
   quote:
     "I owned the UX for this flow, mapping intricate operations into a sequence soldiers could understand and act on. We could not build every military task or activity into the MVP. I worked with the product owner to narrow the scope to high-value scenarios, giving us enough depth to prove the approach without spreading the build too thinly. Focusing on representative scenarios let us test whether live planning and handbook guidance could work together before attempting to model every possible activity.",
+};
+
+export const minervaMainPriority: MainPrioritySectionData = {
+  eyebrow: "My main priority",
+  title: "Designing the brain of the tool",
+  subtitle: "The right-hand “Add Task Flow” became the tool's mental model.",
+  paragraphs: [
+    "The Add Task flow became the most important interaction in the product and was my main priority during the project.",
+    "My key design move was to keep the operational timeline in constant view. My position was that soldiers needed to remain in the main planning-table context while adding a task.",
+    "A task has timing, dependencies, resources, and consequences for the wider plan. Moving someone away from that view risked making a high-stakes planning task harder, not easier.",
+  ],
+  image: { src: "https://placehold.co/596x727", alt: "Add Task flow placeholder" },
+  pushback: {
+    eyebrow: "Managing Design Pushback",
+    image: { src: "https://placehold.co/732x494", alt: "Design pushback prototype placeholder" },
+    paragraphs: [
+      "An internal IBM stakeholder proposed an alternative approach. Rather than simply reject it, I prototyped both directions and made the usability trade-off visible to the soldiers.",
+      "The soldiers could then make an informed decision. We retained my design direction, with the left-hand navigation.",
+    ],
+    quote:
+      "I prototyped to protect an evidenced user need, while giving stakeholders a clear basis for the decision.",
+  },
 };
