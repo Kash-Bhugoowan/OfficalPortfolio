@@ -1,6 +1,7 @@
 import type { CaseStudyHeaderData } from "@/components/case-studies/CaseStudyHeader";
 import type { ChallengeSectionData } from "@/components/case-studies/ChallengeSection";
 import type { ApproachSectionData } from "@/components/case-studies/ApproachSection";
+import type { CoreUxSectionData } from "@/components/case-studies/CoreUxSection";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -81,4 +82,14 @@ export const minervaApproach: ApproachSectionData = {
     closing:
       "That insight shaped the product direction. Rather than designing a generic task-management tool, we set out to create an experience that could support live operational planning while preserving the context engineers relied on.",
   },
+};
+
+export const minervaCoreUx: CoreUxSectionData = {
+  eyebrow: "Core UX",
+  title: "Turning complex guidance into a focused blueprint",
+  image: { src: "https://placehold.co/1527x957", alt: "Core UX interface placeholder" },
+  intro:
+    "The solution needed to make handbook-led guidance easier to use while keeping it connected to the work it informed. The most difficult part of the experience was the right-hand navigation and “Add Task flow”. This was where the soldiers needed to turn complex handbook guidance into practical tasks.",
+  quote:
+    "I owned the UX for this flow, mapping intricate operations into a sequence soldiers could understand and act on. We could not build every military task or activity into the MVP. I worked with the product owner to narrow the scope to high-value scenarios, giving us enough depth to prove the approach without spreading the build too thinly. Focusing on representative scenarios let us test whether live planning and handbook guidance could work together before attempting to model every possible activity.",
 };
