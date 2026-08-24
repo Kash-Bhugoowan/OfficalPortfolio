@@ -20,7 +20,7 @@ const projects: Project[] = [
     // values that must never cross-contaminate.
     bgClass: "bg-[#CBEEA6] md:bg-[#DFEFD7]",
     glowClass: "bg-[#C6EB9E] md:bg-lime-400",
-    href: "#", // TODO: replace with real case study link
+    href: "/case-studies/minerva",
     widthClass: "w-full max-w-[93%]",
     shadowClass: "shadow-[0_8px_24px_0_rgba(36,31,43,0.08)]",
     tagOutlineClass: "outline-white",
