@@ -93,7 +93,7 @@ export default function Contact() {
           </motion.a>
           <motion.a
             href="#work"
-            className="rounded-full border border-border bg-[#eeeafd] px-8 py-3 text-sm font-medium text-accent"
+            className="rounded-full border border-accent/30 bg-[#eeeafd] px-8 py-3 text-sm font-semibold text-accent"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97, backgroundColor: "#ddd3fc" }}
             transition={linkHoverTransition}
