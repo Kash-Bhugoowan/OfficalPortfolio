@@ -18,7 +18,7 @@ const capabilities: Capability[] = [
     title: "AI & Conversational Design",
     description:
       "Designing for generative AI products with ethical frameworks, conversation design, explainability patterns, and human-in-the-loop UX.",
-    link: "#", // TODO: replace with real case study link
+    link: "/case-studies/agentic-ai-conversational-design", // TODO: page not built yet
   },
   {
     icon: "◎",
@@ -222,7 +222,7 @@ export default function Capabilities() {
           variants={item}
           className="text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]"
         >
-          Capabilities
+          My Skills & Capabilities
         </motion.span>
         <motion.h2 variants={item} className="-mt-1 text-4xl leading-[60px] text-accent">
           Where I can help

@@ -72,7 +72,7 @@ const projects: Project[] = [
     ],
     bgClass: "bg-[#E8C5F9] md:bg-[#EAD9F3]",
     glowClass: "bg-[#E2C2F1] md:bg-purple-400",
-    href: "#", // TODO: replace with real case study link
+    href: "/case-studies/hsbc",
     widthClass: "w-full",
     shadowClass: "shadow-[0_8px_24px_0_rgba(36,31,43,0.08)]",
   },

@@ -189,7 +189,7 @@ export const gailReflections: ReflectionsSectionData = {
 
 export const gailNextProject: NextProjectNavData = {
   label: "Next project",
-  title: "HSBC: A Reimagined Banking App for Gen Z",
-  href: "#", // TODO: replace with real case study link once it exists
+  title: "HSBC Financial Coach: Empowering Gen Z Through Smarter Banking",
+  href: "/case-studies/hsbc",
   ctaLabel: "View case study →",
 };
