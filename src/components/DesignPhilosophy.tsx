@@ -375,7 +375,7 @@ function PrincipleCard({
       onHoverStart={isDesktop ? onHoverStart : undefined}
       onMouseMove={isDesktop ? handleMouseMove : undefined}
       style={{ scale }}
-      className="philosophy-card relative box-border flex w-full min-w-0 flex-col overflow-hidden rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
+      className="philosophy-card relative box-border flex w-full min-w-0 flex-col overflow-hidden rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_1px_3px_0px_rgba(36,31,43,0.03)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
     >
       <motion.div
         aria-hidden

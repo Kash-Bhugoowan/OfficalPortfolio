@@ -13,6 +13,8 @@ import {
   CASE_STUDY_REVEAL_VISIBLE,
   CASE_STUDY_REVEAL_VIEWPORT,
   CASE_STUDY_REVEAL_TRANSITION,
+  CASE_STUDY_SHADOW_SM,
+  CASE_STUDY_SHADOW_SM_HOVER,
 } from "@/lib/case-studies/styles";
 
 export type CaseStudyStat = {
@@ -146,7 +148,7 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className={`relative w-full overflow-hidden rounded-3xl p-8 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] transition-all duration-200 md:hover:-translate-y-1 md:hover:shadow-[0px_8px_16px_0px_rgba(36,31,43,0.10)] ${stat.bgClass}`}
+              className={`relative w-full overflow-hidden rounded-3xl p-8 ${CASE_STUDY_SHADOW_SM} transition-all duration-200 md:hover:-translate-y-1 ${CASE_STUDY_SHADOW_SM_HOVER} ${stat.bgClass}`}
             >
               <div className="relative flex flex-col gap-4">
                 <span className="text-xs font-semibold tracking-wider text-zinc-800 uppercase font-[family-name:var(--font-dm-sans)]">

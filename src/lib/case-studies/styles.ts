@@ -39,6 +39,25 @@ export const CASE_STUDY_SUBTITLE = `${CASE_STUDY_BODY} font-semibold`;
 // half of an "ask" sentence).
 export const CASE_STUDY_BODY_EMPHASIS = "text-lg font-semibold md:text-xl";
 
+// ---- Shadows ----
+//
+// The site-wide "small" resting shadow — matches Capabilities.tsx and
+// DesignPhilosophy.tsx's card shadow exactly, so this isn't a
+// case-study-only value, it's the established site standard. Use this
+// (never a heavier one straight off a Figma spec) for any small
+// card/tile at rest in a case study.
+export const CASE_STUDY_SHADOW_SM = "shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)]";
+
+// Deepened shadow for a hover-lift on that same small card (see the
+// header's stat cards) — paired with a slight -translate-y on hover.
+// Includes the md:hover: variant baked in (rather than composed at the
+// call site) because Tailwind's static scanner needs the complete class
+// name to exist as literal text somewhere — splitting "md:hover:" and
+// "shadow-[...]" across a runtime template-string concatenation means
+// neither file ever contains the full class name, so it silently never
+// generates the CSS rule.
+export const CASE_STUDY_SHADOW_SM_HOVER = "md:hover:shadow-[0px_8px_16px_0px_rgba(36,31,43,0.10)]";
+
 // ---- Image frame ----
 
 // Standard placeholder/content image treatment used throughout a case
