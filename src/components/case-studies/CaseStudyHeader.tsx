@@ -72,7 +72,7 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
     <section className="flex flex-col items-center px-6 pt-[37px] md:pt-[54px]">
       <div className={`mx-auto flex w-full max-w-[1227px] flex-col ${CASE_STUDY_GAP_BLOCK}`}>
         <motion.div
-          className={`flex flex-col ${CASE_STUDY_GAP_BLOCK}`}
+          className="flex flex-col gap-8"
           variants={container}
           initial="hidden"
           animate="visible"

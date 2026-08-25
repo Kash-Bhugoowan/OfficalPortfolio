@@ -11,6 +11,11 @@ import WhatsNextSection from "@/components/case-studies/WhatsNextSection";
 import ReflectionsSection from "@/components/case-studies/ReflectionsSection";
 import NextProjectNav from "@/components/case-studies/NextProjectNav";
 import {
+  CaseStudyPageBackground,
+  CaseStudyTopGradient,
+  CaseStudyBottomGradient,
+} from "@/components/case-studies/CaseStudyPageBackground";
+import {
   minervaCaseStudy,
   minervaChallenge,
   minervaApproach,
@@ -25,9 +30,12 @@ import {
 
 export default function MinervaCaseStudyPage() {
   return (
-    <>
-      <Nav />
-      <CaseStudyHeader data={minervaCaseStudy} />
+    <CaseStudyPageBackground>
+      <div className="relative z-0">
+        <CaseStudyTopGradient />
+        <Nav />
+        <CaseStudyHeader data={minervaCaseStudy} />
+      </div>
       <ChallengeSection data={minervaChallenge} />
       <ApproachSection data={minervaApproach} />
       <CoreUxSection data={minervaCoreUx} />
@@ -37,7 +45,8 @@ export default function MinervaCaseStudyPage() {
       <WhatsNextSection data={minervaWhatsNext} />
       <ReflectionsSection data={minervaReflections} />
       <NextProjectNav data={minervaNextProject} />
+      <CaseStudyBottomGradient />
       <Footer />
-    </>
+    </CaseStudyPageBackground>
   );
 }

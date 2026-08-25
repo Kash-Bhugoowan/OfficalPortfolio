@@ -176,6 +176,6 @@ export const minervaReflections: ReflectionsSectionData = {
 export const minervaNextProject: NextProjectNavData = {
   label: "Next project",
   title: "Operation GAiL: Learning & Development",
-  href: "#", // TODO: replace with real case study link once it exists
+  href: "/case-studies/gail",
   ctaLabel: "View case study →",
 };

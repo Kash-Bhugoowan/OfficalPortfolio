@@ -45,12 +45,12 @@ const projects: Project[] = [
       "Design Strategy",
     ],
     stats: [
-      { label: "Time reduced", value: "99.74%" },
-      { label: "Successful content created", value: "99.8%" },
+      { label: "Time reduced", value: "20 mins" },
+      { label: "Designers very happy", value: "99.8%" },
     ],
     bgClass: "bg-[#FFD8A5] md:bg-orange-100",
     glowClass: "bg-[#FFD399] md:bg-orange-400",
-    href: "#", // TODO: replace with real case study link
+    href: "/case-studies/gail",
     widthClass: "w-full max-w-[98%]",
     shadowClass: "shadow-[0_8px_24px_0_rgba(36,31,43,0.08)]",
     tagOutlineClass: "outline-white",
