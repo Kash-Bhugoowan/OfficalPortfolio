@@ -46,7 +46,7 @@ export const CASE_STUDY_BODY_EMPHASIS = "text-lg font-semibold md:text-xl";
 // different, larger treatment and stays defined locally in
 // CaseStudyHeader.tsx.
 export const CASE_STUDY_IMAGE_FRAME =
-  "relative w-full overflow-hidden rounded-2xl border border-zinc-300 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)]";
+  "relative w-full overflow-hidden rounded-2xl border border-zinc-300 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.06)]";
 
 // ---- Scroll-fade motion (whileInView reveal) ----
 //

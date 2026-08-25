@@ -1,4 +1,47 @@
-const LINKEDIN_URL = "https://www.linkedin.com/in/karishma-bhugoowan/";
+"use client";
+
+import { motion } from "framer-motion";
+import { linkHoverTransition } from "@/lib/motion";
+
+const footerLinks: { label: string; href: string | null }[] = [
+  { label: "Work", href: "/#work" },
+  { label: "Process", href: "/#process" },
+  { label: "Resume", href: null },
+  { label: "Contact", href: "/#contact" },
+];
+
+function ArrowUpIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M12 19V5M5 12l7-7 7 7" />
+    </svg>
+  );
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function BackToTopButton({ className }: { className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={scrollToTop}
+      aria-label="Back to top"
+      className={`group flex size-8 items-center justify-center rounded-sm border border-white text-white transition-colors hover:bg-white hover:text-[#1c1726] ${className ?? ""}`}
+    >
+      <ArrowUpIcon className="size-4.5" />
+    </button>
+  );
+}
 
 export default function Footer() {
   return (
@@ -15,19 +58,37 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <a
-        href={LINKEDIN_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="LinkedIn"
-        data-property-1="link"
-        data-property-2="default"
-        className="absolute top-1/2 right-6 flex size-8 -translate-y-1/2 items-center justify-center rounded-md bg-white md:top-[51px] md:right-[100px] md:translate-y-0"
-      >
-        <svg viewBox="0 0 24 24" className="size-4.5" fill="#1c1726">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.114 20.452H3.558V9h3.556v11.452z" />
-        </svg>
-      </a>
+
+      <div className="hidden items-center gap-14 md:absolute md:top-[51px] md:right-[100px] md:flex">
+        <div className="flex items-center gap-6">
+          {footerLinks.map((link) =>
+            link.href ? (
+              <motion.a
+                key={link.label}
+                href={link.href}
+                className="font-['Manrope'] text-lg leading-6 font-light tracking-tight text-white"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 1.02 }}
+                transition={linkHoverTransition}
+              >
+                {link.label}
+              </motion.a>
+            ) : (
+              <span
+                key={link.label}
+                aria-disabled="true"
+                title="Coming soon"
+                className="font-['Manrope'] text-lg leading-6 font-light tracking-tight text-white/40"
+              >
+                {link.label}
+              </span>
+            ),
+          )}
+        </div>
+        <BackToTopButton />
+      </div>
+
+      <BackToTopButton className="absolute top-1/2 right-6 -translate-y-1/2 md:hidden" />
     </div>
   );
 }

@@ -6,10 +6,10 @@ import { fadeInUp, linkHoverTransition } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 
 const links = [
-  { label: "Work", href: "#work" },
-  { label: "Process", href: "#process" },
-  { label: "Resume", href: "#resume" },
-  { label: "Contact", href: "#contact" },
+  { label: "Work", href: "/#work" },
+  { label: "Process", href: "/#process" },
+  { label: "Resume", href: null },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const menuLinks = [{ label: "Home", href: "/" }, ...links];
@@ -85,18 +85,29 @@ export default function Nav() {
           Karishma Bhugoowan
         </motion.a>
         <div className="hidden items-center gap-3 md:flex md:gap-[42px]">
-          {links.map((link) => (
-            <motion.a
-              key={link.href}
-              href={link.href}
-              className="text-sm leading-[22.4px] tracking-[0.14px] font-light text-nav-muted sm:text-[18px]"
-              whileHover={{ color: "#6757e8", scale: 1.15 }}
-              whileTap={{ scale: 1.08 }}
-              transition={linkHoverTransition}
-            >
-              {link.label}
-            </motion.a>
-          ))}
+          {links.map((link) =>
+            link.href ? (
+              <motion.a
+                key={link.label}
+                href={link.href}
+                className="text-sm leading-[22.4px] tracking-[0.14px] font-light text-nav-muted sm:text-[18px]"
+                whileHover={{ color: "#6757e8", scale: 1.15 }}
+                whileTap={{ scale: 1.08 }}
+                transition={linkHoverTransition}
+              >
+                {link.label}
+              </motion.a>
+            ) : (
+              <span
+                key={link.label}
+                aria-disabled="true"
+                title="Coming soon"
+                className="text-sm leading-[22.4px] tracking-[0.14px] font-light text-nav-muted opacity-40 sm:text-[18px]"
+              >
+                {link.label}
+              </span>
+            ),
+          )}
         </div>
         <button
           type="button"
@@ -136,21 +147,33 @@ export default function Nav() {
               exit="hidden"
               variants={menuListVariants}
             >
-              {menuLinks.map((link) => (
-                <motion.a
-                  key={link.href}
-                  variants={fadeInUp}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-between border-b border-border py-5 text-3xl font-light text-foreground"
-                  whileHover={{ color: "#6757e8" }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={linkHoverTransition}
-                >
-                  {link.label}
-                  <Chevron />
-                </motion.a>
-              ))}
+              {menuLinks.map((link) =>
+                link.href ? (
+                  <motion.a
+                    key={link.label}
+                    variants={fadeInUp}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-between border-b border-border py-5 text-3xl font-light text-foreground"
+                    whileHover={{ color: "#6757e8" }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={linkHoverTransition}
+                  >
+                    {link.label}
+                    <Chevron />
+                  </motion.a>
+                ) : (
+                  <motion.div
+                    key={link.label}
+                    variants={fadeInUp}
+                    aria-disabled="true"
+                    title="Coming soon"
+                    className="flex items-center justify-between border-b border-border py-5 text-3xl font-light text-foreground opacity-40"
+                  >
+                    {link.label}
+                  </motion.div>
+                ),
+              )}
             </motion.div>
           </motion.div>
         )}

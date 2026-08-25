@@ -20,7 +20,6 @@ export type CaseStudyStat = {
   value: string;
   description: string;
   bgClass: string;
-  glowClass: string;
 };
 
 export type CaseStudyHeaderData = {
@@ -114,15 +113,16 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
             <span className={CASE_STUDY_FIELD_LABEL}>{roleLabel}</span>
             <p className={CASE_STUDY_BODY}>{roleSummary}</p>
           </motion.div>
-        </motion.div>
 
-        <div className={`flex flex-col ${CASE_STUDY_GAP_BLOCK}`}>
+          {/* Part of the mount-time stagger, not a whileInView scroll
+              reveal — at typical viewport heights this image sits at or
+              near the fold on first load, so waiting for a scroll trigger
+              left it invisible and the page looked empty below the text.
+              The stats row further down is reliably off-screen on load,
+              so it keeps the scroll-triggered reveal. */}
           <motion.div
-            initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-            whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
-            viewport={CASE_STUDY_REVEAL_VIEWPORT}
-            transition={CASE_STUDY_REVEAL_TRANSITION}
-            className="relative w-full max-w-[960px] overflow-hidden rounded-xl border-[1.5px] border-text-secondary shadow-[0px_16px_48px_0px_rgba(36,31,43,0.12)]"
+            variants={item}
+            className="relative w-full max-w-[960px] overflow-hidden rounded-xl border-[1.5px] border-text-secondary shadow-[0px_16px_48px_0px_rgba(36,31,43,0.10)]"
             style={{ aspectRatio: "1169 / 732" }}
           >
             <Image
@@ -134,37 +134,32 @@ export default function CaseStudyHeader({ data }: { data: CaseStudyHeaderData })
               priority
             />
           </motion.div>
+        </motion.div>
 
-          <motion.div
-            initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-            whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
-            viewport={CASE_STUDY_REVEAL_VIEWPORT}
-            transition={CASE_STUDY_REVEAL_TRANSITION}
-            className="grid grid-cols-1 gap-4 md:grid-cols-3"
-          >
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className={`relative w-full overflow-hidden rounded-3xl p-8 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] ${stat.bgClass}`}
-              >
-                <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
-                  <div
-                    className={`absolute -top-10 right-0 size-[180px] rounded-full opacity-20 blur-2xl md:size-[240px] ${stat.glowClass}`}
-                  />
-                </div>
-                <div className="relative flex flex-col gap-4">
-                  <span className="text-xs font-semibold tracking-wider text-zinc-800 uppercase font-[family-name:var(--font-dm-sans)]">
-                    {stat.label}
-                  </span>
-                  <span className="text-5xl font-light leading-[68px] text-zinc-800 md:text-6xl">
-                    {stat.value}
-                  </span>
-                  <p className="text-base leading-6 text-zinc-800">{stat.description}</p>
-                </div>
+        <motion.div
+          initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
+          whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
+          viewport={CASE_STUDY_REVEAL_VIEWPORT}
+          transition={CASE_STUDY_REVEAL_TRANSITION}
+          className="grid grid-cols-1 gap-4 md:grid-cols-3"
+        >
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className={`relative w-full overflow-hidden rounded-3xl p-8 shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)] transition-all duration-200 md:hover:-translate-y-1 md:hover:shadow-[0px_8px_16px_0px_rgba(36,31,43,0.10)] ${stat.bgClass}`}
+            >
+              <div className="relative flex flex-col gap-4">
+                <span className="text-xs font-semibold tracking-wider text-zinc-800 uppercase font-[family-name:var(--font-dm-sans)]">
+                  {stat.label}
+                </span>
+                <span className="text-5xl font-light leading-[68px] text-zinc-800 md:text-6xl">
+                  {stat.value}
+                </span>
+                <p className="text-base leading-6 text-zinc-800">{stat.description}</p>
               </div>
-            ))}
-          </motion.div>
-        </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
