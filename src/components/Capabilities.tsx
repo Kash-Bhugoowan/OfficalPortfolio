@@ -18,7 +18,7 @@ const capabilities: Capability[] = [
     title: "AI & Conversational Design",
     description:
       "Designing for generative AI products with ethical frameworks, conversation design, explainability patterns, and human-in-the-loop UX.",
-    link: "/case-studies/agentic-ai-conversational-design", // TODO: page not built yet
+    link: "/skills/agentic-ai-conversational-design",
   },
   {
     icon: "◎",

@@ -148,6 +148,6 @@ export const hsbcReflections: ReflectionsSectionData = {
 export const hsbcSkillShowcase: NextProjectNavData = {
   label: "Showcase Skill",
   title: "Generative AI Conversational design",
-  href: "/case-studies/agentic-ai-conversational-design", // TODO: page not built yet
+  href: "/skills/agentic-ai-conversational-design",
   ctaLabel: "View Skill →",
 };
