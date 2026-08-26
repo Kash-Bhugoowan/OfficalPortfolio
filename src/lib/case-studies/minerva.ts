@@ -11,7 +11,7 @@ import type { NextProjectNavData } from "@/components/case-studies/NextProjectNa
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
   primaryTag: "Ministry of defence",
-  tags: ["Automation", "AI / ML", "Service Design", "UX Research"],
+  tags: ["Automation", "AI / ML", "Service design", "UX research"],
   titleLight: "Project Minerva: ",
   titleBold: "Designing an AI Workflow for Operational Reality",
   dek: "Creating a tool that turns complex handbook guidance and war-room planning into a faster, more confident operational workflow.",

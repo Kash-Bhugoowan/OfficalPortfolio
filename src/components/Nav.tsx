@@ -75,7 +75,7 @@ export default function Nav() {
 
   return (
     <div className="px-4 pt-6 sm:px-6">
-      <nav className="mx-auto flex w-full max-w-[1528px] items-center justify-between rounded-full border-b border-border bg-[rgba(250,248,245,0.27)] px-4 py-2.5 shadow-[0_1px_2px_0_rgba(36,31,43,0.04)] sm:px-10 sm:py-3.5">
+      <nav className="mx-auto flex w-full max-w-[1528px] items-center justify-between rounded-full border-b border-white/60 bg-[rgba(239,244,249,0.85)] px-4 py-2.5 shadow-[0_4px_20px_0_rgba(36,31,43,0.03)] backdrop-blur-md sm:px-10 sm:py-3.5">
         <motion.a
           href="/"
           className="text-sm leading-[22.4px] tracking-[0.14px] font-light text-nav-muted sm:text-[18px]"

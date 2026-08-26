@@ -12,8 +12,8 @@ import type {
 } from "@/components/case-studies/NextProjectNav";
 
 export const gailCaseStudy: CaseStudyHeaderData = {
-  primaryTag: "UK Gov: Dept Work & Pensions",
-  tags: ["Gen AI", "Lead Designer", "Service Design", "UX & UI Design"],
+  primaryTag: "UK gov: dept work & pensions",
+  tags: ["Gen AI", "Lead designer", "Service design", "UX & UI design"],
   titleLight: "Project GAiL: ",
   titleBold: "Creating trustworthy education materials for 90,000 civil servants",
   dek: "Helping a small learning-design team create trustworthy policy learning for 90,000 people, without removing professional judgement.",
@@ -190,7 +190,7 @@ export const gailReflections: ReflectionsSectionData = {
 };
 
 export const gailPreviousProject: PreviousProjectNavData = {
-  label: "Previous project",
+  label: "Previous Case Study",
   title: "Project Minerva",
   href: "/case-studies/minerva",
 };

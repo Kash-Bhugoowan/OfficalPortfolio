@@ -14,7 +14,7 @@ import type {
 
 export const hsbcCaseStudy: HsbcCaseStudyHeaderData = {
   primaryTag: "HSBC",
-  tags: ["Design Strategy", "Storytelling", "C-Suite Stakeholders", "UX & UI Design"],
+  tags: ["Design strategy", "Storytelling", "C-suite stakeholders", "UX & UI design"],
   titleLight: "HSBC Financial Coach: ",
   titleBold: "Empowering Gen Z Through Smarter Banking",
   dek: "Turning a broad ambition to support Gen Z into a tangible, technology-enabled vision for more confident financial decisions.",
@@ -142,7 +142,7 @@ export const hsbcReflections: ReflectionsSectionData = {
 };
 
 export const hsbcPreviousProject: PreviousProjectNavData = {
-  label: "Previous project",
+  label: "Previous Case Study",
   title: "Operation GAiL",
   href: "/case-studies/gail",
 };

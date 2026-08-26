@@ -81,10 +81,10 @@ export default function Contact() {
           voice, or a room that needs facilitating - I&apos;d love to hear about it. I read every
           message myself and usually reply within a day or two.
         </motion.p>
-        <motion.div variants={item} className="flex items-center gap-4">
+        <motion.div variants={item} className="flex w-full flex-col items-center gap-4 sm:w-auto sm:flex-row">
           <motion.a
             href={`mailto:${EMAIL}`}
-            className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white"
+            className="w-full rounded-full bg-accent px-8 py-3 text-center text-sm font-semibold text-white sm:w-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97, backgroundColor: "#4434B8" }}
             transition={linkHoverTransition}
@@ -93,7 +93,7 @@ export default function Contact() {
           </motion.a>
           <motion.a
             href="#work"
-            className="rounded-full border border-accent/30 bg-[#eeeafd] px-8 py-3 text-sm font-semibold text-accent"
+            className="w-full rounded-full border border-accent/30 bg-[#eeeafd] px-8 py-3 text-center text-sm font-semibold text-accent sm:w-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97, backgroundColor: "#ddd3fc" }}
             transition={linkHoverTransition}
@@ -104,7 +104,7 @@ export default function Contact() {
       </motion.div>
 
       <motion.div
-        className="grid w-full max-w-[1528px] grid-cols-1 gap-8 rounded-2xl border border-border bg-white px-10 py-12 sm:grid-cols-2 md:py-16 lg:flex lg:items-center lg:justify-between"
+        className="grid w-full max-w-[1528px] grid-cols-1 gap-8 rounded-2xl border border-indigo-500/20 bg-white px-10 py-12 sm:grid-cols-2 md:py-16 lg:flex lg:items-center lg:justify-between"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}

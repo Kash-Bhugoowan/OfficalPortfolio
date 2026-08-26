@@ -8,7 +8,8 @@ import type {
 } from "@/components/case-studies/NextProjectNav";
 
 export const conversationalDesignHeader: SkillHeaderData = {
-  tags: ["Conversation Design", "Gen AI", "Accessibility", "Service Design"],
+  primaryTag: "Skills showcase",
+  tags: ["Conversation design", "Gen AI", "Accessibility", "Service design"],
   title: "Generative AI Conversational design",
   dek: "I design intelligent, inclusive and trustworthy Generative AI assistants. Drawing on user experience best practice and close technical collaboration, I craft assistants rooted in real value through meaningful interactions.",
 };
@@ -92,6 +93,6 @@ export const conversationalDesignPrevious: PreviousProjectNavData = {
 export const conversationalDesignNext: NextProjectNavData = {
   label: "Next skill",
   title: "Workshop facilitation",
-  href: "/#process", // TODO: point to /skills/workshop-facilitation once that page exists
+  href: "/skills/workshop-facilitation",
   ctaLabel: "View skill →",
 };

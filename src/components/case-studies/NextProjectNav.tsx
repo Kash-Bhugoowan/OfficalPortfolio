@@ -70,7 +70,7 @@ export default function NextProjectNav({ next }: { next: NextProjectNavData }) {
       className="-mb-[140px] flex flex-col items-center px-6 pb-16 md:pb-24"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className="flex w-full max-w-[1227px] flex-col border-t border-border pt-12">
+      <div className="flex w-full max-w-[1227px] flex-col border-t border-indigo-500/20 pt-12">
         <a
           href={href} // TODO: replace with the real next case study once it exists
           className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8"

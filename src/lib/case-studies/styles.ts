@@ -13,9 +13,11 @@ export const CASE_STUDY_EYEBROW =
 
 // The page-level eyebrow at the very top of the header ("Selected work |
 // CASE STUDY") — muted rather than accent-colored, since it isn't
-// introducing a specific section.
+// introducing a specific section. Regular weight by default: the
+// previous-project nav link that uses this bolds just the project name
+// (see CaseStudyHeader.tsx) via its own font-semibold span, not this class.
 export const CASE_STUDY_PAGE_EYEBROW =
-  "text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]";
+  "text-xs font-normal tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]";
 
 // A small field label above a block of copy (e.g. "ROLE & SUMMARY").
 // Slightly larger than the section eyebrow and muted, not accent-colored.

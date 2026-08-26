@@ -376,7 +376,7 @@ function PrincipleCard({
       onHoverStart={isDesktop ? onHoverStart : undefined}
       onMouseMove={isDesktop ? handleMouseMove : undefined}
       style={{ scale }}
-      className="philosophy-card relative box-border flex w-full min-w-0 flex-col overflow-hidden rounded-[22px] border border-border bg-white px-8 pt-9 pb-10 shadow-[0px_1px_3px_0px_rgba(36,31,43,0.03)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
+      className="philosophy-card relative box-border flex w-full min-w-0 flex-col overflow-hidden rounded-[22px] border border-white bg-white px-8 pt-9 pb-10 shadow-[0px_1px_3px_0px_rgba(36,31,43,0.03)] hover:shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] lg:flex-1 lg:basis-0"
     >
       <motion.div
         aria-hidden
@@ -426,7 +426,7 @@ function PrincipleCard({
         <button
           type="button"
           onClick={() => setShowPhoto((s) => !s)}
-          className="mt-4 inline-flex w-fit rounded-full border border-border bg-[#faf8f5] px-[18px] py-[9px] text-sm font-medium whitespace-nowrap text-nav-muted transition-colors duration-200 hover:bg-[#eeeafd] hover:text-nav-hover"
+          className="mt-4 inline-flex w-fit rounded-full border border-white bg-[#faf8f5] px-[18px] py-[9px] text-sm font-medium whitespace-nowrap text-nav-muted transition-colors duration-200 hover:bg-[#eeeafd] hover:text-nav-hover"
         >
           {showPhoto ? "Show the diagram" : "See it in the room"}
         </button>

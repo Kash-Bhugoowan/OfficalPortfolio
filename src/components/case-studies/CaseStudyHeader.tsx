@@ -101,19 +101,19 @@ export default function CaseStudyHeader({
                 <ArrowLeftIcon className="size-3 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" />
                 <span className="md:hidden">{previous.label}</span>
                 <span className="hidden md:inline">
-                  {previous.label}: {previous.title}
+                  {previous.label}: <span className="font-semibold">{previous.title}</span>
                 </span>
               </motion.a>
             )}
 
             <motion.div variants={item} className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-zinc-800/30 px-3 py-[5px] text-xs font-semibold tracking-wide text-white/90 uppercase outline outline-1 -outline-offset-1 outline-white/20 font-[family-name:var(--font-dm-sans)]">
+              <span className="rounded-full bg-white px-3 py-[5px] text-xs font-semibold tracking-wide text-[#6757E8] font-[family-name:var(--font-dm-sans)]">
                 {primaryTag}
               </span>
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-stone-50/90 px-3 py-1 text-xs font-medium tracking-wide text-text-secondary uppercase outline outline-1 -outline-offset-1 outline-border font-[family-name:var(--font-dm-sans)]"
+                  className="rounded-full bg-[#FAF8F5] px-3 py-1 text-xs font-medium tracking-wide text-nav-muted outline outline-1 -outline-offset-1 outline-white font-[family-name:var(--font-dm-sans)]"
                 >
                   {tag}
                 </span>

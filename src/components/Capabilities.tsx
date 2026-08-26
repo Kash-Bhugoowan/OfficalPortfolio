@@ -25,7 +25,7 @@ const capabilities: Capability[] = [
     title: "Workshop Facilitation",
     description:
       "Designing and leading complex workshops for discovery, co-creation, ideation, and decision-making across multi-disciplinary teams.",
-    link: "#", // TODO: replace with real case study link
+    link: "/skills/workshop-facilitation",
   },
   {
     icon: "◐",

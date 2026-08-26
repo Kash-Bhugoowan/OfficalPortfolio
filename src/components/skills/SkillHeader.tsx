@@ -9,6 +9,7 @@ import {
 import { CASE_STUDY_PAGE_EYEBROW, CASE_STUDY_GAP_CONTENT } from "@/lib/case-studies/styles";
 
 export type SkillHeaderData = {
+  primaryTag: string;
   tags: string[];
   title: string;
   dek: string;
@@ -34,7 +35,7 @@ export default function SkillHeader({
   previous?: PreviousProjectNavData;
 }) {
   const reduceMotion = useReducedMotion();
-  const { tags, title, dek } = data;
+  const { primaryTag, tags, title, dek } = data;
 
   return (
     <section className="flex flex-col items-center px-6 pt-[37px] md:pt-[54px]">
@@ -58,16 +59,19 @@ export default function SkillHeader({
               <ArrowLeftIcon className="size-3 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" />
               <span className="md:hidden">{previous.label}</span>
               <span className="hidden md:inline">
-                {previous.label}: {previous.title}
+                {previous.label}: <span className="font-semibold">{previous.title}</span>
               </span>
             </motion.a>
           )}
 
           <motion.div variants={item} className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-white px-3 py-[5px] text-xs font-semibold tracking-wide text-accent outline outline-1 -outline-offset-1 outline-indigo-500/20 font-[family-name:var(--font-dm-sans)]">
+              {primaryTag}
+            </span>
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-stone-50/90 px-3 py-1 text-xs font-medium tracking-wide text-text-secondary uppercase outline outline-1 -outline-offset-1 outline-border font-[family-name:var(--font-dm-sans)]"
+                className="rounded-full bg-[#FAF8F5] px-3 py-1 text-xs font-medium tracking-wide text-nav-muted outline outline-1 -outline-offset-1 outline-white font-[family-name:var(--font-dm-sans)]"
               >
                 {tag}
               </span>

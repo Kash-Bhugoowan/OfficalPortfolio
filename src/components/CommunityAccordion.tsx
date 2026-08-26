@@ -133,7 +133,7 @@ const items: AccordionItem[] = [
             {["THINK UK 2023", "Women in Tech", "Ethics & AI Lunch", "D&I Panellist"].map((pill) => (
               <span
                 key={pill}
-                className="rounded-full border border-border bg-white px-4 py-2 text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]"
+                className="rounded-full border border-indigo-500/20 bg-indigo-500/5 px-4 py-2 text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]"
               >
                 {pill}
               </span>
@@ -163,7 +163,7 @@ export default function CommunityAccordion() {
       {items.map((item) => {
         const isOpen = openIndexes.has(item.index);
         return (
-          <div key={item.index} className="border-b border-border">
+          <div key={item.index} className="border-b border-gray-300">
             <div
               onClick={() => !isOpen && openRow(item.index)}
               className={`group flex items-center justify-between gap-4 rounded-2xl px-4 py-6 -mx-4 ${colorTransitionClass} ${
@@ -204,7 +204,7 @@ export default function CommunityAccordion() {
                   transition={{ duration: DURATION, ease: EASE }}
                   className={`flex size-8 items-center justify-center rounded-full ${colorTransitionClass} ${
                     isOpen
-                      ? "bg-gradient-to-br from-indigo-100 to-purple-100"
+                      ? "bg-white"
                       : "border-[1.5px] border-text-secondary"
                   }`}
                 >

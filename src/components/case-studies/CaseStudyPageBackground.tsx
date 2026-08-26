@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 // `-z-10` gradients need so they can't leak behind unrelated page
 // content elsewhere.
 export function CaseStudyPageBackground({ children }: { children: ReactNode }) {
-  return <div className="relative z-0 bg-[#F9F8F5]">{children}</div>;
+  return <div className="relative z-0 bg-[#EFF4F9]">{children}</div>;
 }
 
 // Decorative pastel gradient behind a case study's Nav + hero header,
@@ -14,8 +14,8 @@ export function CaseStudyPageBackground({ children }: { children: ReactNode }) {
 // container.
 export function CaseStudyTopGradient() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[700px] bg-linear-55 from-violet-100 via-pink-100 via-40% to-violet-50 md:h-[1000px]">
-      <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-[#F9F8F5]/0 to-[#F9F8F5] md:h-96" />
+    <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[700px] bg-linear-55 from-[#D8E4EE] via-[#E3EBF3] via-40% to-[#EFF4F9] md:h-[1000px]">
+      <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-[#EFF4F9]/0 to-[#EFF4F9] md:h-96" />
     </div>
   );
 }
@@ -30,8 +30,8 @@ export function CaseStudyTopGradient() {
 // <NextProjectNav/> (not wrapping it) — it's positioned independently.
 export function CaseStudyBottomGradient() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-32 -z-10 h-[600px] bg-linear-[235deg] from-violet-100 via-pink-100 via-40% to-violet-50">
-      <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-[#F9F8F5] to-[#F9F8F5]/0" />
+    <div className="pointer-events-none absolute inset-x-0 bottom-32 -z-10 h-[600px] bg-linear-[235deg] from-[#D8E4EE] via-[#E3EBF3] via-40% to-[#EFF4F9]">
+      <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-[#EFF4F9] to-[#EFF4F9]/0" />
     </div>
   );
 }
