@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
 function ChevronDown({ className = "" }: { className?: string }) {
@@ -15,8 +16,11 @@ const DURATION = 0.4;
 const colorTransitionClass = "transition-colors duration-[400ms] ease-out";
 
 function RowImage({ src, className }: { src: string; className: string }) {
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" className={`rounded-2xl object-cover ${className}`} />;
+  return (
+    <div className={`relative overflow-hidden rounded-2xl ${className}`}>
+      <Image src={src} alt="" fill className="object-cover" unoptimized />
+    </div>
+  );
 }
 
 type AccordionItem = {

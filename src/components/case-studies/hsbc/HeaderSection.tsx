@@ -4,6 +4,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInUp } from "@/lib/motion";
 import {
+  ArrowLeftIcon,
+  type PreviousProjectNavData,
+} from "@/components/case-studies/NextProjectNav";
+import {
   CASE_STUDY_PAGE_EYEBROW,
   CASE_STUDY_FIELD_LABEL,
   CASE_STUDY_BODY,
@@ -21,7 +25,6 @@ import {
 export type HsbcOutcomeSegment = { text: string; bold?: boolean };
 
 export type HsbcCaseStudyHeaderData = {
-  eyebrow: string;
   primaryTag: string;
   tags: string[];
   titleLight: string;
@@ -45,9 +48,14 @@ const container = {
 
 const item = fadeInUp;
 
-export default function HsbcCaseStudyHeader({ data }: { data: HsbcCaseStudyHeaderData }) {
+export default function HsbcCaseStudyHeader({
+  data,
+  previous,
+}: {
+  data: HsbcCaseStudyHeaderData;
+  previous?: PreviousProjectNavData;
+}) {
   const {
-    eyebrow,
     primaryTag,
     tags,
     titleLight,
@@ -69,9 +77,23 @@ export default function HsbcCaseStudyHeader({ data }: { data: HsbcCaseStudyHeade
           animate="visible"
         >
           <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
-            <motion.span variants={item} className={CASE_STUDY_PAGE_EYEBROW}>
-              {eyebrow}
-            </motion.span>
+            {/* Replaces the old static "Selected work | CASE STUDY" page
+                eyebrow — see CaseStudyHeader.tsx for the matching change
+                on the other two case studies. */}
+            {previous && (
+              <motion.a
+                variants={item}
+                href={previous.href}
+                aria-label={`${previous.label}: ${previous.title}`}
+                className={`group inline-flex w-fit items-center gap-2 ${CASE_STUDY_PAGE_EYEBROW} transition-colors duration-200 hover:text-accent`}
+              >
+                <ArrowLeftIcon className="size-3 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" />
+                <span className="md:hidden">{previous.label}</span>
+                <span className="hidden md:inline">
+                  {previous.label}: {previous.title}
+                </span>
+              </motion.a>
+            )}
 
             <motion.div variants={item} className="flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-zinc-800/30 px-3 py-[5px] text-xs font-semibold tracking-wide text-white/90 uppercase outline outline-1 -outline-offset-1 outline-white/20 font-[family-name:var(--font-dm-sans)]">

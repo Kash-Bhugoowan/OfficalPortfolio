@@ -8,8 +8,6 @@ import type {
 } from "@/components/case-studies/NextProjectNav";
 
 export const conversationalDesignHeader: SkillHeaderData = {
-  backHref: "/#process",
-  eyebrow: "Skill showcase",
   tags: ["Conversation Design", "Gen AI", "Accessibility", "Service Design"],
   title: "Generative AI Conversational design",
   dek: "I design intelligent, inclusive and trustworthy Generative AI assistants. Drawing on user experience best practice and close technical collaboration, I craft assistants rooted in real value through meaningful interactions.",

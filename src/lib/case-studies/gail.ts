@@ -12,7 +12,6 @@ import type {
 } from "@/components/case-studies/NextProjectNav";
 
 export const gailCaseStudy: CaseStudyHeaderData = {
-  eyebrow: "Selected work | CASE STUDY",
   primaryTag: "UK Gov: Dept Work & Pensions",
   tags: ["Gen AI", "Lead Designer", "Service Design", "UX & UI Design"],
   titleLight: "Project GAiL: ",
@@ -198,7 +197,7 @@ export const gailPreviousProject: PreviousProjectNavData = {
 
 export const gailNextProject: NextProjectNavData = {
   label: "Next project",
-  title: "HSBC Financial Coach: Empowering Gen Z Through Smarter Banking",
+  title: "HSBC Financial Coach",
   href: "/case-studies/hsbc",
   ctaLabel: "View case study →",
 };

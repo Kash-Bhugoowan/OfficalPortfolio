@@ -10,7 +10,6 @@ import type { ReflectionsSectionData } from "@/components/case-studies/Reflectio
 import type { NextProjectNavData } from "@/components/case-studies/NextProjectNav";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
-  eyebrow: "Selected work | CASE STUDY",
   primaryTag: "Ministry of defence",
   tags: ["Automation", "AI / ML", "Service Design", "UX Research"],
   titleLight: "Project Minerva: ",
@@ -175,7 +174,7 @@ export const minervaReflections: ReflectionsSectionData = {
 
 export const minervaNextProject: NextProjectNavData = {
   label: "Next project",
-  title: "Operation GAiL: Learning & Development",
+  title: "Operation GAiL",
   href: "/case-studies/gail",
   ctaLabel: "View case study →",
 };

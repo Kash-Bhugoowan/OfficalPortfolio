@@ -25,12 +25,12 @@ export default function ConversationalDesignSkillPage() {
       <div className="relative z-0">
         <CaseStudyTopGradient />
         <Nav />
-        <SkillHeader data={conversationalDesignHeader} />
+        <SkillHeader data={conversationalDesignHeader} previous={conversationalDesignPrevious} />
       </div>
       <PrinciplesSection data={conversationalDesignPrinciples} />
       <ProcessSection data={conversationalDesignProcess} />
       <ExampleFlowsSection data={conversationalDesignExampleFlows} />
-      <NextProjectNav next={conversationalDesignNext} previous={conversationalDesignPrevious} />
+      <NextProjectNav next={conversationalDesignNext} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>

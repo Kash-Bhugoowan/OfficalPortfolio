@@ -35,7 +35,7 @@ export default function HsbcCaseStudyPage() {
       <div className="relative z-0">
         <CaseStudyTopGradient />
         <Nav />
-        <HsbcHeaderSection data={hsbcCaseStudy} />
+        <HsbcHeaderSection data={hsbcCaseStudy} previous={hsbcPreviousProject} />
       </div>
       <ChallengeSection data={hsbcChallenge} />
       <GailApproachSection data={hsbcApproach} />
@@ -45,7 +45,7 @@ export default function HsbcCaseStudyPage() {
       <HsbcOutcomeSection data={hsbcOutcome} />
       <HsbcWhatsNextSection data={hsbcWhatsNext} />
       <ReflectionsSection data={hsbcReflections} />
-      <NextProjectNav next={hsbcSkillShowcase} previous={hsbcPreviousProject} />
+      <NextProjectNav next={hsbcSkillShowcase} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>

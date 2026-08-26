@@ -25,7 +25,7 @@ export type NextProjectNavData = {
 // unused on every page's data object otherwise.
 export type PreviousProjectNavData = Pick<NextProjectNavData, "label" | "title" | "href">;
 
-function ArrowLeftIcon({ className }: { className?: string }) {
+export function ArrowLeftIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -41,13 +41,7 @@ function ArrowLeftIcon({ className }: { className?: string }) {
   );
 }
 
-export default function NextProjectNav({
-  next,
-  previous,
-}: {
-  next: NextProjectNavData;
-  previous?: PreviousProjectNavData;
-}) {
+export default function NextProjectNav({ next }: { next: NextProjectNavData }) {
   const reduceMotion = useReducedMotion();
   const [buttonHovered, setButtonHovered] = useState(false);
   const { label, title, href, ctaLabel } = next;
@@ -76,22 +70,7 @@ export default function NextProjectNav({
       className="-mb-[140px] flex flex-col items-center px-6 pb-16 md:pb-24"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className="flex w-full max-w-[1227px] flex-col gap-8 border-t border-border pt-12">
-        {/* Secondary to the Next CTA below by design — a plain text link
-            with no button, so it doesn't compete with Next as the primary
-            action on this row. Omitted on the first project in the
-            sequence (Minerva), which has nothing to point back to. */}
-        {previous && (
-          <a
-            href={previous.href}
-            className="group inline-flex w-fit items-center gap-2 text-sm text-text-secondary transition-colors duration-200 hover:text-accent"
-          >
-            <ArrowLeftIcon className="size-4 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" />
-            <span>
-              {previous.label}: {previous.title}
-            </span>
-          </a>
-        )}
+      <div className="flex w-full max-w-[1227px] flex-col border-t border-border pt-12">
         <a
           href={href} // TODO: replace with the real next case study once it exists
           className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8"

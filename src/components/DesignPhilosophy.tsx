@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionTemplate,
@@ -73,7 +74,7 @@ const principles: Principle[] = [
       "Through my work designing for military and government organisations, I’ve learned that complex systems do not need to be simplified. They need to be designed for clarity. The rules, regulation and compliance within them serve a purpose, and often reflect the established mental models of the specialist users who rely on them.",
       "My role is to develop a deep understanding of the environment, then pinpoint where the existing experience breaks down across a user’s task flow. I shape the information architecture and interaction patterns around those moments of friction, creating experiences that build confidence and trust without removing meaningful complexity.",
     ],
-    photo: "/images/design-philosophy/complexity.png",
+    photo: "/images/design-philosophy/complexity.jpg",
     photoAlt: "Karishma facilitating a workshop around a table covered in sticky notes",
     diagram: "grid",
     fill: "#fae5d1",
@@ -413,13 +414,13 @@ function PrincipleCard({
               </div>
             )}
           </motion.div>
-          <motion.img
-            src={principle.photo}
-            alt={principle.photoAlt}
-            className="absolute inset-0 size-full object-cover"
+          <motion.div
+            className="absolute inset-0"
             animate={{ opacity: showPhoto ? 1 : 0 }}
             transition={{ duration: 0.38, ease: "easeInOut" }}
-          />
+          >
+            <Image src={principle.photo} alt={principle.photoAlt} fill className="object-cover" unoptimized />
+          </motion.div>
         </div>
 
         <button

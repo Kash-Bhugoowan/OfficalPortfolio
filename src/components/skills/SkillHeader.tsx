@@ -1,12 +1,14 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { fadeInUp, linkHoverTransition } from "@/lib/motion";
+import { fadeInUp } from "@/lib/motion";
+import {
+  ArrowLeftIcon,
+  type PreviousProjectNavData,
+} from "@/components/case-studies/NextProjectNav";
 import { CASE_STUDY_PAGE_EYEBROW, CASE_STUDY_GAP_CONTENT } from "@/lib/case-studies/styles";
 
 export type SkillHeaderData = {
-  backHref: string;
-  eyebrow: string;
   tags: string[];
   title: string;
   dek: string;
@@ -24,9 +26,15 @@ const container = {
 
 const item = fadeInUp;
 
-export default function SkillHeader({ data }: { data: SkillHeaderData }) {
+export default function SkillHeader({
+  data,
+  previous,
+}: {
+  data: SkillHeaderData;
+  previous?: PreviousProjectNavData;
+}) {
   const reduceMotion = useReducedMotion();
-  const { backHref, eyebrow, tags, title, dek } = data;
+  const { tags, title, dek } = data;
 
   return (
     <section className="flex flex-col items-center px-6 pt-[37px] md:pt-[54px]">
@@ -37,19 +45,23 @@ export default function SkillHeader({ data }: { data: SkillHeaderData }) {
         animate={reduceMotion ? undefined : "visible"}
       >
         <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
-          <motion.a
-            variants={item}
-            href={backHref}
-            className={`w-fit underline ${CASE_STUDY_PAGE_EYEBROW}`}
-            whileHover={{ color: "#6757e8" }}
-            transition={linkHoverTransition}
-          >
-            ← Back
-          </motion.a>
-
-          <motion.span variants={item} className={CASE_STUDY_PAGE_EYEBROW}>
-            {eyebrow}
-          </motion.span>
+          {/* Replaces the old "← Back" link + "Skill showcase" eyebrow —
+              see CaseStudyHeader.tsx for the matching change on the
+              case-study pages. */}
+          {previous && (
+            <motion.a
+              variants={item}
+              href={previous.href}
+              aria-label={`${previous.label}: ${previous.title}`}
+              className={`group inline-flex w-fit items-center gap-2 ${CASE_STUDY_PAGE_EYEBROW} transition-colors duration-200 hover:text-accent`}
+            >
+              <ArrowLeftIcon className="size-3 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" />
+              <span className="md:hidden">{previous.label}</span>
+              <span className="hidden md:inline">
+                {previous.label}: {previous.title}
+              </span>
+            </motion.a>
+          )}
 
           <motion.div variants={item} className="flex flex-wrap items-center gap-2">
             {tags.map((tag) => (

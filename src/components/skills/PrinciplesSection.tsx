@@ -26,7 +26,15 @@ export type SkillPrinciplesSectionData = {
 
 const container = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+  // delayChildren gives SkillHeader's own mount-time fade a head start —
+  // on this page's shorter (hero-image-free) header, Principles is often
+  // already in the initial viewport too, so its own whileInView can fire
+  // almost immediately on load. Without this delay the two sections'
+  // entrances visibly overlap instead of reading top-to-bottom. The
+  // header's own last item (its dek paragraph) doesn't even START
+  // fading in until ~0.58s (its own internal stagger delay), so this
+  // needs real headroom beyond that, not just a token gap.
+  visible: { transition: { delayChildren: 1, staggerChildren: 0.1 } },
 };
 
 const item = fadeInUp;

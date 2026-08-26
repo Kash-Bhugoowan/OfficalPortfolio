@@ -13,7 +13,6 @@ import type {
 } from "@/components/case-studies/NextProjectNav";
 
 export const hsbcCaseStudy: HsbcCaseStudyHeaderData = {
-  eyebrow: "Selected work | CASE STUDY",
   primaryTag: "HSBC",
   tags: ["Design Strategy", "Storytelling", "C-Suite Stakeholders", "UX & UI Design"],
   titleLight: "HSBC Financial Coach: ",
@@ -144,7 +143,7 @@ export const hsbcReflections: ReflectionsSectionData = {
 
 export const hsbcPreviousProject: PreviousProjectNavData = {
   label: "Previous project",
-  title: "GAiL",
+  title: "Operation GAiL",
   href: "/case-studies/gail",
 };
 
@@ -153,7 +152,7 @@ export const hsbcPreviousProject: PreviousProjectNavData = {
 // AI Conversational Design page.
 export const hsbcSkillShowcase: NextProjectNavData = {
   label: "Showcase Skill",
-  title: "Generative AI Conversational design",
+  title: "Gen AI Conversational Design",
   href: "/skills/conversational-design",
   ctaLabel: "View my skill →",
 };

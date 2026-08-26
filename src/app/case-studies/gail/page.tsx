@@ -34,7 +34,7 @@ export default function GailCaseStudyPage() {
       <div className="relative z-0">
         <CaseStudyTopGradient />
         <Nav />
-        <CaseStudyHeader data={gailCaseStudy} />
+        <CaseStudyHeader data={gailCaseStudy} previous={gailPreviousProject} />
       </div>
       <ChallengeSection data={gailChallenge} />
       <GailApproachSection data={gailApproach} />
@@ -44,7 +44,7 @@ export default function GailCaseStudyPage() {
       <GailOutcomesSection data={gailOutcomes} />
       <WhatsNextSection data={gailWhatsNext} />
       <ReflectionsSection data={gailReflections} />
-      <NextProjectNav next={gailNextProject} previous={gailPreviousProject} />
+      <NextProjectNav next={gailNextProject} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>
