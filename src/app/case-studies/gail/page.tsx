@@ -24,6 +24,7 @@ import {
   gailOutcomes,
   gailWhatsNext,
   gailReflections,
+  gailPreviousProject,
   gailNextProject,
 } from "@/lib/case-studies/gail";
 
@@ -43,7 +44,7 @@ export default function GailCaseStudyPage() {
       <GailOutcomesSection data={gailOutcomes} />
       <WhatsNextSection data={gailWhatsNext} />
       <ReflectionsSection data={gailReflections} />
-      <NextProjectNav data={gailNextProject} />
+      <NextProjectNav next={gailNextProject} previous={gailPreviousProject} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>

@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
 import {
   CASE_STUDY_EYEBROW,
-  CASE_STUDY_GAP_BLOCK,
+  CASE_STUDY_GAP_CONTENT,
   CASE_STUDY_REVEAL_HIDDEN,
   CASE_STUDY_REVEAL_VISIBLE,
   CASE_STUDY_REVEAL_VIEWPORT,
@@ -26,7 +26,7 @@ export default function ExampleFlowsSection({ data }: { data: SkillExampleFlowsS
       className="flex flex-col items-center px-6"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <div className={`mx-auto flex w-full max-w-[1227px] flex-col ${CASE_STUDY_GAP_BLOCK}`}>
+      <div className={`mx-auto flex w-full max-w-[1227px] flex-col ${CASE_STUDY_GAP_CONTENT}`}>
         <span className={CASE_STUDY_EYEBROW}>{eyebrow}</span>
         <motion.div
           initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}

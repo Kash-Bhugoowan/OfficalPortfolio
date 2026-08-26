@@ -15,6 +15,7 @@ import {
   conversationalDesignPrinciples,
   conversationalDesignProcess,
   conversationalDesignExampleFlows,
+  conversationalDesignPrevious,
   conversationalDesignNext,
 } from "@/lib/skills/conversational-design";
 
@@ -29,7 +30,7 @@ export default function ConversationalDesignSkillPage() {
       <PrinciplesSection data={conversationalDesignPrinciples} />
       <ProcessSection data={conversationalDesignProcess} />
       <ExampleFlowsSection data={conversationalDesignExampleFlows} />
-      <NextProjectNav data={conversationalDesignNext} />
+      <NextProjectNav next={conversationalDesignNext} previous={conversationalDesignPrevious} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>

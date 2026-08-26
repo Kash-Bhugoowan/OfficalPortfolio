@@ -25,6 +25,7 @@ import {
   hsbcOutcome,
   hsbcWhatsNext,
   hsbcReflections,
+  hsbcPreviousProject,
   hsbcSkillShowcase,
 } from "@/lib/case-studies/hsbc";
 
@@ -44,7 +45,7 @@ export default function HsbcCaseStudyPage() {
       <HsbcOutcomeSection data={hsbcOutcome} />
       <HsbcWhatsNextSection data={hsbcWhatsNext} />
       <ReflectionsSection data={hsbcReflections} />
-      <NextProjectNav data={hsbcSkillShowcase} />
+      <NextProjectNav next={hsbcSkillShowcase} previous={hsbcPreviousProject} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>

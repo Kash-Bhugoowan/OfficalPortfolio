@@ -6,7 +6,10 @@ import type { GailMainPrioritySectionData } from "@/components/case-studies/gail
 import type { GailOutcomesSectionData } from "@/components/case-studies/gail/OutcomesSection";
 import type { WhatsNextSectionData } from "@/components/case-studies/WhatsNextSection";
 import type { ReflectionsSectionData } from "@/components/case-studies/ReflectionsSection";
-import type { NextProjectNavData } from "@/components/case-studies/NextProjectNav";
+import type {
+  NextProjectNavData,
+  PreviousProjectNavData,
+} from "@/components/case-studies/NextProjectNav";
 
 export const gailCaseStudy: CaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -185,6 +188,12 @@ export const gailReflections: ReflectionsSectionData = {
     "This project taught me that responsible generative AI is not principally about replacing a person's work. It is about designing the hand-offs between the technology and the person's judgement.",
   supporting:
     "For DWP, the most important product decision was not generation itself. It was making every output transparent enough for learning designers to remain accountable for what learners would eventually see.",
+};
+
+export const gailPreviousProject: PreviousProjectNavData = {
+  label: "Previous project",
+  title: "Project Minerva",
+  href: "/case-studies/minerva",
 };
 
 export const gailNextProject: NextProjectNavData = {

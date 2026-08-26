@@ -2,7 +2,10 @@ import type { SkillHeaderData } from "@/components/skills/SkillHeader";
 import type { SkillPrinciplesSectionData } from "@/components/skills/PrinciplesSection";
 import type { SkillProcessSectionData } from "@/components/skills/ProcessSection";
 import type { SkillExampleFlowsSectionData } from "@/components/skills/ExampleFlowsSection";
-import type { NextProjectNavData } from "@/components/case-studies/NextProjectNav";
+import type {
+  NextProjectNavData,
+  PreviousProjectNavData,
+} from "@/components/case-studies/NextProjectNav";
 
 export const conversationalDesignHeader: SkillHeaderData = {
   backHref: "/#process",
@@ -77,6 +80,15 @@ export const conversationalDesignExampleFlows: SkillExampleFlowsSectionData = {
     src: "https://placehold.co/1530x503?text=Example+conversation+flow",
     alt: "Example conversational flow diagram placeholder",
   },
+};
+
+// Mirrors hsbcSkillShowcase's reverse-direction labeling: this page is a
+// skill, but it's stepping back into a case study, so the label says what
+// the destination is, not what the current page is.
+export const conversationalDesignPrevious: PreviousProjectNavData = {
+  label: "Previous case study",
+  title: "HSBC Financial Coach",
+  href: "/case-studies/hsbc",
 };
 
 export const conversationalDesignNext: NextProjectNavData = {

@@ -44,7 +44,7 @@ export default function MinervaCaseStudyPage() {
       <OutcomesSection data={minervaOutcomes} />
       <WhatsNextSection data={minervaWhatsNext} />
       <ReflectionsSection data={minervaReflections} />
-      <NextProjectNav data={minervaNextProject} />
+      <NextProjectNav next={minervaNextProject} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>

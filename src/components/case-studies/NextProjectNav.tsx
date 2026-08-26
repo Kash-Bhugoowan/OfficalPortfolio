@@ -21,10 +21,36 @@ export type NextProjectNavData = {
   ctaLabel: string;
 };
 
-export default function NextProjectNav({ data }: { data: NextProjectNavData }) {
+// Previous has no button, so it skips ctaLabel — the field would just sit
+// unused on every page's data object otherwise.
+export type PreviousProjectNavData = Pick<NextProjectNavData, "label" | "title" | "href">;
+
+function ArrowLeftIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M19 12H5M12 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
+export default function NextProjectNav({
+  next,
+  previous,
+}: {
+  next: NextProjectNavData;
+  previous?: PreviousProjectNavData;
+}) {
   const reduceMotion = useReducedMotion();
   const [buttonHovered, setButtonHovered] = useState(false);
-  const { label, title, href, ctaLabel } = data;
+  const { label, title, href, ctaLabel } = next;
 
   return (
     // -mb-[140px] cancels Footer.tsx's own mt-[140px] (built for the
@@ -50,39 +76,56 @@ export default function NextProjectNav({ data }: { data: NextProjectNavData }) {
       className="-mb-[140px] flex flex-col items-center px-6 pb-16 md:pb-24"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
-      <a
-        href={href} // TODO: replace with the real next case study once it exists
-        className="flex w-full max-w-[1227px] flex-col gap-4 border-t border-border pt-12 md:flex-row md:items-center md:justify-between md:gap-8"
-      >
-        <div className="flex flex-col gap-2">
-          <span className={CASE_STUDY_FIELD_LABEL}>{label}</span>
-          {/* Tied to buttonHovered state (not CSS group-hover on the row)
-              so the title only recolors when the button itself is
-              hovered, not anywhere else on the row. */}
-          <span
-            className={`text-2xl leading-10 transition-colors duration-[400ms] ease-out ${
-              buttonHovered ? "text-accent" : "text-foreground"
-            }`}
+      <div className="flex w-full max-w-[1227px] flex-col gap-8 border-t border-border pt-12">
+        {/* Secondary to the Next CTA below by design — a plain text link
+            with no button, so it doesn't compete with Next as the primary
+            action on this row. Omitted on the first project in the
+            sequence (Minerva), which has nothing to point back to. */}
+        {previous && (
+          <a
+            href={previous.href}
+            className="group inline-flex w-fit items-center gap-2 text-sm text-text-secondary transition-colors duration-200 hover:text-accent"
           >
-            {title}
-          </span>
-        </div>
-        {/* The site's standard primary-button interaction (see Contact.tsx's
-            "Get in touch" button): scales up and shifts to the brand's
-            hover-purple on hover, then scales down to a darker purple on
-            press — kept identical here rather than inventing a new variant,
-            so every primary CTA on the site behaves the same way. */}
-        <motion.span
-          onHoverStart={() => setButtonHovered(true)}
-          onHoverEnd={() => setButtonHovered(false)}
-          whileHover={{ scale: 1.05, backgroundColor: "#6757e8" }}
-          whileTap={{ scale: 0.97, backgroundColor: "#4434B8" }}
-          transition={linkHoverTransition}
-          className="inline-flex w-fit items-center justify-center rounded-full bg-accent px-9 py-3.5 text-sm font-semibold text-white shadow-[0px_4px_8px_0px_rgba(36,31,43,0.12)] font-[family-name:var(--font-dm-sans)]"
+            <ArrowLeftIcon className="size-4 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" />
+            <span>
+              {previous.label}: {previous.title}
+            </span>
+          </a>
+        )}
+        <a
+          href={href} // TODO: replace with the real next case study once it exists
+          className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8"
         >
-          {ctaLabel}
-        </motion.span>
-      </a>
+          <div className="flex flex-col gap-2">
+            <span className={CASE_STUDY_FIELD_LABEL}>{label}</span>
+            {/* Tied to buttonHovered state (not CSS group-hover on the row)
+                so the title only recolors when the button itself is
+                hovered, not anywhere else on the row. */}
+            <span
+              className={`text-2xl leading-10 transition-colors duration-[400ms] ease-out ${
+                buttonHovered ? "text-accent" : "text-foreground"
+              }`}
+            >
+              {title}
+            </span>
+          </div>
+          {/* The site's standard primary-button interaction (see Contact.tsx's
+              "Get in touch" button): scales up and shifts to the brand's
+              hover-purple on hover, then scales down to a darker purple on
+              press — kept identical here rather than inventing a new variant,
+              so every primary CTA on the site behaves the same way. */}
+          <motion.span
+            onHoverStart={() => setButtonHovered(true)}
+            onHoverEnd={() => setButtonHovered(false)}
+            whileHover={{ scale: 1.05, backgroundColor: "#6757e8" }}
+            whileTap={{ scale: 0.97, backgroundColor: "#4434B8" }}
+            transition={linkHoverTransition}
+            className="inline-flex w-fit items-center justify-center rounded-full bg-accent px-9 py-3.5 text-sm font-semibold text-white shadow-[0px_4px_8px_0px_rgba(36,31,43,0.12)] font-[family-name:var(--font-dm-sans)]"
+          >
+            {ctaLabel}
+          </motion.span>
+        </a>
+      </div>
     </motion.section>
   );
 }

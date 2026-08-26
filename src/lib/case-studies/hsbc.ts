@@ -7,7 +7,10 @@ import type { HsbcResponsibilitiesSectionData } from "@/components/case-studies/
 import type { HsbcOutcomeSectionData } from "@/components/case-studies/hsbc/OutcomeSection";
 import type { HsbcWhatsNextSectionData } from "@/components/case-studies/hsbc/WhatsNextSection";
 import type { ReflectionsSectionData } from "@/components/case-studies/ReflectionsSection";
-import type { NextProjectNavData } from "@/components/case-studies/NextProjectNav";
+import type {
+  NextProjectNavData,
+  PreviousProjectNavData,
+} from "@/components/case-studies/NextProjectNav";
 
 export const hsbcCaseStudy: HsbcCaseStudyHeaderData = {
   eyebrow: "Selected work | CASE STUDY",
@@ -137,6 +140,12 @@ export const hsbcReflections: ReflectionsSectionData = {
     "Design leadership is often less about the interface and more about creating alignment — and taking the time to understand the vision before reaching for a solution.",
   supporting:
     "The Vision Statements activity was a small but consequential intervention. It helped a mixed stakeholder group move from broad ambition to a shared view of the confidence, control, and guidance the product needed to create.",
+};
+
+export const hsbcPreviousProject: PreviousProjectNavData = {
+  label: "Previous project",
+  title: "GAiL",
+  href: "/case-studies/gail",
 };
 
 // Per the Figma, HSBC's closing band isn't a "next project" cross-link to
