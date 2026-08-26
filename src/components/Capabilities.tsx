@@ -18,6 +18,7 @@ const capabilities: Capability[] = [
     title: "AI & Conversational Design",
     description:
       "Designing for generative AI products with ethical frameworks, conversation design, explainability patterns, and human-in-the-loop UX.",
+    link: "/skills/conversational-design",
   },
   {
     icon: "◎",
@@ -99,7 +100,7 @@ function CardContent({
             whileTap={isDesktop ? { scale: 1.08 } : undefined}
             transition={linkHoverTransition}
           >
-            View my work →
+            View my skill →
           </motion.a>
         )}
       </div>

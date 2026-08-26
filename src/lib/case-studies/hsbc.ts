@@ -141,12 +141,10 @@ export const hsbcReflections: ReflectionsSectionData = {
 
 // Per the Figma, HSBC's closing band isn't a "next project" cross-link to
 // another case study — it's a "Showcase Skill" pointer to the Generative
-// AI Conversational Design page. That page isn't built yet, so href is a
-// placeholder (matches the same "link: '#'" convention used for other
-// not-yet-built destinations in Capabilities.tsx) until it exists again.
+// AI Conversational Design page.
 export const hsbcSkillShowcase: NextProjectNavData = {
   label: "Showcase Skill",
   title: "Generative AI Conversational design",
-  href: "#", // TODO: point to the Conversational Design skill page once it's rebuilt
-  ctaLabel: "View Skill →",
+  href: "/skills/conversational-design",
+  ctaLabel: "View my skill →",
 };

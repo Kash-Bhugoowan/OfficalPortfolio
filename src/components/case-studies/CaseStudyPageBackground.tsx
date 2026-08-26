@@ -14,7 +14,7 @@ export function CaseStudyPageBackground({ children }: { children: ReactNode }) {
 // container.
 export function CaseStudyTopGradient() {
   return (
-    <div className="absolute inset-x-0 top-0 -z-10 h-[700px] bg-linear-55 from-violet-100 via-pink-100 via-40% to-violet-50 md:h-[1000px]">
+    <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[700px] bg-linear-55 from-violet-100 via-pink-100 via-40% to-violet-50 md:h-[1000px]">
       <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-[#F9F8F5]/0 to-[#F9F8F5] md:h-96" />
     </div>
   );
@@ -30,7 +30,7 @@ export function CaseStudyTopGradient() {
 // <NextProjectNav/> (not wrapping it) — it's positioned independently.
 export function CaseStudyBottomGradient() {
   return (
-    <div className="absolute inset-x-0 bottom-32 -z-10 h-[600px] bg-linear-[235deg] from-violet-100 via-pink-100 via-40% to-violet-50">
+    <div className="pointer-events-none absolute inset-x-0 bottom-32 -z-10 h-[600px] bg-linear-[235deg] from-violet-100 via-pink-100 via-40% to-violet-50">
       <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-[#F9F8F5] to-[#F9F8F5]/0" />
     </div>
   );
