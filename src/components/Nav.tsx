@@ -7,7 +7,8 @@ import { useIsDesktop } from "@/lib/useIsDesktop";
 
 const links = [
   { label: "Work", href: "/#work" },
-  { label: "Process", href: "/#process" },
+  { label: "Skills", href: "/#process" },
+  { label: "Process", href: "/#design-principles" },
   { label: "Resume", href: null },
   { label: "Contact", href: "/#contact" },
 ];

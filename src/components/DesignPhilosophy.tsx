@@ -488,7 +488,7 @@ export default function DesignPhilosophy() {
   }, [updateActiveIndex]);
 
   return (
-    <section className="flex flex-col items-center gap-8 px-6 py-[37px] md:py-[54px]">
+    <section id="design-principles" className="flex flex-col items-center gap-8 px-6 py-[37px] md:py-[54px]">
       <motion.div
         className="flex w-96 flex-col items-center gap-2 text-center"
         initial="hidden"

@@ -37,11 +37,16 @@ export default function NextProjectNav({ data }: { data: NextProjectNavData }) {
     // color of its own — it's plain page background, not a distinct
     // decorative band, so it reads as a continuation of the page rather
     // than a separate block sitting on top of it.
+    // initial/whileInView stay defined even when reduceMotion is true —
+    // only the transition duration drops to 0. Conditionally undefined
+    // props here create a server/client hydration mismatch React can't
+    // patch up, which can force a broader client-side re-render of the
+    // page and cause unrelated sections to flash/disappear.
     <motion.section
-      initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-      whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
+      initial={CASE_STUDY_REVEAL_HIDDEN}
+      whileInView={CASE_STUDY_REVEAL_VISIBLE}
       viewport={CASE_STUDY_REVEAL_VIEWPORT}
-      transition={CASE_STUDY_REVEAL_TRANSITION}
+      transition={reduceMotion ? { duration: 0 } : CASE_STUDY_REVEAL_TRANSITION}
       className="-mb-[140px] flex flex-col items-center px-6 pb-16 md:pb-24"
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
