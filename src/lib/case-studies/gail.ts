@@ -12,7 +12,7 @@ import type {
 } from "@/components/case-studies/NextProjectNav";
 
 export const gailCaseStudy: CaseStudyHeaderData = {
-  primaryTag: "UK gov: dept work & pensions",
+  primaryTag: "UK Gov: Dept Work & Pensions",
   tags: ["Gen AI", "Lead designer", "Service design", "UX & UI design"],
   titleLight: "Project GAiL: ",
   titleBold: "Creating trustworthy education materials for 90,000 civil servants",

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { fadeInUp } from "@/lib/motion";
+import { fadeInUp, CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
 import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_TITLE,
@@ -10,7 +10,6 @@ import {
   CASE_STUDY_SHADOW_SM,
   CASE_STUDY_SHADOW_SM_HOVER,
 } from "@/lib/case-studies/styles";
-import { SKILL_HEADER_TO_BODY_GAP_PX } from "@/lib/skills/styles";
 
 export type SkillPrincipleCard = {
   icon: string;
@@ -27,13 +26,14 @@ export type SkillPrinciplesSectionData = {
 const container = {
   hidden: {},
   // delayChildren gives SkillHeader's own mount-time fade a head start —
-  // on this page's shorter (hero-image-free) header, Principles is often
-  // already in the initial viewport too, so its own whileInView can fire
-  // almost immediately on load. Without this delay the two sections'
-  // entrances visibly overlap instead of reading top-to-bottom. The
-  // header's own last item (its dek paragraph) doesn't even START
-  // fading in until ~0.58s (its own internal stagger delay), so this
-  // needs real headroom beyond that, not just a token gap.
+  // on tall viewports Principles can still land in the initial viewport
+  // alongside the header (even with ExperienceSection between them), so
+  // its own whileInView could otherwise fire almost immediately on load.
+  // Without this delay the two sections' entrances visibly overlap
+  // instead of reading top-to-bottom. The header's own last item (its
+  // dek paragraph) doesn't even START fading in until ~0.58s (its own
+  // internal stagger delay), so this needs real headroom beyond that,
+  // not just a token gap.
   visible: { transition: { delayChildren: 1, staggerChildren: 0.1 } },
 };
 
@@ -50,7 +50,7 @@ export default function PrinciplesSection({ data }: { data: SkillPrinciplesSecti
   return (
     <motion.section
       className="relative flex flex-col items-center px-6"
-      style={{ marginTop: SKILL_HEADER_TO_BODY_GAP_PX }}
+      style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
       initial={reduceMotion ? undefined : "hidden"}
       whileInView={reduceMotion ? undefined : "visible"}
       viewport={{ once: true, amount: 0.25 }}

@@ -1,5 +1,6 @@
 import type { SkillHeaderData } from "@/components/skills/SkillHeader";
 import type { SkillPrinciplesSectionData } from "@/components/skills/PrinciplesSection";
+import type { SkillExperienceSectionData } from "@/components/skills/ExperienceSection";
 import type { SkillProcessSectionData } from "@/components/skills/ProcessSection";
 import type { SkillExampleFlowsSectionData } from "@/components/skills/ExampleFlowsSection";
 import type {
@@ -36,6 +37,47 @@ export const workshopFacilitationPrinciples: SkillPrinciplesSectionData = {
       description:
         "A workshop that gets through its agenda but produces no shared artifact has failed. I hold the room accountable to a concrete output, not just a full itinerary.",
     },
+  ],
+};
+
+export const workshopFacilitationExperience: SkillExperienceSectionData = {
+  eyebrow: "My experience",
+  paragraphs: [
+    {
+      lead: "Experience across industries",
+      text: "From digital transformation in banking to generative AI in government, I've led diverse workshops that uncover hidden needs, align teams and spark actionable ideas.",
+    },
+    {
+      lead: "Innovation through co-creation",
+      text: "I design and deliver full-day Innovation Days and Design Thinking sessions that move beyond post-its to strategy: creating clarity, momentum and shared vision.",
+    },
+  ],
+  stats: [
+    {
+      label: "No. of workshops facilitated",
+      value: "100+",
+      description: "Design Thinking Workshops & Innovation Days",
+      bgClass: "bg-[#CFF2BE]",
+    },
+    {
+      label: "Certified",
+      value: "Enterprise\nDesign Thinking Coach",
+      bgClass: "bg-[#F9F0B3]",
+    },
+    {
+      label: "Largest group",
+      value: "60",
+      description: "Participants in one Innovation Day",
+      bgClass: "bg-[#B7F1E7]",
+    },
+  ],
+  logos: [
+    { name: "Company One", src: "https://placehold.co/160x64?text=Logo+1" },
+    { name: "Company Two", src: "https://placehold.co/160x64?text=Logo+2" },
+    { name: "Company Three", src: "https://placehold.co/160x64?text=Logo+3" },
+    { name: "Company Four", src: "https://placehold.co/160x64?text=Logo+4" },
+    { name: "Company Five", src: "https://placehold.co/160x64?text=Logo+5" },
+    { name: "Company Six", src: "https://placehold.co/160x64?text=Logo+6" },
   ],
 };
 

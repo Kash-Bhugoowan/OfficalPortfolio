@@ -10,7 +10,7 @@ import type { ReflectionsSectionData } from "@/components/case-studies/Reflectio
 import type { NextProjectNavData } from "@/components/case-studies/NextProjectNav";
 
 export const minervaCaseStudy: CaseStudyHeaderData = {
-  primaryTag: "Ministry of defence",
+  primaryTag: "Ministry Of Defence",
   tags: ["Automation", "AI / ML", "Service design", "UX research"],
   titleLight: "Project Minerva: ",
   titleBold: "Designing an AI Workflow for Operational Reality",
