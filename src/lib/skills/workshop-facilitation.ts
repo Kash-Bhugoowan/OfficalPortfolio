@@ -3,10 +3,7 @@ import type { SkillPrinciplesSectionData } from "@/components/skills/PrinciplesS
 import type { SkillExperienceSectionData } from "@/components/skills/ExperienceSection";
 import type { SkillProcessSectionData } from "@/components/skills/ProcessSection";
 import type { SkillExampleFlowsSectionData } from "@/components/skills/ExampleFlowsSection";
-import type {
-  NextProjectNavData,
-  PreviousProjectNavData,
-} from "@/components/case-studies/NextProjectNav";
+import type { PreviousProjectNavData } from "@/components/case-studies/NextProjectNav";
 
 export const workshopFacilitationHeader: SkillHeaderData = {
   primaryTag: "Skills showcase",
@@ -130,11 +127,4 @@ export const workshopFacilitationPrevious: PreviousProjectNavData = {
   label: "Previous skill",
   title: "Generative AI Conversational design",
   href: "/skills/conversational-design",
-};
-
-export const workshopFacilitationNext: NextProjectNavData = {
-  label: "Next skill",
-  title: "Rapid Prototyping",
-  href: "/#process", // TODO: point to /skills/rapid-prototyping once that page exists
-  ctaLabel: "View skill →",
 };

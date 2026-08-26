@@ -5,7 +5,6 @@ import PrinciplesSection from "@/components/skills/PrinciplesSection";
 import ExperienceSection from "@/components/skills/ExperienceSection";
 import ProcessSection from "@/components/skills/ProcessSection";
 import ExampleFlowsSection from "@/components/skills/ExampleFlowsSection";
-import NextProjectNav from "@/components/case-studies/NextProjectNav";
 import {
   CaseStudyPageBackground,
   CaseStudyTopGradient,
@@ -19,7 +18,6 @@ import {
   workshopFacilitationProcess,
   workshopFacilitationExampleFlows,
   workshopFacilitationPrevious,
-  workshopFacilitationNext,
 } from "@/lib/skills/workshop-facilitation";
 
 export default function WorkshopFacilitationSkillPage() {
@@ -35,7 +33,6 @@ export default function WorkshopFacilitationSkillPage() {
       <PrinciplesSection data={workshopFacilitationPrinciples} />
       <ProcessSection data={workshopFacilitationProcess} />
       <ExampleFlowsSection data={workshopFacilitationExampleFlows} />
-      <NextProjectNav next={workshopFacilitationNext} />
       <CaseStudyBottomGradient />
       <Footer />
     </CaseStudyPageBackground>
