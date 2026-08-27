@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import { useImageReveal } from "@/lib/case-studies/useImageReveal";
 import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_TITLE,
@@ -14,11 +15,17 @@ import {
   CASE_STUDY_GAP_BLOCK,
   CASE_STUDY_REVEAL_HIDDEN,
   CASE_STUDY_REVEAL_VISIBLE,
-  CASE_STUDY_REVEAL_VIEWPORT,
   CASE_STUDY_REVEAL_TRANSITION,
 } from "@/lib/case-studies/styles";
 
 export type ApproachImage = { src: string; alt: string };
+
+// This section's images sit in the two-column grid below (max-w-[1227px],
+// gap-16 desktop): ~582px wide once the container hits its cap, but the
+// single-column mobile layout just under the md breakpoint renders wider
+// than that — up to the viewport itself. 100vw below md covers that case
+// correctly rather than under-sizing it.
+const APPROACH_IMAGE_SIZES = "(min-width: 1276px) 582px, (min-width: 768px) 45vw, 100vw";
 
 export type ApproachSectionData = {
   eyebrow: string;
@@ -37,16 +44,27 @@ export type ApproachSectionData = {
 
 function RevealImage({ image }: { image: ApproachImage }) {
   const reduceMotion = useReducedMotion();
+  const { containerRef, inView, loaded, onImageLoad, imageRef } = useImageReveal();
+  const ready = inView && loaded;
   return (
     <motion.div
+      ref={containerRef}
       initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-      whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
-      viewport={CASE_STUDY_REVEAL_VIEWPORT}
+      animate={reduceMotion ? undefined : ready ? CASE_STUDY_REVEAL_VISIBLE : CASE_STUDY_REVEAL_HIDDEN}
       transition={CASE_STUDY_REVEAL_TRANSITION}
       className={CASE_STUDY_IMAGE_FRAME}
       style={{ aspectRatio: "733 / 453" }}
     >
-      <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+      <Image
+        ref={imageRef}
+        src={image.src}
+        alt={image.alt}
+        fill
+        className="object-cover"
+        sizes={APPROACH_IMAGE_SIZES}
+        quality={90}
+        onLoad={onImageLoad}
+      />
     </motion.div>
   );
 }

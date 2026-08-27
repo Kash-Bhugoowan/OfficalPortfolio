@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import { useImageReveal } from "@/lib/case-studies/useImageReveal";
 import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_TITLE,
@@ -12,7 +13,6 @@ import {
   CASE_STUDY_GAP_CONTENT,
   CASE_STUDY_REVEAL_HIDDEN,
   CASE_STUDY_REVEAL_VISIBLE,
-  CASE_STUDY_REVEAL_VIEWPORT,
   CASE_STUDY_REVEAL_TRANSITION,
 } from "@/lib/case-studies/styles";
 
@@ -24,8 +24,15 @@ export type CoreUxSectionData = {
   quote: string;
 };
 
+// This section's image frame is max-w-[960px], full width below that. 960px
+// is the true ceiling at every breakpoint (unlike the two-column sections),
+// so a plain viewport-vs-fixed split covers it exactly.
+const CORE_UX_IMAGE_SIZES = "(min-width: 960px) 960px, 100vw";
+
 export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
   const reduceMotion = useReducedMotion();
+  const { containerRef, inView, loaded, onImageLoad, imageRef } = useImageReveal();
+  const ready = inView && loaded;
   const { eyebrow, title, image, intro, quote } = data;
 
   return (
@@ -41,14 +48,23 @@ export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
 
         <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>
           <motion.div
+            ref={containerRef}
             initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-            whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
-            viewport={CASE_STUDY_REVEAL_VIEWPORT}
+            animate={reduceMotion ? undefined : ready ? CASE_STUDY_REVEAL_VISIBLE : CASE_STUDY_REVEAL_HIDDEN}
             transition={CASE_STUDY_REVEAL_TRANSITION}
             className={`${CASE_STUDY_IMAGE_FRAME} max-w-[960px]`}
             style={{ aspectRatio: "2546 / 1228" }}
           >
-            <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+            <Image
+              ref={imageRef}
+              src={image.src}
+              alt={image.alt}
+              fill
+              className="object-cover"
+              sizes={CORE_UX_IMAGE_SIZES}
+              quality={90}
+              onLoad={onImageLoad}
+            />
           </motion.div>
 
           <div className={`flex flex-col ${CASE_STUDY_GAP_CONTENT}`}>

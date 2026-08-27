@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import { useImageReveal } from "@/lib/case-studies/useImageReveal";
 import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_TITLE,
@@ -13,7 +14,6 @@ import {
   CASE_STUDY_GAP_BLOCK,
   CASE_STUDY_REVEAL_HIDDEN,
   CASE_STUDY_REVEAL_VISIBLE,
-  CASE_STUDY_REVEAL_VIEWPORT,
   CASE_STUDY_REVEAL_TRANSITION,
 } from "@/lib/case-studies/styles";
 
@@ -27,8 +27,15 @@ export type OutcomesSectionData = {
   image: { src: string; alt: string };
 };
 
+// Fixed 420px column at md+; below md this stacks full-width, which renders
+// wider than 420px on tablet-ish viewports just under the breakpoint — 100vw
+// covers that case correctly rather than under-sizing it.
+const OUTCOMES_IMAGE_SIZES = "(min-width: 768px) 420px, 100vw";
+
 export default function OutcomesSection({ data }: { data: OutcomesSectionData }) {
   const reduceMotion = useReducedMotion();
+  const { containerRef, inView, loaded, onImageLoad, imageRef } = useImageReveal();
+  const ready = inView && loaded;
   const { eyebrow, title, intro, results, closing, quote, image } = data;
 
   return (
@@ -62,13 +69,22 @@ export default function OutcomesSection({ data }: { data: OutcomesSectionData })
           </div>
 
           <motion.div
+            ref={containerRef}
             initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-            whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
-            viewport={CASE_STUDY_REVEAL_VIEWPORT}
+            animate={reduceMotion ? undefined : ready ? CASE_STUDY_REVEAL_VISIBLE : CASE_STUDY_REVEAL_HIDDEN}
             transition={CASE_STUDY_REVEAL_TRANSITION}
             className={`${CASE_STUDY_IMAGE_FRAME} aspect-[533/688] md:aspect-auto md:h-full`}
           >
-            <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+            <Image
+              ref={imageRef}
+              src={image.src}
+              alt={image.alt}
+              fill
+              className="object-cover"
+              sizes={OUTCOMES_IMAGE_SIZES}
+              quality={90}
+              onLoad={onImageLoad}
+            />
           </motion.div>
         </div>
       </div>

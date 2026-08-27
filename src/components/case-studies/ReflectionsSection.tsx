@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import { useImageReveal } from "@/lib/case-studies/useImageReveal";
 import {
   CASE_STUDY_IMAGE_FRAME,
   CASE_STUDY_GAP_BLOCK,
@@ -11,6 +12,10 @@ import {
   CASE_STUDY_REVEAL_VIEWPORT,
   CASE_STUDY_REVEAL_TRANSITION,
 } from "@/lib/case-studies/styles";
+
+// Same max-w-[960px] frame as CoreUxSection's image — see that file's sizes
+// comment for why a plain viewport-vs-fixed split is correct here.
+const REFLECTIONS_IMAGE_SIZES = "(min-width: 960px) 960px, 100vw";
 
 export type ReflectionsSectionData = {
   // Optional: not every case study wants an image/video stacked directly
@@ -36,6 +41,14 @@ function QuoteIcon() {
 export default function ReflectionsSection({ data }: { data: ReflectionsSectionData }) {
   const reduceMotion = useReducedMotion();
   const { image, video, label, quote, supporting } = data;
+  const { containerRef, inView, loaded, onImageLoad, imageRef } = useImageReveal();
+  // Video has no decode step to gate on — but the same video (e.g. Minerva's
+  // header hero) can appear again here, and this section sits far enough
+  // down the page that it was fetching and buffering that second copy from
+  // first paint, well before anyone scrolled to it. Only mounting the
+  // <video> once it's actually in view stops that eager duplicate load;
+  // `image` still waits on its own decode, same as every other section.
+  const ready = video ? inView : inView && loaded;
 
   return (
     <section
@@ -45,24 +58,35 @@ export default function ReflectionsSection({ data }: { data: ReflectionsSectionD
       <div className={`mx-auto flex w-full max-w-[1227px] flex-col ${CASE_STUDY_GAP_BLOCK}`}>
         {(video || image) && (
           <motion.div
+            ref={containerRef}
             initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-            whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
-            viewport={CASE_STUDY_REVEAL_VIEWPORT}
+            animate={reduceMotion ? undefined : ready ? CASE_STUDY_REVEAL_VISIBLE : CASE_STUDY_REVEAL_HIDDEN}
             transition={CASE_STUDY_REVEAL_TRANSITION}
             className={`${CASE_STUDY_IMAGE_FRAME} max-w-[960px]`}
             style={{ aspectRatio: "1169 / 732" }}
           >
             {video ? (
-              <video
-                src={video.src}
-                className="absolute inset-0 h-full w-full object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
+              inView && (
+                <video
+                  src={video.src}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              )
             ) : (
-              <Image src={image!.src} alt={image!.alt} fill className="object-cover" unoptimized />
+              <Image
+                ref={imageRef}
+                src={image!.src}
+                alt={image!.alt}
+                fill
+                className="object-cover"
+                sizes={REFLECTIONS_IMAGE_SIZES}
+                quality={90}
+                onLoad={onImageLoad}
+              />
             )}
           </motion.div>
         )}

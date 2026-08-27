@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import { useImageReveal } from "@/lib/case-studies/useImageReveal";
 import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_TITLE,
@@ -15,9 +16,13 @@ import {
   CASE_STUDY_GAP_BLOCK,
   CASE_STUDY_REVEAL_HIDDEN,
   CASE_STUDY_REVEAL_VISIBLE,
-  CASE_STUDY_REVEAL_VIEWPORT,
   CASE_STUDY_REVEAL_TRANSITION,
 } from "@/lib/case-studies/styles";
+
+// Same two-column-grid math as ApproachSection's constant — see the comment
+// there. Kept as its own copy rather than shared, matching this codebase's
+// existing convention of per-file constants for section-specific sizing.
+const MAIN_PRIORITY_IMAGE_SIZES = "(min-width: 1276px) 582px, (min-width: 768px) 45vw, 100vw";
 
 export type MainPrioritySectionData = {
   eyebrow: string;
@@ -41,16 +46,27 @@ function RevealImage({
   aspectRatio: string;
 }) {
   const reduceMotion = useReducedMotion();
+  const { containerRef, inView, loaded, onImageLoad, imageRef } = useImageReveal();
+  const ready = inView && loaded;
   return (
     <motion.div
+      ref={containerRef}
       initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
-      whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
-      viewport={CASE_STUDY_REVEAL_VIEWPORT}
+      animate={reduceMotion ? undefined : ready ? CASE_STUDY_REVEAL_VISIBLE : CASE_STUDY_REVEAL_HIDDEN}
       transition={CASE_STUDY_REVEAL_TRANSITION}
       className={CASE_STUDY_IMAGE_FRAME}
       style={{ aspectRatio }}
     >
-      <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+      <Image
+        ref={imageRef}
+        src={image.src}
+        alt={image.alt}
+        fill
+        className="object-cover"
+        sizes={MAIN_PRIORITY_IMAGE_SIZES}
+        quality={90}
+        onLoad={onImageLoad}
+      />
     </motion.div>
   );
 }

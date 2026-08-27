@@ -173,8 +173,9 @@ export default function CaseStudyHeader({
                 alt={heroImage!.alt}
                 fill
                 className="object-cover"
-                unoptimized
-                priority
+                sizes="(min-width: 960px) 960px, 100vw"
+                quality={90}
+                preload
               />
             )}
           </motion.div>

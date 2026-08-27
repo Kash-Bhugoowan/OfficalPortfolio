@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { fadeInUp, linkHoverTransition } from "@/lib/motion";
+import { linkHoverTransition } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import { runExit, requestScrollReset } from "@/lib/pageTransitionBus";
 
@@ -43,6 +43,23 @@ function wait(ms: number): Promise<void> {
 const menuListVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } },
+};
+
+// Deliberately its own fast variant rather than the shared fadeInUp (1.6s
+// entrance meant for passive hero/page-content reveals — see SkillHeader.tsx
+// for the same tradeoff). This is a tappable overlay, and real taps land
+// well before a 1.6s cascade finishes: retargeting several mid-flight 1.6s
+// tweens to their exit state at once was enough main-thread work to stall
+// the close -> navigate sequence for a second or more. Also gives "hidden"
+// its own explicit transition so exit doesn't fall back to the MotionLink's
+// hover spring.
+const menuItemVariants = {
+  hidden: { opacity: 0, y: 14, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
+  },
 };
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
@@ -249,7 +266,7 @@ export default function Nav() {
                 link.href ? (
                   <MotionLink
                     key={link.label}
-                    variants={fadeInUp}
+                    variants={menuItemVariants}
                     href={link.href}
                     data-nav-overlay-link="true"
                     onClick={(e) => handleMenuLinkClick(e, link.href)}
@@ -264,7 +281,7 @@ export default function Nav() {
                 ) : (
                   <motion.div
                     key={link.label}
-                    variants={fadeInUp}
+                    variants={menuItemVariants}
                     aria-disabled="true"
                     title="Coming soon"
                     className="flex items-center justify-between border-b border-border py-5 text-3xl font-light text-foreground opacity-40"
