@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { CASE_STUDY_SECTION_GAP_PX, linkHoverTransition } from "@/lib/motion";
 import {
@@ -71,8 +72,8 @@ export default function NextProjectNav({ next }: { next: NextProjectNavData }) {
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
       <div className="flex w-full max-w-[1227px] flex-col border-t border-indigo-500/20 pt-12">
-        <a
-          href={href} // TODO: replace with the real next case study once it exists
+        <Link
+          href={href}
           className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8"
         >
           <div className="flex flex-col gap-2">
@@ -103,7 +104,7 @@ export default function NextProjectNav({ next }: { next: NextProjectNavData }) {
           >
             {ctaLabel}
           </motion.span>
-        </a>
+        </Link>
       </div>
     </motion.section>
   );

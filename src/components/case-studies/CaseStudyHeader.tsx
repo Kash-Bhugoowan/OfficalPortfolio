@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeInUp } from "@/lib/motion";
 import {
@@ -20,6 +21,10 @@ import {
   CASE_STUDY_SHADOW_SM,
   CASE_STUDY_SHADOW_SM_HOVER,
 } from "@/lib/case-studies/styles";
+
+// See Nav.tsx for why: swaps the previous-project link's plumbing from a
+// hard browser navigation to a client-side one, markup/hover untouched.
+const MotionLink = motion.create(Link);
 
 export type CaseStudyStat = {
   label: string;
@@ -92,7 +97,7 @@ export default function CaseStudyHeader({
                 has no previous project, so this slot is simply omitted
                 there rather than falling back to the old label. */}
             {previous && (
-              <motion.a
+              <MotionLink
                 variants={item}
                 href={previous.href}
                 aria-label={`${previous.label}: ${previous.title}`}
@@ -103,7 +108,7 @@ export default function CaseStudyHeader({
                 <span className="hidden md:inline">
                   {previous.label}: <span className="font-semibold">{previous.title}</span>
                 </span>
-              </motion.a>
+              </MotionLink>
             )}
 
             <motion.div variants={item} className="flex flex-wrap items-center gap-2">

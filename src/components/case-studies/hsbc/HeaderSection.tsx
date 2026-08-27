@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeInUp } from "@/lib/motion";
 import {
@@ -14,6 +15,10 @@ import {
   CASE_STUDY_GAP_CONTENT,
   CASE_STUDY_GAP_BLOCK,
 } from "@/lib/case-studies/styles";
+
+// See Nav.tsx for why: swaps the previous-project link's plumbing from a
+// hard browser navigation to a client-side one, markup/hover untouched.
+const MotionLink = motion.create(Link);
 
 // HSBC-specific header: this project never shipped, so there are no
 // production metrics to put in the usual 3-stat grid (see
@@ -81,7 +86,7 @@ export default function HsbcCaseStudyHeader({
                 eyebrow — see CaseStudyHeader.tsx for the matching change
                 on the other two case studies. */}
             {previous && (
-              <motion.a
+              <MotionLink
                 variants={item}
                 href={previous.href}
                 aria-label={`${previous.label}: ${previous.title}`}
@@ -92,7 +97,7 @@ export default function HsbcCaseStudyHeader({
                 <span className="hidden md:inline">
                   {previous.label}: <span className="font-semibold">{previous.title}</span>
                 </span>
-              </motion.a>
+              </MotionLink>
             )}
 
             <motion.div variants={item} className="flex flex-wrap items-center gap-2">

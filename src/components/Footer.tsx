@@ -1,7 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { linkHoverTransition } from "@/lib/motion";
+
+// See Nav.tsx for why: swaps the footer link plumbing from a hard browser
+// navigation to a client-side one, markup/hover untouched.
+const MotionLink = motion.create(Link);
 
 const footerLinks: { label: string; href: string | null }[] = [
   { label: "Work", href: "/#work" },
@@ -64,7 +69,7 @@ export default function Footer() {
         <div className="flex items-center gap-6">
           {footerLinks.map((link) =>
             link.href ? (
-              <motion.a
+              <MotionLink
                 key={link.label}
                 href={link.href}
                 className="font-['Manrope'] text-lg leading-6 font-light tracking-tight text-white"
@@ -73,7 +78,7 @@ export default function Footer() {
                 transition={linkHoverTransition}
               >
                 {link.label}
-              </motion.a>
+              </MotionLink>
             ) : (
               <span
                 key={link.label}

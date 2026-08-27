@@ -1,9 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { fadeInUp, linkHoverTransition } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+
+// next/link wrapped for motion props (whileHover/whileTap/variants) — swaps
+// the plumbing under every nav link from a hard browser navigation to a
+// client-side one, with byte-identical markup, classes, and hover/tap
+// behavior. See motion.create in framer-motion 13's API (not the legacy
+// motion(Component) call syntax).
+const MotionLink = motion.create(Link);
 
 const links = [
   { label: "Work", href: "/#work" },
@@ -76,7 +84,7 @@ export default function Nav() {
   return (
     <div className="px-4 pt-6 sm:px-6">
       <nav className="mx-auto flex w-full max-w-[1528px] items-center justify-between rounded-full border-b border-white/60 bg-[rgba(239,244,249,0.85)] px-4 py-2.5 shadow-[0_4px_20px_0_rgba(36,31,43,0.03)] backdrop-blur-md sm:px-10 sm:py-3.5">
-        <motion.a
+        <MotionLink
           href="/"
           className="text-sm leading-[22.4px] tracking-[0.14px] font-light text-nav-muted sm:text-[18px]"
           whileHover={{ color: "#6757e8", scale: 1.15 }}
@@ -84,11 +92,11 @@ export default function Nav() {
           transition={linkHoverTransition}
         >
           Karishma Bhugoowan
-        </motion.a>
+        </MotionLink>
         <div className="hidden items-center gap-3 md:flex md:gap-[42px]">
           {links.map((link) =>
             link.href ? (
-              <motion.a
+              <MotionLink
                 key={link.label}
                 href={link.href}
                 className="text-sm leading-[22.4px] tracking-[0.14px] font-light text-nav-muted sm:text-[18px]"
@@ -97,7 +105,7 @@ export default function Nav() {
                 transition={linkHoverTransition}
               >
                 {link.label}
-              </motion.a>
+              </MotionLink>
             ) : (
               <span
                 key={link.label}
@@ -150,7 +158,7 @@ export default function Nav() {
             >
               {menuLinks.map((link) =>
                 link.href ? (
-                  <motion.a
+                  <MotionLink
                     key={link.label}
                     variants={fadeInUp}
                     href={link.href}
@@ -162,7 +170,7 @@ export default function Nav() {
                   >
                     {link.label}
                     <Chevron />
-                  </motion.a>
+                  </MotionLink>
                 ) : (
                   <motion.div
                     key={link.label}

@@ -1,9 +1,14 @@
 "use client";
 
 import { useRef, useState, useEffect, type RefObject } from "react";
+import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { fadeInUp, linkHoverTransition, CAPABILITY_CARD_FOCUS_SCALE } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+
+// See Nav.tsx for why: swaps the skill link's plumbing from a hard browser
+// navigation to a client-side one, markup/hover untouched.
+const MotionLink = motion.create(Link);
 
 type Capability = {
   icon: string;
@@ -93,15 +98,15 @@ function CardContent({
           {capability.description}
         </p>
         {capability.link && (
-          <motion.a
-            href={capability.link} // TODO: replace with real case study link
+          <MotionLink
+            href={capability.link}
             className="text-sm font-medium text-[#6757e8] underline md:text-zinc-600"
             whileHover={isDesktop ? { color: "#6757e8", scale: 1.15 } : undefined}
             whileTap={isDesktop ? { scale: 1.08 } : undefined}
             transition={linkHoverTransition}
           >
             View my skill →
-          </motion.a>
+          </MotionLink>
         )}
       </div>
     </>

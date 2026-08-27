@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export type Project = {
   id: string;
@@ -113,12 +114,12 @@ export default function ProjectCard({
             <p className="text-lg leading-7 text-zinc-800">{description}</p>
 
             {!compact && (
-              <a
-                href={href} // TODO: replace with real case study link
+              <Link
+                href={href}
                 className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white transition-all duration-200 hover:brightness-110 active:scale-95 active:brightness-95"
               >
                 View Case Study
-              </a>
+              </Link>
             )}
           </div>
 
@@ -131,12 +132,12 @@ export default function ProjectCard({
             </div>
 
             {compact ? (
-              <a
-                href={href} // TODO: replace with real case study link
+              <Link
+                href={href}
                 className="rounded-full bg-accent px-8 py-3 text-center text-sm font-semibold text-white"
               >
                 View Case Study
-              </a>
+              </Link>
             ) : (
               stats && (
                 <div className="flex items-center gap-14">

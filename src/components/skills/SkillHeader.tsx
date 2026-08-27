@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeftIcon,
@@ -11,6 +12,10 @@ import {
   SKILL_HEADER_STAGGER_CHILDREN_S,
   SKILL_HEADER_ITEM_DURATION_S,
 } from "@/lib/motion";
+
+// See Nav.tsx for why: swaps the previous-skill link's plumbing from a
+// hard browser navigation to a client-side one, markup/hover untouched.
+const MotionLink = motion.create(Link);
 
 export type SkillHeaderData = {
   primaryTag: string;
@@ -77,7 +82,7 @@ export default function SkillHeader({
               see CaseStudyHeader.tsx for the matching change on the
               case-study pages. */}
           {previous && (
-            <motion.a
+            <MotionLink
               variants={item}
               href={previous.href}
               aria-label={`${previous.label}: ${previous.title}`}
@@ -88,7 +93,7 @@ export default function SkillHeader({
               <span className="hidden md:inline">
                 {previous.label}: <span className="font-semibold">{previous.title}</span>
               </span>
-            </motion.a>
+            </MotionLink>
           )}
 
           <motion.div variants={item} className="flex flex-wrap items-center gap-2">
