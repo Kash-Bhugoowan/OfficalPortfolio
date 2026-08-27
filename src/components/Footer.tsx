@@ -58,9 +58,12 @@ export default function Footer() {
             Karishma Bhugoowan
           </div>
         </div>
-        <div className="flex h-6 w-44 flex-col items-start justify-start pt-1">
-          <div className="justify-start font-['DM_Sans'] text-xs leading-5 font-normal tracking-tight text-white/40">
-            Product Designer · London · Vibe Coded by Karishma Bhugoowan
+        <div className="flex flex-col items-start justify-start pt-1">
+          <div className="justify-start font-['DM_Sans'] text-xs leading-5 font-normal tracking-tight whitespace-nowrap text-white/40">
+            Product Designer · London
+            <span className="hidden md:inline"> · </span>
+            <br className="md:hidden" />
+            Vibe Coded by Me
           </div>
         </div>
       </div>
