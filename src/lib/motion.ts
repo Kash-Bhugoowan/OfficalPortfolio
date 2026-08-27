@@ -68,6 +68,40 @@ export const CAPABILITY_CARD_FOCUS_SCALE = [0.95, 1, 0.95] as [number, number, n
 // bigger dip would be more visually jarring.
 export const PHILOSOPHY_CARD_FOCUS_SCALE = [0.96, 1, 0.96] as [number, number, number];
 
+// Same focus-scale concept, applied to the skill pages' cards (Principles'
+// principle cards and Experience's stat cards) — kept as its own constant
+// per that same convention. Matches CAPABILITY_CARD_FOCUS_SCALE's dip since
+// these cards are a similar size/weight to the Capabilities cards they're
+// modeled on.
+export const SKILL_CARD_FOCUS_SCALE = [0.95, 1, 0.95] as [number, number, number];
+
+// SkillHeader's own mount-time cascade timing. PrinciplesSection and
+// ExperienceSection use SKILL_HEADER_NEXT_ITEM_DELAY_S as their own
+// container's delayChildren — SkillHeader itself uses the other three
+// constants directly, so this stays the single source of truth for both
+// sides of the handoff between the header and the section below it.
+//
+// That handoff continues the header's own stagger rhythm by exactly one
+// more beat, rather than waiting for the header to fully finish first.
+// Waiting for a full stop (delayChildren = header's total duration) did
+// guarantee top-to-bottom completion order, but it also meant nothing was
+// moving for a stretch between the header settling and the section below
+// starting — a dead pause. Since each item's fade (duration, 0.6s) is
+// longer than the stagger step (0.15s) between items, continuing the same
+// rhythm still guarantees every later item finishes after every earlier
+// one — finish time = start time + duration, and start times are already
+// strictly increasing by a fixed step — so top-to-bottom order holds
+// without ever fully stopping.
+export const SKILL_HEADER_DELAY_CHILDREN_S = 0.1;
+export const SKILL_HEADER_STAGGER_CHILDREN_S = 0.15;
+export const SKILL_HEADER_ITEM_DURATION_S = 0.6;
+// SkillHeader stages at most 4 items (prev-skill link, tags, title, dek) —
+// both skill pages always pass a `previous` link, so this is exact today,
+// not just a safe upper bound.
+const SKILL_HEADER_ITEM_COUNT = 4;
+export const SKILL_HEADER_NEXT_ITEM_DELAY_S =
+  SKILL_HEADER_DELAY_CHILDREN_S + SKILL_HEADER_ITEM_COUNT * SKILL_HEADER_STAGGER_CHILDREN_S;
+
 // Fixed gap between consecutive sections on a case-study page (measured
 // from the header's hero image / stat cards to the Challenge section).
 // Unlike the homepage's responsive py-[37px]/md:py-[54px] rhythm, this is

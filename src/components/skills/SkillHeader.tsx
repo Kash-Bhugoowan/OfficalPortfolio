@@ -6,6 +6,11 @@ import {
   type PreviousProjectNavData,
 } from "@/components/case-studies/NextProjectNav";
 import { CASE_STUDY_PAGE_EYEBROW, CASE_STUDY_GAP_CONTENT } from "@/lib/case-studies/styles";
+import {
+  SKILL_HEADER_DELAY_CHILDREN_S,
+  SKILL_HEADER_STAGGER_CHILDREN_S,
+  SKILL_HEADER_ITEM_DURATION_S,
+} from "@/lib/motion";
 
 export type SkillHeaderData = {
   primaryTag: string;
@@ -20,7 +25,10 @@ export type SkillHeaderData = {
 const container = {
   hidden: {},
   visible: {
-    transition: { delayChildren: 0.1, staggerChildren: 0.12 },
+    transition: {
+      delayChildren: SKILL_HEADER_DELAY_CHILDREN_S,
+      staggerChildren: SKILL_HEADER_STAGGER_CHILDREN_S,
+    },
   },
 };
 
@@ -28,10 +36,22 @@ const container = {
 // uses: that header has a hero image filling the viewport while its text
 // fades in, so a slow fade doesn't read as an empty page. This header has
 // no image to fall back on, so a slow fade left the page looking content-less
-// for ~2s on mount, worst on mobile where hydration itself is slower.
+// for ~2s on mount, worst on mobile where hydration itself is slower. Went
+// too far the other way at 0.4s/0.08s stagger — fast enough that the
+// cascade (each line following the last) wasn't perceptible, it just read
+// as "pop in". This duration/stagger pairing keeps the total under ~1s
+// while each item's fade is still long enough, and spaced out enough, to
+// see as a sequence rather than a flash. These three values are exported
+// from lib/motion.ts (not just local constants) because PrinciplesSection
+// and ExperienceSection need to compute exactly when this cascade finishes,
+// so their own cascade can start only once this one is fully done.
 const item = {
   hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: SKILL_HEADER_ITEM_DURATION_S, ease: [0.22, 1, 0.36, 1] as const },
+  },
 };
 
 export default function SkillHeader({
