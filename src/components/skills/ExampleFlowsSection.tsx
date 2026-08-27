@@ -33,10 +33,10 @@ export default function ExampleFlowsSection({ data }: { data: SkillExampleFlowsS
           whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
           viewport={CASE_STUDY_REVEAL_VIEWPORT}
           transition={CASE_STUDY_REVEAL_TRANSITION}
-          className="relative w-full overflow-hidden rounded-2xl shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)]"
+          className="relative w-full overflow-hidden rounded-2xl bg-white shadow-[0px_8px_24px_0px_rgba(36,31,43,0.06)]"
           style={{ aspectRatio: "1530 / 503" }}
         >
-          <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+          <Image src={image.src} alt={image.alt} fill className="object-contain" unoptimized />
         </motion.div>
       </div>
     </section>

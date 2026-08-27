@@ -76,8 +76,8 @@ export const conversationalDesignProcess: SkillProcessSectionData = {
 export const conversationalDesignExampleFlows: SkillExampleFlowsSectionData = {
   eyebrow: "Example flows",
   image: {
-    src: "https://placehold.co/1530x503?text=Example+conversation+flow",
-    alt: "Example conversational flow diagram placeholder",
+    src: "/images/Skills/Convo/conversation-example.png",
+    alt: "Conversation flow diagram mapping a chatbot's branching dialogue paths, decision points and fallback responses",
   },
 };
 
