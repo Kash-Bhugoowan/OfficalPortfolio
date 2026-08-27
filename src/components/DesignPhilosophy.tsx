@@ -489,7 +489,7 @@ export default function DesignPhilosophy() {
   }, [updateActiveIndex]);
 
   return (
-    <section id="design-principles" className="flex flex-col items-center gap-8 px-6 py-[37px] md:py-[54px]">
+    <section id="design-principles" className="flex scroll-mt-24 flex-col items-center gap-8 px-6 py-[37px] md:py-[54px]">
       <motion.div
         className="flex w-96 flex-col items-center gap-2 text-center"
         initial="hidden"
@@ -512,7 +512,7 @@ export default function DesignPhilosophy() {
         className="philosophy-cards-row mx-auto flex w-full max-w-[1528px] flex-col items-stretch gap-4 lg:flex-row lg:gap-8"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: isDesktop ? 0.2 : 0 }}
         variants={container}
         onHoverEnd={isDesktop ? () => setHoveredIndex(null) : undefined}
       >

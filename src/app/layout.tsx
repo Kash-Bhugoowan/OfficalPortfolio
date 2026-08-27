@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${dmSans.variable} scroll-smooth antialiased`}
+      className={`${manrope.variable} ${dmSans.variable} scroll-auto antialiased md:scroll-smooth`}
     >
       <body className="flex min-h-dvh flex-col">
         <RouteTransitionController />

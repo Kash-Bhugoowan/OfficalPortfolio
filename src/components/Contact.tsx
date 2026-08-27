@@ -57,7 +57,7 @@ function CopyableEmail({ email }: { email: string }) {
 
 export default function Contact() {
   return (
-    <section id="contact" className="flex flex-col items-center gap-16 px-6 py-[37px] md:py-[54px]">
+    <section id="contact" className="flex scroll-mt-24 flex-col items-center gap-16 px-6 py-[37px] md:py-[54px]">
       <motion.div
         className="flex w-full max-w-[476px] flex-col items-center gap-6 text-center md:max-w-[970px]"
         initial="hidden"

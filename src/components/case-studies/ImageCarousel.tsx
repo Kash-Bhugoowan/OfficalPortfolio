@@ -13,9 +13,19 @@ import {
 
 export type CarouselMedia = { src: string; alt: string; type?: "image" | "video" };
 
-// Snappier than the 0.8s scroll-reveal fade (CASE_STUDY_REVEAL_TRANSITION) —
-// this one is click-driven, not scroll-driven, so it should feel immediate.
-const CROSSFADE_TRANSITION = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const };
+// Same easing curve as the site's scroll-reveal fade (CASE_STUDY_REVEAL_TRANSITION)
+// — kept slower than a typical click response so the glide reads as gentle,
+// not snappy.
+const SLIDE_TRANSITION = { duration: 0.65, ease: [0.22, 1, 0.36, 1] as const };
+
+// Direction (+1 next, -1 prev) decides which side a slide enters/exits
+// from, so "next" always glides right-to-left and "prev" the reverse,
+// regardless of which two slide indices are actually involved (incl. wrap).
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%" }),
+  center: { x: 0 },
+  exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%" }),
+};
 
 // Same two-column-grid math as ApproachSection's constant — this carousel
 // sits in the second column of a max-w-[1227px]/gap-16 grid. Callers with a
@@ -55,6 +65,7 @@ export default function ImageCarousel({
   sizes?: string;
 }) {
   const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [pendingIndex, setPendingIndex] = useState<number | null>(null);
   const [readyMap, setReadyMap] = useState<Record<number, boolean>>({});
   const pendingIndexRef = useRef<number | null>(null);
@@ -63,13 +74,8 @@ export default function ImageCarousel({
   const reduceMotion = useReducedMotion();
   const total = media.length;
   const current = media[index];
+  const imageClassName = objectFit === "contain" ? "object-contain" : "object-cover";
 
-  // Every image slide stays mounted (opacity-toggled, not mounted/unmounted)
-  // so this one `onLoad`/`.complete` check is both the real signal the
-  // <Image> below is actually showing and the background preload for the
-  // other slides — the same element, so there's no risk of preloading one
-  // URL while next/image's responsive srcset requests a different one.
-  // Videos have no decode step, so they're always considered ready.
   const settle = (i: number) => {
     setReadyMap((prev) => (prev[i] ? prev : { ...prev, [i]: true }));
     if (pendingIndexRef.current === i) {
@@ -91,8 +97,14 @@ export default function ImageCarousel({
   };
 
   const base = pendingIndex ?? index;
-  const goPrev = () => requestIndex((base - 1 + total) % total);
-  const goNext = () => requestIndex((base + 1) % total);
+  const goPrev = () => {
+    setDirection(-1);
+    requestIndex((base - 1 + total) % total);
+  };
+  const goNext = () => {
+    setDirection(1);
+    requestIndex((base + 1) % total);
+  };
   const isWaiting = pendingIndex !== null;
 
   // The gallery's own reveal waits on the same "in view AND ready" rule as
@@ -113,52 +125,49 @@ export default function ImageCarousel({
         className={`relative w-full overflow-hidden rounded-2xl border border-zinc-300 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)] ${background}`}
         style={{ aspectRatio: "737 / 512" }}
       >
-        {/* Image slides all stay mounted (opacity-toggled by index match)
-            rather than mounting only the current one — that's what lets
-            each slide's own onLoad double as both its ready-check and its
-            background preload for the others, with no separate preloader
-            requesting a different URL than the one actually rendered. */}
+        {/* Invisible warm pool: every image slide stays mounted here, off
+            screen (opacity-0, not display:none, so it still enters the
+            viewport and loads like any other image), purely so its onLoad
+            doubles as the ready-check AND primes the browser's cache for
+            the visible <Image> below — same src/sizes/quality, so it's the
+            literal same request, not a guess at next/image's internal URL
+            scheme. */}
         {media.map((item, i) =>
           item.type === "video" ? null : (
-            <motion.div
-              key={item.src}
-              className="absolute inset-0"
-              style={{ zIndex: i === index ? 1 : 0 }}
-              initial={false}
-              animate={{ opacity: i === index ? 1 : 0 }}
-              transition={reduceMotion ? { duration: 0 } : CROSSFADE_TRANSITION}
-              aria-hidden={i === index ? undefined : true}
-            >
+            <div key={item.src} className="absolute inset-0 opacity-0" aria-hidden="true">
               <Image
                 ref={(img) => {
                   if (img?.complete) settle(i);
                 }}
                 src={item.src}
-                alt={item.alt}
+                alt=""
                 fill
-                className={objectFit === "contain" ? "object-contain" : "object-cover"}
+                className={imageClassName}
                 sizes={sizes}
                 quality={90}
                 onLoad={() => settle(i)}
               />
-            </motion.div>
+            </div>
           ),
         )}
 
-        {/* Video slides mount only while current — unlike images, they
-            aren't preloaded in the background, matching the existing
-            (unchanged) lazy behaviour for this gallery's video entries. */}
-        <AnimatePresence initial={false}>
-          {current.type === "video" && (
-            <motion.div
-              key={index}
-              initial={reduceMotion ? undefined : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0 }}
-              transition={CROSSFADE_TRANSITION}
-              className="absolute inset-0"
-              style={{ zIndex: 2 }}
-            >
+        {/* Visible stage: only the current slide is mounted, entering and
+            exiting from the side matching the click direction — a glide,
+            not a fade. requestIndex only changes `index` once the target
+            slide has actually finished loading (via the warm pool above),
+            so this is always safe to start immediately. */}
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={index}
+            custom={direction}
+            variants={slideVariants}
+            initial={reduceMotion ? false : "enter"}
+            animate="center"
+            exit={reduceMotion ? undefined : "exit"}
+            transition={reduceMotion ? { duration: 0 } : SLIDE_TRANSITION}
+            className="absolute inset-0"
+          >
+            {current.type === "video" ? (
               <video
                 src={current.src}
                 className="absolute inset-0 h-full w-full object-cover"
@@ -167,8 +176,10 @@ export default function ImageCarousel({
                 muted
                 playsInline
               />
-            </motion.div>
-          )}
+            ) : (
+              <Image src={current.src} alt={current.alt} fill className={imageClassName} sizes={sizes} quality={90} />
+            )}
+          </motion.div>
         </AnimatePresence>
       </div>
       <div className="flex justify-center gap-3">

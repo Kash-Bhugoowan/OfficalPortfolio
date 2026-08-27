@@ -109,7 +109,7 @@ export default function StickyCardStack({
   const cardRefs = [card0, card1, card2];
 
   return (
-    <div id="work" className="relative">
+    <div id="work" className="relative scroll-mt-24">
       {header && (
         // A separate, height-bounded containing block for the header —
         // NOT the shared one below that holds the cards. Same mechanism,

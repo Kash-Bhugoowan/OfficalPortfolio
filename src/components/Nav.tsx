@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { linkHoverTransition } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import { runExit, requestScrollReset } from "@/lib/pageTransitionBus";
@@ -37,12 +37,33 @@ function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// The "curtain" sequence for an in-page hash tap (see handleMenuLinkClick):
+// link list fades out, screen holds fully covered, scroll jumps instantly,
+// then the overlay itself fades away to reveal the destination already in
+// place. Total ~650ms. Values below reduced-motion halve down to a single
+// short cover-and-reveal with no stagger — the fade still has to survive
+// long enough to hide the scroll jump, so it can't drop to zero.
+const LIST_FADE_MS = 150;
+const HOLD_MS = 80;
+const OVERLAY_EXIT_S = 0.42;
+const REDUCED_LIST_FADE_MS = 60;
+const REDUCED_HOLD_MS = 0;
+const REDUCED_OVERLAY_EXIT_S = 0.15;
+const CURTAIN_EASE = [0.22, 1, 0.36, 1] as const;
+
 // Waits a beat for the panel's own fade to mostly settle, then reveals
 // each link one after another rather than all at once — a soft entrance
 // that reads as considered rather than a hard on/off toggle.
 const menuListVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } },
+};
+
+// No stagger under reduced motion — links appear together rather than
+// cascading in one after another.
+const reducedMenuListVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0, delayChildren: 0 } },
 };
 
 // Deliberately its own fast variant rather than the shared fadeInUp (1.6s
@@ -52,14 +73,26 @@ const menuListVariants = {
 // tweens to their exit state at once was enough main-thread work to stall
 // the close -> navigate sequence for a second or more. Also gives "hidden"
 // its own explicit transition so exit doesn't fall back to the MotionLink's
-// hover spring.
+// hover spring. The "hidden" duration doubles as the curtain's list-fade
+// step (LIST_FADE_MS above), so the two stay in lockstep.
 const menuItemVariants = {
-  hidden: { opacity: 0, y: 14, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const } },
+  hidden: {
+    opacity: 0,
+    y: 14,
+    transition: { duration: LIST_FADE_MS / 1000, ease: CURTAIN_EASE },
+  },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.4, ease: CURTAIN_EASE },
   },
+};
+
+// Opacity-only under reduced motion — no y travel — and matched to
+// REDUCED_LIST_FADE_MS so the curtain's wait lines up with what's on screen.
+const reducedMenuItemVariants = {
+  hidden: { opacity: 0, transition: { duration: REDUCED_LIST_FADE_MS / 1000 } },
+  visible: { opacity: 1, transition: { duration: REDUCED_LIST_FADE_MS / 1000 } },
 };
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
@@ -92,14 +125,27 @@ function Chevron() {
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
+  // Drives the link list's own fade independently of `isOpen` — the curtain
+  // sequence (runCurtainNav) needs the list gone while the overlay itself
+  // stays fully opaque, ahead of the overlay's own close. Reset to true by
+  // the hamburger button's own onClick below, whenever it opens the
+  // overlay (that button is covered by the overlay once open, so it never
+  // fires on the way back down — only the dedicated X button and link taps
+  // close it, neither of which should re-arm this).
+  const [showLinks, setShowLinks] = useState(true);
   const isDesktop = useIsDesktop();
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
   // Stashed by a mobile-menu link tap; consumed once the overlay's exit
   // animation has fully finished (AnimatePresence's onExitComplete), or by
   // the EXIT_TIMEOUT_MS fallback if that never fires. Cleared by every
   // non-navigating way the overlay can close, so a stale tap from an
-  // aborted close never fires a late/wrong navigation.
+  // aborted close never fires a late/wrong navigation. Only used for the
+  // cross-route/no-hash paths — an in-page hash tap goes through
+  // runCurtainNav instead and never touches this.
   const pendingHrefRef = useRef<string | null>(null);
+  // Guards against a double-tap re-entering the curtain sequence mid-flight.
+  const curtainRunningRef = useRef(false);
 
   // If the viewport crosses into desktop while the mobile overlay is
   // open (resize, orientation change), close it — the overlay and its
@@ -137,19 +183,63 @@ export default function Nav() {
       !e.currentTarget.hasAttribute("download") &&
       (!target || target === "_self");
 
-    if (isPlainClick) {
-      e.preventDefault();
-      pendingHrefRef.current = href;
-      // Safety net — see EXIT_TIMEOUT_MS comment above.
-      setTimeout(handleOverlayExitComplete, EXIT_TIMEOUT_MS);
+    if (!isPlainClick) {
+      setIsOpen(false);
+      return;
     }
+
+    e.preventDefault();
+
+    let url: URL | null;
+    try {
+      url = new URL(href, window.location.href);
+    } catch {
+      url = null;
+    }
+
+    const here = window.location;
+    const samePath = !!url && url.pathname === here.pathname && url.search === here.search;
+
+    if (url && samePath && url.hash) {
+      // In-page hash target (Work/Skills/Process/Contact) — curtain, not a
+      // native/router scroll. Deliberately doesn't touch pendingHrefRef or
+      // isOpen yet; runCurtainNav closes the overlay itself once the jump
+      // is safely hidden behind it.
+      runCurtainNav(url);
+      return;
+    }
+
+    // Everything else — a real route change (Resume), or the same-path/
+    // no-hash edge case (Home tapped while already home) — unchanged from
+    // before: hand off to handleOverlayExitComplete once the overlay's own
+    // close finishes (or the fallback timer fires).
+    pendingHrefRef.current = href;
+    setTimeout(handleOverlayExitComplete, EXIT_TIMEOUT_MS);
     setIsOpen(false);
+  }
+
+  async function runCurtainNav(url: URL) {
+    if (curtainRunningRef.current) return; // ignore a double-tap mid-sequence
+    curtainRunningRef.current = true;
+
+    const listFadeMs = reduceMotion ? REDUCED_LIST_FADE_MS : LIST_FADE_MS;
+    const holdMs = reduceMotion ? REDUCED_HOLD_MS : HOLD_MS;
+
+    setShowLinks(false); // list fades out
+    await wait(listFadeMs);
+    await wait(holdMs); // fully covered
+
+    document.getElementById(url.hash.slice(1))?.scrollIntoView({ behavior: "instant", block: "start" });
+    router.replace(url.pathname + url.hash, { scroll: false });
+
+    setIsOpen(false); // overlay's existing exit fade reveals the destination
+    curtainRunningRef.current = false;
   }
 
   async function handleOverlayExitComplete() {
     const href = pendingHrefRef.current;
     pendingHrefRef.current = null;
-    if (!href) return; // already handled (real completion or fallback beat us to it), closed via X, or desktop-breakpoint auto-close
+    if (!href) return; // already handled (real completion or fallback beat us to it), closed via X, desktop-breakpoint auto-close, or a curtain nav that doesn't use this ref
 
     let url: URL;
     try {
@@ -163,9 +253,9 @@ export default function Nav() {
     const destination = url.pathname + url.search + url.hash;
 
     if (samePath) {
-      // Same-page hash scroll — RouteTransitionController leaves this to
-      // next/link's own default behavior too. Now that the overlay is fully
-      // gone, that native/router-driven smooth-scroll plays uncovered.
+      // Same-path, no-hash edge case only (e.g. Home tapped while already
+      // home) — the hash case is diverted to runCurtainNav before this is
+      // ever reached, so there's no scroll to worry about uncovering here.
       router.push(destination);
       return;
     }
@@ -225,7 +315,10 @@ export default function Nav() {
           type="button"
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
-          onClick={() => setIsOpen((v) => !v)}
+          onClick={() => {
+            setIsOpen((v) => !v);
+            setShowLinks(true);
+          }}
           className="inline-flex size-10 items-center justify-center rounded-full md:hidden"
         >
           <HamburgerIcon isOpen={isOpen} />
@@ -238,7 +331,20 @@ export default function Nav() {
             key="mobile-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            // Own embedded transition rather than the shared `transition`
+            // prop below (which still governs entrance, untouched) — the
+            // curtain wants this close to use the site's shared expo-out
+            // curve (matches PageTransition.tsx/fadeInUp) so the reveal
+            // reads as the same fade-in language as /resume, and to shrink
+            // under reduced motion (still needs *some* fade to hide the
+            // scroll jump it's covering, so this never drops to 0).
+            exit={{
+              opacity: 0,
+              transition: {
+                duration: reduceMotion ? REDUCED_OVERLAY_EXIT_S : OVERLAY_EXIT_S,
+                ease: CURTAIN_EASE,
+              },
+            }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="fixed inset-0 z-50 flex flex-col bg-[#FEFCFF] md:hidden"
           >
@@ -258,15 +364,15 @@ export default function Nav() {
             <motion.div
               className="flex flex-1 flex-col justify-center gap-2 px-8 pb-16"
               initial="hidden"
-              animate="visible"
+              animate={showLinks ? "visible" : "hidden"}
               exit="hidden"
-              variants={menuListVariants}
+              variants={reduceMotion ? reducedMenuListVariants : menuListVariants}
             >
               {menuLinks.map((link) =>
                 link.href ? (
                   <MotionLink
                     key={link.label}
-                    variants={menuItemVariants}
+                    variants={reduceMotion ? reducedMenuItemVariants : menuItemVariants}
                     href={link.href}
                     data-nav-overlay-link="true"
                     onClick={(e) => handleMenuLinkClick(e, link.href)}
@@ -281,7 +387,7 @@ export default function Nav() {
                 ) : (
                   <motion.div
                     key={link.label}
-                    variants={menuItemVariants}
+                    variants={reduceMotion ? reducedMenuItemVariants : menuItemVariants}
                     aria-disabled="true"
                     title="Coming soon"
                     className="flex items-center justify-between border-b border-border py-5 text-3xl font-light text-foreground opacity-40"
