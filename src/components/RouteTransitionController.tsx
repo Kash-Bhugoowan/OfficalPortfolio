@@ -39,6 +39,14 @@ export default function RouteTransitionController() {
       const anchor = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
       if (!anchor) return;
 
+      // Nav's mobile overlay (Nav.tsx) marks its own links and fully owns their
+      // click -> close-overlay -> navigate sequencing itself, so the overlay's
+      // exit-fade finishes before navigation starts. Left to this controller, its
+      // capture-phase listener runs (and starts navigating) before the overlay's
+      // own fade even begins, racing it closed underneath the new page. See
+      // Nav.tsx's handleMenuLinkClick/handleOverlayExitComplete.
+      if (anchor.dataset.navOverlayLink) return;
+
       const target = anchor.getAttribute("target");
       if (target && target !== "_self") return; // new tab/window
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // open-in-new-tab intents

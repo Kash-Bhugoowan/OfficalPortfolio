@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { fadeInUp, linkHoverTransition } from "@/lib/motion";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+import { runExit, requestScrollReset } from "@/lib/pageTransitionBus";
 
 // next/link wrapped for motion props (whileHover/whileTap/variants) — swaps
 // the plumbing under every nav link from a hard browser navigation to a
@@ -22,6 +24,18 @@ const links = [
 ];
 
 const menuLinks = [{ label: "Home", href: "/" }, ...links];
+
+// Defensive cap: how long we wait for the current page's exit fade before
+// navigating anyway (mirrors RouteTransitionController's EXIT_TIMEOUT_MS),
+// and also the fallback delay for the mobile overlay's own close fade — if
+// AnimatePresence's onExitComplete is ever interrupted and never fires (e.g.
+// the menu is reopened mid-exit, cancelling that exit cycle), a tap must
+// still navigate rather than silently dead-end.
+const EXIT_TIMEOUT_MS = 600;
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 // Waits a beat for the panel's own fade to mostly settle, then reveals
 // each link one after another rather than all at once — a soft entrance
@@ -62,6 +76,13 @@ function Chevron() {
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useIsDesktop();
+  const router = useRouter();
+  // Stashed by a mobile-menu link tap; consumed once the overlay's exit
+  // animation has fully finished (AnimatePresence's onExitComplete), or by
+  // the EXIT_TIMEOUT_MS fallback if that never fires. Cleared by every
+  // non-navigating way the overlay can close, so a stale tap from an
+  // aborted close never fires a late/wrong navigation.
+  const pendingHrefRef = useRef<string | null>(null);
 
   // If the viewport crosses into desktop while the mobile overlay is
   // open (resize, orientation change), close it — the overlay and its
@@ -69,7 +90,10 @@ export default function Nav() {
   // rendered would just mean it snaps back open if the viewport shrinks
   // again without the user having tapped anything.
   useEffect(() => {
-    if (isDesktop) setIsOpen(false);
+    if (isDesktop) {
+      setIsOpen(false);
+      pendingHrefRef.current = null;
+    }
   }, [isDesktop]);
 
   useEffect(() => {
@@ -80,6 +104,68 @@ export default function Nav() {
       document.body.style.overflow = original;
     };
   }, [isOpen]);
+
+  function handleMenuLinkClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    // Mirrors RouteTransitionController's own new-tab/modifier-click checks —
+    // only a plain, same-tab primary click is ours to sequence. Cmd/ctrl/
+    // shift/alt-click, middle-click, or an explicit target/download should
+    // open exactly as the browser would natively, unintercepted.
+    const target = e.currentTarget.getAttribute("target");
+    const isPlainClick =
+      e.button === 0 &&
+      !e.metaKey &&
+      !e.ctrlKey &&
+      !e.shiftKey &&
+      !e.altKey &&
+      !e.currentTarget.hasAttribute("download") &&
+      (!target || target === "_self");
+
+    if (isPlainClick) {
+      e.preventDefault();
+      pendingHrefRef.current = href;
+      // Safety net — see EXIT_TIMEOUT_MS comment above.
+      setTimeout(handleOverlayExitComplete, EXIT_TIMEOUT_MS);
+    }
+    setIsOpen(false);
+  }
+
+  async function handleOverlayExitComplete() {
+    const href = pendingHrefRef.current;
+    pendingHrefRef.current = null;
+    if (!href) return; // already handled (real completion or fallback beat us to it), closed via X, or desktop-breakpoint auto-close
+
+    let url: URL;
+    try {
+      url = new URL(href, window.location.href);
+    } catch {
+      return;
+    }
+
+    const here = window.location;
+    const samePath = url.pathname === here.pathname && url.search === here.search;
+    const destination = url.pathname + url.search + url.hash;
+
+    if (samePath) {
+      // Same-page hash scroll — RouteTransitionController leaves this to
+      // next/link's own default behavior too. Now that the overlay is fully
+      // gone, that native/router-driven smooth-scroll plays uncovered.
+      router.push(destination);
+      return;
+    }
+
+    const hasHash = url.hash.length > 0;
+    try {
+      await Promise.race([runExit(), wait(EXIT_TIMEOUT_MS)]);
+      if (hasHash) {
+        router.push(destination);
+      } else {
+        requestScrollReset();
+        router.push(destination, { scroll: false });
+      }
+    } catch {
+      window.location.assign(destination); // fail open
+    }
+  }
 
   return (
     <div className="px-4 pt-6 sm:px-6">
@@ -129,7 +215,7 @@ export default function Nav() {
         </button>
       </nav>
 
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={handleOverlayExitComplete}>
         {isOpen && (
           <motion.div
             key="mobile-menu"
@@ -143,7 +229,10 @@ export default function Nav() {
               <button
                 type="button"
                 aria-label="Close menu"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  pendingHrefRef.current = null;
+                  setIsOpen(false);
+                }}
                 className="inline-flex size-10 items-center justify-center rounded-full"
               >
                 <HamburgerIcon isOpen />
@@ -162,7 +251,8 @@ export default function Nav() {
                     key={link.label}
                     variants={fadeInUp}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
+                    data-nav-overlay-link="true"
+                    onClick={(e) => handleMenuLinkClick(e, link.href)}
                     className="flex items-center justify-between border-b border-border py-5 text-3xl font-light text-foreground"
                     whileHover={{ color: "#6757e8" }}
                     whileTap={{ scale: 0.98 }}
