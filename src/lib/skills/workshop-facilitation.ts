@@ -69,12 +69,21 @@ export const workshopFacilitationExperience: SkillExperienceSectionData = {
     },
   ],
   logos: [
-    { name: "Company One", src: "https://placehold.co/160x64?text=Logo+1" },
-    { name: "Company Two", src: "https://placehold.co/160x64?text=Logo+2" },
-    { name: "Company Three", src: "https://placehold.co/160x64?text=Logo+3" },
-    { name: "Company Four", src: "https://placehold.co/160x64?text=Logo+4" },
-    { name: "Company Five", src: "https://placehold.co/160x64?text=Logo+5" },
-    { name: "Company Six", src: "https://placehold.co/160x64?text=Logo+6" },
+    { name: "BP", src: "/images/Skills/Workshop/logos/bp.png" },
+    { name: "Coventry University", src: "/images/Skills/Workshop/logos/coventry-university.png" },
+    { name: "DEFRA", src: "/images/Skills/Workshop/logos/defra.png" },
+    { name: "DWP", src: "/images/Skills/Workshop/logos/dwp.png" },
+    { name: "HSBC", src: "/images/Skills/Workshop/logos/hsbc.png" },
+    { name: "Home Office", src: "/images/Skills/Workshop/logos/home-office.png" },
+    { name: "Ministry of Defence", src: "/images/Skills/Workshop/logos/mod.png" },
+    { name: "NHS England", src: "/images/Skills/Workshop/logos/nhs.png" },
+    { name: "Rolls-Royce", src: "/images/Skills/Workshop/logos/rolls-royce.png" },
+    { name: "Santander", src: "/images/Skills/Workshop/logos/santander.png" },
+    { name: "Telefónica O2", src: "/images/Skills/Workshop/logos/telefonica.png" },
+    { name: "Tesco", src: "/images/Skills/Workshop/logos/tesco.png" },
+    { name: "Virgin Media O2", src: "/images/Skills/Workshop/logos/virgin-media-o2.png" },
+    { name: "Vodafone", src: "/images/Skills/Workshop/logos/vodafone.png" },
+    { name: "Whitespace", src: "/images/Skills/Workshop/logos/whitespace.png" },
   ],
 };
 
@@ -116,11 +125,25 @@ export const workshopFacilitationProcess: SkillProcessSectionData = {
 };
 
 export const workshopFacilitationExampleFlows: SkillExampleFlowsSectionData = {
-  eyebrow: "Example workshop",
-  image: {
-    src: "https://placehold.co/1530x503?text=Example+workshop+activity",
-    alt: "Example workshop activity flow placeholder",
-  },
+  eyebrow: "IN THE ROOM",
+  images: [
+    {
+      src: "/images/Skills/Workshop/gallery/workshop-1.jpg",
+      alt: "Karishma facilitating a design thinking workshop, presenting to participants seated around a table covered in activity cards",
+    },
+    {
+      src: "/images/Skills/Workshop/gallery/workshop-2.jpg",
+      alt: "Karishma presenting a 'What is Design Thinking?' slide to a room of workshop participants",
+    },
+    {
+      src: "/images/Skills/Workshop/gallery/workshop-4.png",
+      alt: "Group photo of workshop participants posing together after an Innovation Day session",
+    },
+    {
+      src: "/images/Skills/Workshop/gallery/workshop-5.png",
+      alt: "Workshop participants celebrating with raised hands around a table, joined by remote attendees on a video call screen",
+    },
+  ],
 };
 
 export const workshopFacilitationPrevious: PreviousProjectNavData = {

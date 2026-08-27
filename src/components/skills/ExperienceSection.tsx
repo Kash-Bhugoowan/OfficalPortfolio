@@ -59,14 +59,8 @@ const edgeFadeStyle = {
 
 function LogoItem({ name, src }: SkillExperienceLogo) {
   return (
-    <div className="relative h-16 w-40 shrink-0 overflow-hidden rounded-xl bg-white shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)]">
-      <Image
-        src={src}
-        alt={`${name} logo`}
-        fill
-        className="object-contain p-4 grayscale opacity-60"
-        unoptimized
-      />
+    <div className="relative h-16 w-40 shrink-0">
+      <Image src={src} alt={`${name} logo`} fill className="object-contain" unoptimized />
     </div>
   );
 }
@@ -81,7 +75,7 @@ function LogosMarquee({ logos }: { logos: SkillExperienceLogo[] }) {
 
   return (
     <div className="w-full overflow-hidden" style={edgeFadeStyle}>
-      <div className="animate-marquee flex w-max items-center gap-6">
+      <div className="animate-marquee flex w-max items-center gap-4">
         {repeatedLogos.map((logo, i) => (
           <LogoItem key={`${logo.name}-${i}`} {...logo} />
         ))}
