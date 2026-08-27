@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, DM_Sans } from "next/font/google";
+import RouteTransitionController from "@/components/RouteTransitionController";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -26,7 +27,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${manrope.variable} ${dmSans.variable} scroll-smooth antialiased`}
     >
-      <body className="flex min-h-dvh flex-col">{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        <RouteTransitionController />
+        {children}
+      </body>
     </html>
   );
 }
