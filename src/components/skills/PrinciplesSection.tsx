@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { fadeInUp, CASE_STUDY_SECTION_GAP_PX } from "@/lib/motion";
+import { CASE_STUDY_SECTION_GAP_PX, SKILL_HEADER_GAP_CLASSNAME } from "@/lib/motion";
 import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_TITLE,
@@ -31,26 +31,46 @@ const container = {
   // its own whileInView could otherwise fire almost immediately on load.
   // Without this delay the two sections' entrances visibly overlap
   // instead of reading top-to-bottom. The header's own last item (its
-  // dek paragraph) doesn't even START fading in until ~0.58s (its own
-  // internal stagger delay), so this needs real headroom beyond that,
-  // not just a token gap.
-  visible: { transition: { delayChildren: 1, staggerChildren: 0.1 } },
+  // dek paragraph) starts fading in at ~0.46s (its own internal stagger
+  // delay), so this needs headroom beyond that, not just a token gap —
+  // kept short since both this and the header's own item transition
+  // below are already fast (0.6s), unlike the old 1.6s fadeInUp this
+  // used to wait out.
+  visible: { transition: { delayChildren: 0.5, staggerChildren: 0.1 } },
 };
 
-const item = fadeInUp;
+const item = {
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+};
 
 // Static, non-carousel take on the homepage's CapabilityCard
 // (Capabilities.tsx) — same visual language (icon glyph, shadow, type
 // scale) without the scroll-focus/hover-carousel machinery that card
 // needs for the horizontal-swipe homepage layout.
-export default function PrinciplesSection({ data }: { data: SkillPrinciplesSectionData }) {
+export default function PrinciplesSection({
+  data,
+  underHeader = false,
+}: {
+  data: SkillPrinciplesSectionData;
+  // True when this sits directly under SkillHeader (conversational-design's
+  // first section) rather than after another body section (workshop-
+  // facilitation's second section, which keeps the standard fixed gap).
+  // Shares ExperienceSection's header-gap value (SKILL_HEADER_GAP_CLASSNAME)
+  // so both skill pages' header-to-first-section gap stay identical.
+  underHeader?: boolean;
+}) {
   const reduceMotion = useReducedMotion();
   const { eyebrow, title, cards } = data;
 
   return (
     <motion.section
-      className="relative flex flex-col items-center px-6"
-      style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
+      className={
+        underHeader
+          ? `relative flex flex-col items-center px-6 ${SKILL_HEADER_GAP_CLASSNAME}`
+          : "relative flex flex-col items-center px-6"
+      }
+      style={underHeader ? undefined : { marginTop: CASE_STUDY_SECTION_GAP_PX }}
       initial={reduceMotion ? undefined : "hidden"}
       whileInView={reduceMotion ? undefined : "visible"}
       viewport={{ once: true, amount: 0.25 }}

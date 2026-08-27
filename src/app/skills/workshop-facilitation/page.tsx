@@ -10,7 +10,6 @@ import {
   CaseStudyTopGradient,
   CaseStudyBottomGradient,
 } from "@/components/case-studies/CaseStudyPageBackground";
-import { SKILL_HEADER_TO_BODY_GAP_PX } from "@/lib/skills/styles";
 import {
   workshopFacilitationHeader,
   workshopFacilitationPrinciples,
@@ -26,10 +25,7 @@ export default function WorkshopFacilitationSkillPage() {
       <CaseStudyTopGradient />
       <Nav />
       <SkillHeader data={workshopFacilitationHeader} previous={workshopFacilitationPrevious} />
-      <ExperienceSection
-        data={workshopFacilitationExperience}
-        marginTopPx={SKILL_HEADER_TO_BODY_GAP_PX}
-      />
+      <ExperienceSection data={workshopFacilitationExperience} />
       <PrinciplesSection data={workshopFacilitationPrinciples} />
       <ProcessSection data={workshopFacilitationProcess} />
       <ExampleFlowsSection data={workshopFacilitationExampleFlows} />

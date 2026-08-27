@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { SKILL_HEADER_GAP_CLASSNAME } from "@/lib/motion";
 import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_FIELD_LABEL,
@@ -90,33 +91,32 @@ function LogosMarquee({ logos }: { logos: SkillExperienceLogo[] }) {
 // Local override of CASE_STUDY_REVEAL_TRANSITION's timing (not a change
 // to that shared constant): every other section using it sits further
 // down the page, so by the time a user scrolls it into view the
-// header's own mount-time fade (SkillHeader's fadeInUp stagger, ~1.6s
-// per item) has long since finished. This section instead sits
-// directly under the header and is typically already inside the
-// initial viewport, so its whileInView threshold fires almost at
-// t=0 — without a delay it visibly beat the header's own title/dek to
-// full opacity. PrinciplesSection has the same guard (its
-// delayChildren: 1) for the same reason, from when it used to occupy
-// this slot.
-const EXPERIENCE_REVEAL_TRANSITION = { ...CASE_STUDY_REVEAL_TRANSITION, delay: 1 };
+// header's own mount-time fade (SkillHeader's item stagger, ~0.6s per
+// item) has long since finished. This section instead sits directly
+// under the header and is typically already inside the initial
+// viewport, so its whileInView threshold fires almost at t=0 —
+// without a delay it visibly beat the header's own title/dek to full
+// opacity. PrinciplesSection has the same guard (its delayChildren:
+// 0.5) for the same reason, from when it used to occupy this slot.
+// Kept short (unlike the old delay: 1) since SkillHeader's own fade is
+// fast now — a long wait here just reintroduces the "page looks empty
+// on load" gap this was tuned to avoid causing in the first place.
+const EXPERIENCE_REVEAL_TRANSITION = { ...CASE_STUDY_REVEAL_TRANSITION, delay: 0.5 };
 
 // Sits directly under SkillHeader (its marginTop is the header-to-body gap,
 // same slot PrinciplesSection normally owns) — establishing credibility
 // with real numbers before Principles gets into how this skill is applied.
 export default function ExperienceSection({
   data,
-  marginTopPx,
 }: {
   data: SkillExperienceSectionData;
-  marginTopPx: number;
 }) {
   const reduceMotion = useReducedMotion();
   const { eyebrow, paragraphs, stats, logos } = data;
 
   return (
     <motion.section
-      className="relative flex flex-col items-center px-6"
-      style={{ marginTop: marginTopPx }}
+      className={`relative flex flex-col items-center px-6 ${SKILL_HEADER_GAP_CLASSNAME}`}
       initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
       whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
       viewport={CASE_STUDY_REVEAL_VIEWPORT}

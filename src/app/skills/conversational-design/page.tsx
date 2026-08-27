@@ -27,7 +27,7 @@ export default function ConversationalDesignSkillPage() {
         <Nav />
         <SkillHeader data={conversationalDesignHeader} previous={conversationalDesignPrevious} />
       </div>
-      <PrinciplesSection data={conversationalDesignPrinciples} />
+      <PrinciplesSection data={conversationalDesignPrinciples} underHeader />
       <ProcessSection data={conversationalDesignProcess} />
       <ExampleFlowsSection data={conversationalDesignExampleFlows} />
       <NextProjectNav next={conversationalDesignNext} />

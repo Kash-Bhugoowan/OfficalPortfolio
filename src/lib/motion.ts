@@ -74,3 +74,11 @@ export const PHILOSOPHY_CARD_FOCUS_SCALE = [0.96, 1, 0.96] as [number, number, n
 // a single fixed value at all breakpoints, applied as each section's own
 // top margin.
 export const CASE_STUDY_SECTION_GAP_PX = 100;
+
+// Gap from SkillHeader down to whichever section is a page's first body
+// section (PrinciplesSection on conversational-design, ExperienceSection
+// on workshop-facilitation) — shared so both pages stay in sync. Tighter
+// than CASE_STUDY_SECTION_GAP_PX because SkillHeader has no hero image to
+// counterbalance the extra space, and tightened further on mobile where
+// the same fixed gap reads as proportionally bigger.
+export const SKILL_HEADER_GAP_CLASSNAME = "mt-[54px] md:mt-[64px]";

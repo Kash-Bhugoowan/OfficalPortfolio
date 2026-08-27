@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { fadeInUp } from "@/lib/motion";
 import {
   ArrowLeftIcon,
   type PreviousProjectNavData,
@@ -25,7 +24,15 @@ const container = {
   },
 };
 
-const item = fadeInUp;
+// Deliberately faster than the shared fadeInUp (1.6s) that CaseStudyHeader
+// uses: that header has a hero image filling the viewport while its text
+// fades in, so a slow fade doesn't read as an empty page. This header has
+// no image to fall back on, so a slow fade left the page looking content-less
+// for ~2s on mount, worst on mobile where hydration itself is slower.
+const item = {
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+};
 
 export default function SkillHeader({
   data,
