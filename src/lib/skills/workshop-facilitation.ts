@@ -68,23 +68,7 @@ export const workshopFacilitationExperience: SkillExperienceSectionData = {
       bgClass: "bg-[#B7F1E7]",
     },
   ],
-  logos: [
-    { name: "BP", src: "/images/Skills/Workshop/logos/bp.png" },
-    { name: "Coventry University", src: "/images/Skills/Workshop/logos/coventry-university.png" },
-    { name: "DEFRA", src: "/images/Skills/Workshop/logos/defra.png" },
-    { name: "DWP", src: "/images/Skills/Workshop/logos/dwp.png" },
-    { name: "HSBC", src: "/images/Skills/Workshop/logos/hsbc.png" },
-    { name: "Home Office", src: "/images/Skills/Workshop/logos/home-office.png" },
-    { name: "Ministry of Defence", src: "/images/Skills/Workshop/logos/mod.png" },
-    { name: "NHS England", src: "/images/Skills/Workshop/logos/nhs.png" },
-    { name: "Rolls-Royce", src: "/images/Skills/Workshop/logos/rolls-royce.png" },
-    { name: "Santander", src: "/images/Skills/Workshop/logos/santander.png" },
-    { name: "Telefónica O2", src: "/images/Skills/Workshop/logos/telefonica.png" },
-    { name: "Tesco", src: "/images/Skills/Workshop/logos/tesco.png" },
-    { name: "Virgin Media O2", src: "/images/Skills/Workshop/logos/virgin-media-o2.png" },
-    { name: "Vodafone", src: "/images/Skills/Workshop/logos/vodafone.png" },
-    { name: "Whitespace", src: "/images/Skills/Workshop/logos/whitespace.png" },
-  ],
+  logos: [],
 };
 
 export const workshopFacilitationProcess: SkillProcessSectionData = {

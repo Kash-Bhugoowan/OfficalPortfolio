@@ -140,7 +140,7 @@ export default function PrinciplesSection({
           ? `relative flex flex-col items-center px-6 ${SKILL_HEADER_GAP_CLASSNAME}`
           : "relative flex flex-col items-center px-6"
       }
-      style={underHeader ? undefined : { marginTop: CASE_STUDY_SECTION_GAP_PX }}
+      style={underHeader ? undefined : { marginTop: CASE_STUDY_SECTION_GAP_PX - 16 }}
       initial={reduceMotion ? undefined : "hidden"}
       whileInView={reduceMotion ? undefined : "visible"}
       // amount: "some" (any visible sliver), not a fraction like 0.25 — the

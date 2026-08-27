@@ -59,8 +59,8 @@ const edgeFadeStyle = {
 
 function LogoItem({ name, src }: SkillExperienceLogo) {
   return (
-    <div className="relative h-16 w-40 shrink-0">
-      <Image src={src} alt={`${name} logo`} fill className="object-contain" unoptimized />
+    <div className="relative h-16 w-40 shrink-0 overflow-hidden rounded-xl bg-white shadow-[0px_2px_8px_0px_rgba(36,31,43,0.06)]">
+      <Image src={src} alt={`${name} logo`} fill className="object-contain p-4" unoptimized />
     </div>
   );
 }
@@ -201,10 +201,12 @@ export default function ExperienceSection({
           ))}
         </motion.div>
 
-        <motion.div variants={EXPERIENCE_ITEM} className={`flex flex-col ${CASE_STUDY_GAP_EYEBROW}`}>
-          <span className={CASE_STUDY_FIELD_LABEL}>Companies I&apos;ve worked with</span>
-          <LogosMarquee logos={logos} />
-        </motion.div>
+        {logos.length > 0 && (
+          <motion.div variants={EXPERIENCE_ITEM} className={`flex flex-col ${CASE_STUDY_GAP_EYEBROW}`}>
+            <span className={CASE_STUDY_FIELD_LABEL}>Companies I&apos;ve worked with</span>
+            <LogosMarquee logos={logos} />
+          </motion.div>
+        )}
       </div>
     </motion.section>
   );
