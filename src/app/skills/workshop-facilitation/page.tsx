@@ -10,6 +10,7 @@ import {
   CaseStudyTopGradient,
   CaseStudyBottomGradient,
 } from "@/components/case-studies/CaseStudyPageBackground";
+import PageTransition from "@/components/PageTransition";
 import {
   workshopFacilitationHeader,
   workshopFacilitationPrinciples,
@@ -24,13 +25,15 @@ export default function WorkshopFacilitationSkillPage() {
     <CaseStudyPageBackground>
       <CaseStudyTopGradient />
       <Nav />
-      <SkillHeader data={workshopFacilitationHeader} previous={workshopFacilitationPrevious} />
-      <ExperienceSection data={workshopFacilitationExperience} />
-      <PrinciplesSection data={workshopFacilitationPrinciples} />
-      <ProcessSection data={workshopFacilitationProcess} />
-      <ExampleFlowsSection data={workshopFacilitationExampleFlows} />
+      <PageTransition>
+        <SkillHeader data={workshopFacilitationHeader} previous={workshopFacilitationPrevious} />
+        <ExperienceSection data={workshopFacilitationExperience} />
+        <PrinciplesSection data={workshopFacilitationPrinciples} />
+        <ProcessSection data={workshopFacilitationProcess} />
+        <ExampleFlowsSection data={workshopFacilitationExampleFlows} />
+        <Footer />
+      </PageTransition>
       <CaseStudyBottomGradient />
-      <Footer />
     </CaseStudyPageBackground>
   );
 }

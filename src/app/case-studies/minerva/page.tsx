@@ -15,6 +15,7 @@ import {
   CaseStudyTopGradient,
   CaseStudyBottomGradient,
 } from "@/components/case-studies/CaseStudyPageBackground";
+import PageTransition from "@/components/PageTransition";
 import {
   minervaCaseStudy,
   minervaChallenge,
@@ -31,22 +32,22 @@ import {
 export default function MinervaCaseStudyPage() {
   return (
     <CaseStudyPageBackground>
-      <div className="relative z-0">
-        <CaseStudyTopGradient />
-        <Nav />
+      <CaseStudyTopGradient />
+      <Nav />
+      <PageTransition>
         <CaseStudyHeader data={minervaCaseStudy} />
-      </div>
-      <ChallengeSection data={minervaChallenge} />
-      <ApproachSection data={minervaApproach} />
-      <CoreUxSection data={minervaCoreUx} />
-      <MainPrioritySection data={minervaMainPriority} />
-      <CoCreationSection data={minervaCoCreation} />
-      <OutcomesSection data={minervaOutcomes} />
-      <WhatsNextSection data={minervaWhatsNext} />
-      <ReflectionsSection data={minervaReflections} />
-      <NextProjectNav next={minervaNextProject} />
+        <ChallengeSection data={minervaChallenge} />
+        <ApproachSection data={minervaApproach} />
+        <CoreUxSection data={minervaCoreUx} />
+        <MainPrioritySection data={minervaMainPriority} />
+        <CoCreationSection data={minervaCoCreation} />
+        <OutcomesSection data={minervaOutcomes} />
+        <WhatsNextSection data={minervaWhatsNext} />
+        <ReflectionsSection data={minervaReflections} />
+        <NextProjectNav next={minervaNextProject} />
+        <Footer />
+      </PageTransition>
       <CaseStudyBottomGradient />
-      <Footer />
     </CaseStudyPageBackground>
   );
 }

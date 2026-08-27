@@ -15,6 +15,7 @@ import {
   CaseStudyTopGradient,
   CaseStudyBottomGradient,
 } from "@/components/case-studies/CaseStudyPageBackground";
+import PageTransition from "@/components/PageTransition";
 import {
   hsbcCaseStudy,
   hsbcChallenge,
@@ -32,22 +33,22 @@ import {
 export default function HsbcCaseStudyPage() {
   return (
     <CaseStudyPageBackground>
-      <div className="relative z-0">
-        <CaseStudyTopGradient />
-        <Nav />
+      <CaseStudyTopGradient />
+      <Nav />
+      <PageTransition>
         <HsbcHeaderSection data={hsbcCaseStudy} previous={hsbcPreviousProject} />
-      </div>
-      <ChallengeSection data={hsbcChallenge} />
-      <GailApproachSection data={hsbcApproach} />
-      <HsbcVisionSection data={hsbcVision} />
-      <HsbcNorthStarSection data={hsbcNorthStar} />
-      <HsbcResponsibilitiesSection data={hsbcResponsibilities} />
-      <HsbcOutcomeSection data={hsbcOutcome} />
-      <HsbcWhatsNextSection data={hsbcWhatsNext} />
-      <ReflectionsSection data={hsbcReflections} />
-      <NextProjectNav next={hsbcSkillShowcase} />
+        <ChallengeSection data={hsbcChallenge} />
+        <GailApproachSection data={hsbcApproach} />
+        <HsbcVisionSection data={hsbcVision} />
+        <HsbcNorthStarSection data={hsbcNorthStar} />
+        <HsbcResponsibilitiesSection data={hsbcResponsibilities} />
+        <HsbcOutcomeSection data={hsbcOutcome} />
+        <HsbcWhatsNextSection data={hsbcWhatsNext} />
+        <ReflectionsSection data={hsbcReflections} />
+        <NextProjectNav next={hsbcSkillShowcase} />
+        <Footer />
+      </PageTransition>
       <CaseStudyBottomGradient />
-      <Footer />
     </CaseStudyPageBackground>
   );
 }

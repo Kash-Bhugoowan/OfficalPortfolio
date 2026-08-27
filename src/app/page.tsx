@@ -6,18 +6,21 @@ import DesignPhilosophy from "@/components/DesignPhilosophy";
 import Community from "@/components/Community";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 
 export default function Home() {
   return (
     <>
       <Nav />
-      <Hero />
-      <ProjectsSection />
-      <Capabilities />
-      <DesignPhilosophy />
-      <Community />
-      <Contact />
-      <Footer />
+      <PageTransition>
+        <Hero />
+        <ProjectsSection />
+        <Capabilities />
+        <DesignPhilosophy />
+        <Community />
+        <Contact />
+        <Footer />
+      </PageTransition>
     </>
   );
 }

@@ -8,6 +8,7 @@ import {
   CaseStudyTopGradient,
   CaseStudyBottomGradient,
 } from "@/components/case-studies/CaseStudyPageBackground";
+import PageTransition from "@/components/PageTransition";
 import { resumeHeader, resumeExperience, resumeSkills, resumeTraining } from "@/lib/resume";
 
 export default function ResumePage() {
@@ -15,12 +16,14 @@ export default function ResumePage() {
     <CaseStudyPageBackground>
       <CaseStudyTopGradient />
       <Nav />
-      <ResumeHeader data={resumeHeader} />
-      <ExperienceTimelineSection data={resumeExperience} />
-      <ResumeListSection data={resumeSkills} />
-      <ResumeListSection data={resumeTraining} />
+      <PageTransition>
+        <ResumeHeader data={resumeHeader} />
+        <ExperienceTimelineSection data={resumeExperience} />
+        <ResumeListSection data={resumeSkills} />
+        <ResumeListSection data={resumeTraining} />
+        <Footer />
+      </PageTransition>
       <CaseStudyBottomGradient />
-      <Footer />
     </CaseStudyPageBackground>
   );
 }

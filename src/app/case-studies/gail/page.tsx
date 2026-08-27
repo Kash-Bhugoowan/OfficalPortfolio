@@ -14,6 +14,7 @@ import {
   CaseStudyTopGradient,
   CaseStudyBottomGradient,
 } from "@/components/case-studies/CaseStudyPageBackground";
+import PageTransition from "@/components/PageTransition";
 import {
   gailCaseStudy,
   gailChallenge,
@@ -31,22 +32,22 @@ import {
 export default function GailCaseStudyPage() {
   return (
     <CaseStudyPageBackground>
-      <div className="relative z-0">
-        <CaseStudyTopGradient />
-        <Nav />
+      <CaseStudyTopGradient />
+      <Nav />
+      <PageTransition>
         <CaseStudyHeader data={gailCaseStudy} previous={gailPreviousProject} />
-      </div>
-      <ChallengeSection data={gailChallenge} />
-      <GailApproachSection data={gailApproach} />
-      <GailCoCreationSection data={gailCoCreation} />
-      <GailMainPrioritySection data={gailMainPriority} />
-      <WhatsNextSection data={gailTeamAndBuild} />
-      <GailOutcomesSection data={gailOutcomes} />
-      <WhatsNextSection data={gailWhatsNext} />
-      <ReflectionsSection data={gailReflections} />
-      <NextProjectNav next={gailNextProject} />
+        <ChallengeSection data={gailChallenge} />
+        <GailApproachSection data={gailApproach} />
+        <GailCoCreationSection data={gailCoCreation} />
+        <GailMainPrioritySection data={gailMainPriority} />
+        <WhatsNextSection data={gailTeamAndBuild} />
+        <GailOutcomesSection data={gailOutcomes} />
+        <WhatsNextSection data={gailWhatsNext} />
+        <ReflectionsSection data={gailReflections} />
+        <NextProjectNav next={gailNextProject} />
+        <Footer />
+      </PageTransition>
       <CaseStudyBottomGradient />
-      <Footer />
     </CaseStudyPageBackground>
   );
 }

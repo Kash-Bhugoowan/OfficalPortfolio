@@ -10,6 +10,7 @@ import {
   CaseStudyTopGradient,
   CaseStudyBottomGradient,
 } from "@/components/case-studies/CaseStudyPageBackground";
+import PageTransition from "@/components/PageTransition";
 import {
   conversationalDesignHeader,
   conversationalDesignPrinciples,
@@ -22,17 +23,17 @@ import {
 export default function ConversationalDesignSkillPage() {
   return (
     <CaseStudyPageBackground>
-      <div className="relative z-0">
-        <CaseStudyTopGradient />
-        <Nav />
+      <CaseStudyTopGradient />
+      <Nav />
+      <PageTransition>
         <SkillHeader data={conversationalDesignHeader} previous={conversationalDesignPrevious} />
-      </div>
-      <PrinciplesSection data={conversationalDesignPrinciples} underHeader />
-      <ProcessSection data={conversationalDesignProcess} />
-      <ExampleFlowsSection data={conversationalDesignExampleFlows} />
-      <NextProjectNav next={conversationalDesignNext} />
+        <PrinciplesSection data={conversationalDesignPrinciples} underHeader />
+        <ProcessSection data={conversationalDesignProcess} />
+        <ExampleFlowsSection data={conversationalDesignExampleFlows} />
+        <NextProjectNav next={conversationalDesignNext} />
+        <Footer />
+      </PageTransition>
       <CaseStudyBottomGradient />
-      <Footer />
     </CaseStudyPageBackground>
   );
 }
