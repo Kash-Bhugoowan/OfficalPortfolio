@@ -22,7 +22,7 @@ export const hsbcCaseStudy: HsbcCaseStudyHeaderData = {
   roleSummary:
     "As lead designer, I ran the design-thinking workshops and the UX/UI journey from early concept to an interactive prototype — turning HSBC's ambition to better support younger customers into a shared product direction for a complex innovation conversation.",
   heroVideo: {
-    src: "/images/Case_studies/HSBC/HeroHeader.mov",
+    src: "/images/Case_studies/HSBC/HeroHeader2.mp4",
   },
   outcome: {
     label: "Outcome",
@@ -166,7 +166,7 @@ export const hsbcWhatsNext: HsbcWhatsNextSectionData = {
   title: "From storytelling to roadmap",
   paragraph:
     "The prototype became the basis for a roadmap, not a shelved deck. It clarified the next bets HSBC could pursue — including how technology-enabled financial guidance could be woven into an established banking experience.",
-  video: { src: "/images/Case_studies/HSBC/HeroHeader.mov" },
+  video: { src: "/images/Case_studies/HSBC/HeroHeader2.mp4" },
 };
 
 export const hsbcReflections: ReflectionsSectionData = {

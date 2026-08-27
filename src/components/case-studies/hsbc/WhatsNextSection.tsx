@@ -50,7 +50,7 @@ export default function HsbcWhatsNextSection({ data }: { data: HsbcWhatsNextSect
           viewport={CASE_STUDY_REVEAL_VIEWPORT}
           transition={CASE_STUDY_REVEAL_TRANSITION}
           className="relative w-full max-w-[380px] overflow-hidden rounded-2xl shadow-[0px_8px_24px_0px_rgba(36,31,43,0.06)] md:w-[380px] md:shrink-0"
-          style={{ aspectRatio: video ? "958 / 1866" : "653 / 1100" }}
+          style={{ aspectRatio: video ? "554 / 1080" : "653 / 1100" }}
         >
           {video ? (
             <video

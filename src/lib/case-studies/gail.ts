@@ -21,7 +21,7 @@ export const gailCaseStudy: CaseStudyHeaderData = {
   roleSummary:
     "As IBM Client Engineering's lead designer and engagement lead, I led a generative-AI proof of concept that helped learning designers from the Department for Work and Pensions create policy-learning content faster, while keeping human judgement in control.",
   heroVideo: {
-    src: "/images/Case_studies/GAiL/Hero%20Header.mov",
+    src: "/images/Case_studies/GAiL/Hero%20Header.mp4",
   },
   stats: [
     {

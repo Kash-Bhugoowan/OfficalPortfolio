@@ -163,7 +163,7 @@ export default function HsbcCaseStudyHeader({
             <motion.div
               variants={item}
               className="relative mx-auto w-full max-w-[380px] overflow-hidden rounded-xl shadow-[0px_16px_48px_0px_rgba(36,31,43,0.10)] md:mx-0"
-              style={{ aspectRatio: heroVideo ? "958 / 1866" : "653 / 1100" }}
+              style={{ aspectRatio: heroVideo ? "554 / 1080" : "653 / 1100" }}
             >
               {heroVideo ? (
                 <video

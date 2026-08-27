@@ -19,7 +19,7 @@ export const minervaCaseStudy: CaseStudyHeaderData = {
   roleSummary:
     "As senior product designer, I led the service design and UX for Project Minerva, working with military engineers and guiding two junior designers. The aim was to turn complex military planning guidance into a usable AI-enabled task workflow without disconnecting it from the reality of the war room.",
   heroVideo: {
-    src: "/images/Case_studies/Minerva/Header%20Hero.mov",
+    src: "/images/Case_studies/Minerva/Header%20Hero2.mp4",
   },
   stats: [
     {
@@ -205,7 +205,7 @@ export const minervaWhatsNext: WhatsNextSectionData = {
 };
 
 export const minervaReflections: ReflectionsSectionData = {
-  video: { src: "/images/Case_studies/Minerva/Header%20Hero.mov" },
+  video: { src: "/images/Case_studies/Minerva/Header%20Hero2.mp4" },
   label: "Reflection",
   quote:
     "This project reinforced that even in a highly structured, rule-bound environment, empathy, facilitation, and co-creation remain essential design tools.",
