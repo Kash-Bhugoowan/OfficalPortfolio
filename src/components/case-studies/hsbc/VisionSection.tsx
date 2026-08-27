@@ -67,7 +67,7 @@ export default function HsbcVisionSection({ data }: { data: HsbcVisionSectionDat
             className={CASE_STUDY_IMAGE_FRAME}
             style={{ aspectRatio: "731 / 396" }}
           >
-            <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+            <Image src={image.src} alt={image.alt} fill className="object-cover object-left" unoptimized />
           </motion.div>
         </div>
       </div>

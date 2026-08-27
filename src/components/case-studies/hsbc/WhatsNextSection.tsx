@@ -7,7 +7,6 @@ import {
   CASE_STUDY_EYEBROW,
   CASE_STUDY_TITLE,
   CASE_STUDY_BODY,
-  CASE_STUDY_IMAGE_FRAME,
   CASE_STUDY_GAP_EYEBROW,
   CASE_STUDY_GAP_BLOCK,
   CASE_STUDY_REVEAL_HIDDEN,
@@ -24,12 +23,13 @@ export type HsbcWhatsNextSectionData = {
   eyebrow: string;
   title: string;
   paragraph: string;
-  image: { src: string; alt: string };
+  image?: { src: string; alt: string };
+  video?: { src: string };
 };
 
 export default function HsbcWhatsNextSection({ data }: { data: HsbcWhatsNextSectionData }) {
   const reduceMotion = useReducedMotion();
-  const { eyebrow, title, paragraph, image } = data;
+  const { eyebrow, title, paragraph, image, video } = data;
 
   return (
     <section
@@ -49,10 +49,21 @@ export default function HsbcWhatsNextSection({ data }: { data: HsbcWhatsNextSect
           whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
           viewport={CASE_STUDY_REVEAL_VIEWPORT}
           transition={CASE_STUDY_REVEAL_TRANSITION}
-          className={`${CASE_STUDY_IMAGE_FRAME} w-full max-w-[380px] md:w-[380px] md:shrink-0`}
-          style={{ aspectRatio: "653 / 1100" }}
+          className="relative w-full max-w-[380px] overflow-hidden rounded-2xl shadow-[0px_8px_24px_0px_rgba(36,31,43,0.06)] md:w-[380px] md:shrink-0"
+          style={{ aspectRatio: video ? "958 / 1866" : "653 / 1100" }}
         >
-          <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+          {video ? (
+            <video
+              src={video.src}
+              className="absolute inset-0 h-full w-full object-cover mix-blend-multiply"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          ) : (
+            <Image src={image!.src} alt={image!.alt} fill className="object-cover" unoptimized />
+          )}
         </motion.div>
       </div>
     </section>

@@ -54,7 +54,7 @@ export default function HsbcOutcomeSection({ data }: { data: HsbcOutcomeSectionD
           viewport={CASE_STUDY_REVEAL_VIEWPORT}
           transition={CASE_STUDY_REVEAL_TRANSITION}
           className={`${CASE_STUDY_IMAGE_FRAME} max-w-[960px]`}
-          style={{ aspectRatio: "1169 / 732" }}
+          style={{ aspectRatio: "1920 / 1080" }}
         >
           <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
         </motion.div>

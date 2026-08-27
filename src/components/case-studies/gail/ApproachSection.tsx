@@ -25,13 +25,20 @@ import {
 export type GailApproachSectionData = {
   eyebrow: string;
   title: string;
-  topImage: { src: string; alt: string };
+  // fit defaults to "cover" (crops to fill the frame). HSBC's approach
+  // screenshots don't share GAiL's ~734/453 aspect ratio, so those set
+  // "contain" to show the whole board instead of cropping into it.
+  topImage: { src: string; alt: string; fit?: "cover" | "contain" };
   paragraphs: string[];
   quote: string;
-  bottomImage: { src: string; alt: string };
+  bottomImage: { src: string; alt: string; fit?: "cover" | "contain" };
 };
 
-function RevealImage({ image }: { image: { src: string; alt: string } }) {
+function RevealImage({
+  image,
+}: {
+  image: { src: string; alt: string; fit?: "cover" | "contain" };
+}) {
   const reduceMotion = useReducedMotion();
   return (
     <motion.div
@@ -39,10 +46,16 @@ function RevealImage({ image }: { image: { src: string; alt: string } }) {
       whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
       viewport={CASE_STUDY_REVEAL_VIEWPORT}
       transition={CASE_STUDY_REVEAL_TRANSITION}
-      className={CASE_STUDY_IMAGE_FRAME}
+      className={`${CASE_STUDY_IMAGE_FRAME} bg-white`}
       style={{ aspectRatio: "734 / 453" }}
     >
-      <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        className={image.fit === "contain" ? "object-contain" : "object-cover"}
+        unoptimized
+      />
     </motion.div>
   );
 }

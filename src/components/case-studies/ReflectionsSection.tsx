@@ -13,9 +13,8 @@ import {
 } from "@/lib/case-studies/styles";
 
 export type ReflectionsSectionData = {
-  // Optional: HSBC's page already has a placeholder image directly above
-  // this section (WhatsNextSection's), so its Reflection omits this one
-  // rather than stacking two placeholders back to back.
+  // Optional: not every case study wants an image/video stacked directly
+  // above this section's quote block.
   image?: { src: string; alt: string };
   video?: { src: string };
   label: string;

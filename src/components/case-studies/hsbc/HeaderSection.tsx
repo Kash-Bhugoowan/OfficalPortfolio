@@ -37,7 +37,8 @@ export type HsbcCaseStudyHeaderData = {
   dek: string;
   roleLabel: string;
   roleSummary: string;
-  heroImage: { src: string; alt: string };
+  heroImage?: { src: string; alt: string };
+  heroVideo?: { src: string };
   outcome: {
     label: string;
     segments: HsbcOutcomeSegment[];
@@ -69,6 +70,7 @@ export default function HsbcCaseStudyHeader({
     roleLabel,
     roleSummary,
     heroImage,
+    heroVideo,
     outcome,
   } = data;
 
@@ -160,17 +162,28 @@ export default function HsbcCaseStudyHeader({
                 the text column; the leftover space there is expected. */}
             <motion.div
               variants={item}
-              className="relative mx-auto w-full max-w-[380px] overflow-hidden rounded-xl border-[1.5px] border-text-secondary shadow-[0px_16px_48px_0px_rgba(36,31,43,0.10)] md:mx-0"
-              style={{ aspectRatio: "653 / 1100" }}
+              className="relative mx-auto w-full max-w-[380px] overflow-hidden rounded-xl shadow-[0px_16px_48px_0px_rgba(36,31,43,0.10)] md:mx-0"
+              style={{ aspectRatio: heroVideo ? "958 / 1866" : "653 / 1100" }}
             >
-              <Image
-                src={heroImage.src}
-                alt={heroImage.alt}
-                fill
-                className="object-cover"
-                unoptimized
-                priority
-              />
+              {heroVideo ? (
+                <video
+                  src={heroVideo.src}
+                  className="absolute inset-0 h-full w-full object-cover mix-blend-multiply"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              ) : (
+                <Image
+                  src={heroImage!.src}
+                  alt={heroImage!.alt}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                  priority
+                />
+              )}
             </motion.div>
           </div>
         </motion.div>

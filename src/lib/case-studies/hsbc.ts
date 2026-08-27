@@ -21,9 +21,8 @@ export const hsbcCaseStudy: HsbcCaseStudyHeaderData = {
   roleLabel: "Role & Summary",
   roleSummary:
     "As lead designer, I ran the design-thinking workshops and the UX/UI journey from early concept to an interactive prototype — turning HSBC's ambition to better support younger customers into a shared product direction for a complex innovation conversation.",
-  heroImage: {
-    src: "https://placehold.co/653x1100",
-    alt: "HSBC Financial Coach product screenshot placeholder",
+  heroVideo: {
+    src: "/images/Case_studies/HSBC/HeroHeader.mov",
   },
   outcome: {
     label: "Outcome",
@@ -57,7 +56,11 @@ export const hsbcChallenge: ChallengeSectionData = {
 export const hsbcApproach: GailApproachSectionData = {
   eyebrow: "My Approach",
   title: "Creating a shared vision before creating a solution",
-  topImage: { src: "https://placehold.co/730x400", alt: "Design thinking workshop placeholder" },
+  topImage: {
+    src: "/images/Case_studies/HSBC/Approach1.png",
+    alt: "Workshop sticky-note board mapping the business challenges facing HSBC — slow digital transformation, regulatory constraints, competing with fintech — against the business advantages of a new digital coaching solution",
+    fit: "contain",
+  },
   paragraphs: [
     "I led in-person workshops using Design Thinking and IBM Value Engineering, starting with empathy mapping to surface the aspirations, fears, and motivations Gen Z customers hold about money.",
     "Partway through, I introduced an activity I designed for this session: Vision Statements. Rather than let stakeholders jump straight to features — which reliably produced generic ideas — I asked them to first articulate what a successful future should achieve for the user.",
@@ -66,7 +69,11 @@ export const hsbcApproach: GailApproachSectionData = {
   ],
   quote:
     "Vision Statements gave stakeholders a way to align on the outcome before debating the interface — turning a broad innovation brief into shared product intent.",
-  bottomImage: { src: "https://placehold.co/730x374", alt: "Workshop synthesis placeholder" },
+  bottomImage: {
+    src: "/images/Case_studies/HSBC/Approach2.png",
+    alt: "Feature-ideation mind map exploring AI-categorised spending, monthly insight summaries, mood-based interaction, proactive spending alternatives, and a generative-AI chatbot",
+    fit: "contain",
+  },
 };
 
 export const hsbcVision: HsbcVisionSectionData = {
@@ -79,7 +86,10 @@ export const hsbcVision: HsbcVisionSectionData = {
     "The output was an opportunity statement and one coherent concept journey: a Financial Coach that could make financial guidance feel personal, understandable, and relevant to the individual.",
     "I made a deliberate call not to walk away with a feature list. The product needed to be a guided experience connecting everyday financial behaviour to confidence-building support — not a set of disconnected utilities.",
   ],
-  image: { src: "https://placehold.co/731x396", alt: "Concept journey map placeholder" },
+  image: {
+    src: "/images/Case_studies/HSBC/Defining%20Vision.png",
+    alt: "Opportunity Statement workshop board framing the problem, the innovative idea, the target users (millennials and Gen Z), and the benefit to both users and HSBC",
+  },
 };
 
 export const hsbcNorthStar: HsbcNorthStarSectionData = {
@@ -93,11 +103,34 @@ export const hsbcNorthStar: HsbcNorthStarSectionData = {
     "The point was never to make banking “look younger.” It was to make guidance feel accessible and relevant while staying recognisably part of HSBC's ecosystem.",
   ],
   images: [
-    { src: "https://placehold.co/737x512?text=Screen+1", alt: "Financial Coach screen placeholder 1" },
-    { src: "https://placehold.co/737x512?text=Screen+2", alt: "Financial Coach screen placeholder 2" },
-    { src: "https://placehold.co/737x512?text=Screen+3", alt: "Financial Coach screen placeholder 3" },
-    { src: "https://placehold.co/737x512?text=Screen+4", alt: "Financial Coach screen placeholder 4" },
-    { src: "https://placehold.co/737x512?text=Screen+5", alt: "Financial Coach screen placeholder 5" },
+    {
+      src: "/images/Case_studies/HSBC/Image%20Gallery/Image%20Gallery%201.png",
+      alt: "Sprint 1 low-fidelity wireframes for the goals flow — log-in, home landing, goals landing, the multi-step Create Goal flow, and the generated goal roadmap",
+    },
+    {
+      src: "/images/Case_studies/HSBC/Image%20Gallery/Image%20gallery%202.png",
+      alt: "Sprint 2 low-fidelity wireframes for the Insights flow — spending-category breakdowns, a single-card view, unreconciled spending, and travel spending with smart-spending suggestions",
+    },
+    {
+      src: "/images/Case_studies/HSBC/Image%20Gallery/Image%20Gallery%203.png",
+      alt: "Mid-fidelity screens for the home landing page, budget goals list, and the four-step Create a Goal flow with placeholder copy",
+    },
+    {
+      src: "/images/Case_studies/HSBC/Image%20Gallery/Image%20Gallery%204.png",
+      alt: "Higher-fidelity dark-themed Insights screens showing the card carousel and spending-category pie charts across different states",
+    },
+    {
+      src: "/images/Case_studies/HSBC/Image%20Gallery/Image%20Gallery%205.png",
+      alt: "Further Insights screen explorations, including a purple spending-analytics donut chart and per-card category breakdowns",
+    },
+    {
+      src: "/images/Case_studies/HSBC/Image%20Gallery/Image%20Gallery%206.png",
+      alt: "Goal detail view for a 'Flights to Mexico' savings goal alongside further Insights colour-theme explorations and a personalised weekly budget roadmap",
+    },
+    {
+      src: "/images/Case_studies/HSBC/Image%20Gallery/Image%20Gallery%207.png",
+      alt: "Three colour-theme explorations of the home landing page, showing notifications, spending-metric rings, and the saving-streak card",
+    },
   ],
 };
 
@@ -118,7 +151,10 @@ export const hsbcOutcome: HsbcOutcomeSectionData = {
   title: "A strategic vision: from storytelling to engagement",
   intro:
     "Turning an open-ended innovation brief into a coherent, interactive product vision opened conversations about how IBM technology could support HSBC's existing app, and where the concept could be taken next.",
-  image: { src: "https://placehold.co/1169x732", alt: "Final presentation analysis placeholder" },
+  image: {
+    src: "/images/Case_studies/HSBC/Outcome.png",
+    alt: "HSBC Financial Coach App roadmap slide outlining MVP 1 (expanding the assistant with Watson X), MVP 2 (personalising the assistant), and the scaling and production phase",
+  },
   quoteParagraphs: [
     "I presented the final direction to HSBC's senior executives alongside this analysis, giving stakeholders a clear view of how IBM would implement the feature.",
     "The value of the engagement sat in the clarity it created: an aligned customer problem, a tangible future journey, and an informed basis for the technical and product decisions that would follow.",
@@ -130,7 +166,7 @@ export const hsbcWhatsNext: HsbcWhatsNextSectionData = {
   title: "From storytelling to roadmap",
   paragraph:
     "The prototype became the basis for a roadmap, not a shelved deck. It clarified the next bets HSBC could pursue — including how technology-enabled financial guidance could be woven into an established banking experience.",
-  image: { src: "https://placehold.co/653x1100", alt: "Roadmap discussion placeholder" },
+  video: { src: "/images/Case_studies/HSBC/HeroHeader.mov" },
 };
 
 export const hsbcReflections: ReflectionsSectionData = {
