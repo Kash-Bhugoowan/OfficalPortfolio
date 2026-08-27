@@ -46,7 +46,7 @@ export default function CoreUxSection({ data }: { data: CoreUxSectionData }) {
             viewport={CASE_STUDY_REVEAL_VIEWPORT}
             transition={CASE_STUDY_REVEAL_TRANSITION}
             className={`${CASE_STUDY_IMAGE_FRAME} max-w-[960px]`}
-            style={{ aspectRatio: "1169 / 732" }}
+            style={{ aspectRatio: "2546 / 1228" }}
           >
             <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
           </motion.div>

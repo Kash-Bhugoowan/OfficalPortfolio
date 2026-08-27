@@ -20,9 +20,8 @@ export const gailCaseStudy: CaseStudyHeaderData = {
   roleLabel: "Role & Summary",
   roleSummary:
     "As IBM Client Engineering's lead designer and engagement lead, I led a generative-AI proof of concept that helped learning designers from the Department for Work and Pensions create policy-learning content faster, while keeping human judgement in control.",
-  heroImage: {
-    src: "https://placehold.co/1169x732",
-    alt: "Project GAiL product screenshot placeholder",
+  heroVideo: {
+    src: "/images/Case_studies/GAiL/Hero%20Header.mov",
   },
   stats: [
     {
@@ -63,7 +62,10 @@ export const gailChallenge: ChallengeSectionData = {
 export const gailApproach: GailApproachSectionData = {
   eyebrow: "My Approach",
   title: "Starting with the designers' workflow, not the technology",
-  topImage: { src: "https://placehold.co/734x453", alt: "Learning-designer journey mapping workshop placeholder" },
+  topImage: {
+    src: "/images/Case_studies/GAiL/myapproach1.png",
+    alt: "Whiteboard journey map of the learning designer's current workflow, broken into steps, actions, and pain points using colour-coded sticky notes",
+  },
   paragraphs: [
     "I began by bringing DWP stakeholders into workshops and mapped two learning-designer journeys, to understand where time was being spent, where quality risk entered the process, and where generative AI could add value without removing the designer's professional judgement.",
     "The workshops moved beyond a broad request to “use AI to create learning.” Using the journeys and a big-ideas activity, we identified what the tool needed to do, where designers needed to intervene, and what confidence they'd need before trusting an output.",
@@ -71,7 +73,10 @@ export const gailApproach: GailApproachSectionData = {
   ],
   quote:
     "Mapping the work made the opportunity specific. The aim was not to automate content creation end-to-end, but to reduce the distance between policy source and a reviewable learning draft.",
-  bottomImage: { src: "https://placehold.co/734x453", alt: "Workshop synthesis placeholder" },
+  bottomImage: {
+    src: "/images/Case_studies/GAiL/myapproach2.png",
+    alt: "Whiteboard synthesis of the proposed workflow, clustering research findings and improvement ideas by theme with colour-coded sticky notes",
+  },
 };
 
 export const gailCoCreation: GailCoCreationSectionData = {
@@ -85,9 +90,30 @@ export const gailCoCreation: GailCoCreationSectionData = {
     "This created a collaborative back-and-forth with DWP. I developed the work through low, mid, and high-fidelity stages, using each stage to test the right level of control, clarity, and confidence.",
   ],
   images: [
-    { src: "https://placehold.co/737x512?text=Low-fi+wireframe", alt: "Low-fidelity wireframe placeholder" },
-    { src: "https://placehold.co/737x512?text=Mid-fi+flow", alt: "Mid-fidelity flow placeholder" },
-    { src: "https://placehold.co/737x512?text=High-fi+screen", alt: "High-fidelity screen placeholder" },
+    {
+      src: "/images/Case_studies/GAiL/Gallery%20Images/Image%20Gallery1.jpg",
+      alt: "Early UI sketches for a mock login and document-upload flow, paired with user stories and prioritisation notes on outstanding product-owner questions",
+    },
+    {
+      src: "/images/Case_studies/GAiL/Gallery%20Images/Image%20Gallery2.jpg",
+      alt: "Detailed service-blueprint diagram mapping the three-part generation flow — input documents, generate & review outline, generate & review content — with supporting features and user stories",
+    },
+    {
+      src: "/images/Case_studies/GAiL/Gallery%20Images/Image%20Gallery3.jpg",
+      alt: "Workshop board playing back the to-be user journey across seven steps, from inputting a commissioning document through to export",
+    },
+    {
+      src: "/images/Case_studies/GAiL/Gallery%20Images/Image%20Gallery4.jpg",
+      alt: "Flow diagram linking the homepage and step-by-step content-generation screens to the underlying prompt design and RAG architecture — source documents, LLM summarisation prompts, and Postgres/Milvus storage",
+    },
+    {
+      src: "/images/Case_studies/GAiL/Gallery%20Images/Image%20Gallery%205.jpg",
+      alt: "Mid-fidelity wireframe of the module outline screen with an open version-history panel, annotated to show where output type can be changed",
+    },
+    {
+      src: "/images/Case_studies/GAiL/Gallery%20Images/Image%20Gallery%206.jpg",
+      alt: "Wireframe of the paragraph-by-paragraph content review screen, pairing generated text with reading time, key points, and knowledge sources used",
+    },
   ],
 };
 
@@ -100,7 +126,10 @@ export const gailMainPriority: GailMainPrioritySectionData = {
     "I also made changes and versions visible, so designers could see what had been generated, what had changed, and what still required their judgement before it became live learning content.",
     "This wasn't a decorative trust feature — it was how I translated responsible use of generative AI into an interaction model. The tool did the heavy lifting; the learning designer stayed in control of the evidence, the wording, and the final output.",
   ],
-  image: { src: "https://placehold.co/732x518", alt: "Paragraph-level review flow placeholder" },
+  image: {
+    src: "/images/Case_studies/GAiL/My%20Design%20Decision.png",
+    alt: "Screenshot of the Review Generated Learning screen, showing paragraph-by-paragraph content review with policy source extracts and a knowledge-sources panel",
+  },
   imageQuote: "Designers could validate each paragraph against policy, rather than accept a final output on trust.",
 };
 
@@ -181,7 +210,7 @@ export const gailWhatsNext: WhatsNextSectionData = {
 };
 
 export const gailReflections: ReflectionsSectionData = {
-  image: { src: "https://placehold.co/1169x732", alt: "Reflections placeholder" },
+  video: { src: "/images/Case_studies/GAiL/Reflection.mov" },
   label: "Reflection",
   quote:
     "This project taught me that responsible generative AI is not principally about replacing a person's work. It is about designing the hand-offs between the technology and the person's judgement.",

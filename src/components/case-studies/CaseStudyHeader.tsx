@@ -41,7 +41,8 @@ export type CaseStudyHeaderData = {
   dek: string;
   roleLabel: string;
   roleSummary: string;
-  heroImage: { src: string; alt: string };
+  heroImage?: { src: string; alt: string };
+  heroVideo?: { src: string };
   stats: CaseStudyStat[];
 };
 
@@ -74,6 +75,7 @@ export default function CaseStudyHeader({
     roleLabel,
     roleSummary,
     heroImage,
+    heroVideo,
     stats,
   } = data;
 
@@ -153,17 +155,28 @@ export default function CaseStudyHeader({
               so it keeps the scroll-triggered reveal. */}
           <motion.div
             variants={item}
-            className="relative w-full max-w-[960px] overflow-hidden rounded-xl border-[1.5px] border-text-secondary shadow-[0px_16px_48px_0px_rgba(36,31,43,0.10)]"
+            className="relative w-full max-w-[960px] overflow-hidden rounded-xl shadow-[0px_16px_48px_0px_rgba(36,31,43,0.10)]"
             style={{ aspectRatio: "1169 / 732" }}
           >
-            <Image
-              src={heroImage.src}
-              alt={heroImage.alt}
-              fill
-              className="object-cover"
-              unoptimized
-              priority
-            />
+            {heroVideo ? (
+              <video
+                src={heroVideo.src}
+                className="absolute inset-0 h-full w-full object-cover object-[center_-2px]"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <Image
+                src={heroImage!.src}
+                alt={heroImage!.alt}
+                fill
+                className="object-cover"
+                unoptimized
+                priority
+              />
+            )}
           </motion.div>
         </motion.div>
 

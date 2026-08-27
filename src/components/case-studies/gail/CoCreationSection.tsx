@@ -90,7 +90,7 @@ export default function GailCoCreationSection({ data }: { data: GailCoCreationSe
             className={`flex flex-col ${CASE_STUDY_GAP_EYEBROW}`}
           >
             <div
-              className="relative w-full overflow-hidden rounded-2xl border border-zinc-300 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)]"
+              className="relative w-full overflow-hidden rounded-2xl border border-zinc-300 bg-zinc-100 shadow-[0px_8px_24px_0px_rgba(36,31,43,0.08)]"
               style={{ aspectRatio: "737 / 512" }}
             >
               {/* Default (sync) AnimatePresence mode, not "wait" — the incoming
@@ -107,7 +107,7 @@ export default function GailCoCreationSection({ data }: { data: GailCoCreationSe
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0"
                 >
-                  <Image src={current.src} alt={current.alt} fill className="object-cover" unoptimized />
+                  <Image src={current.src} alt={current.alt} fill className="object-contain" unoptimized />
                 </motion.div>
               </AnimatePresence>
             </div>

@@ -18,9 +18,8 @@ export const minervaCaseStudy: CaseStudyHeaderData = {
   roleLabel: "Role & Summary",
   roleSummary:
     "As senior product designer, I led the service design and UX for Project Minerva, working with military engineers and guiding two junior designers. The aim was to turn complex military planning guidance into a usable AI-enabled task workflow without disconnecting it from the reality of the war room.",
-  heroImage: {
-    src: "https://placehold.co/1169x732",
-    alt: "Project Minerva product screenshot placeholder",
+  heroVideo: {
+    src: "/images/Case_studies/Minerva/Header%20Hero.mov",
   },
   stats: [
     {
@@ -63,19 +62,28 @@ export const minervaApproach: ApproachSectionData = {
   title: "Starting with the work, not the interface",
   columns: [
     {
-      image: { src: "https://placehold.co/733x453", alt: "Service design workshop placeholder" },
+      image: {
+        src: "/images/Case_studies/Minerva/MOD%20workshop1%20copy.png",
+        alt: "Service design workshop with military engineers around a whiteboard",
+      },
       paragraph:
         "I facilitated workshops with military engineers and mapped how tasks, decisions, and guidance moved through the operational environment. This service-design work gave the team a shared view of the people, systems, handbooks, constraints, and handovers behind the screens.",
     },
     {
-      image: { src: "https://placehold.co/732x453", alt: "Research synthesis placeholder" },
+      image: {
+        src: "/images/Case_studies/Minerva/workshopimage2.jpeg",
+        alt: "Whiteboard synthesis of workshop findings, mapping steps, tools, and pain points",
+      },
       paragraph:
         "The research changed the product direction. Instead of attempting to automate every activity, we focused on the points where engineers most needed support: creating tasks, following structured guidance, and coordinating work without losing sight of the wider scenario.",
     },
   ],
   fieldObservation: {
     eyebrow: "Field observation",
-    image: { src: "https://placehold.co/733x453", alt: "Field observation placeholder" },
+    image: {
+      src: "/images/Case_studies/Minerva/Fiedl%20Observation.jpg",
+      alt: "Soldiers in a field command tent planning around map tables",
+    },
     introPrefix: "Whilst observing the soldiers, a ",
     introHighlight: "key insight",
     introSuffix: " emerged: ",
@@ -89,7 +97,10 @@ export const minervaApproach: ApproachSectionData = {
 export const minervaCoreUx: CoreUxSectionData = {
   eyebrow: "Core UX",
   title: "Turning complex guidance into a focused blueprint",
-  image: { src: "https://placehold.co/1527x957", alt: "Core UX interface placeholder" },
+  image: {
+    src: "/images/Case_studies/Minerva/CoreUX2.png",
+    alt: "Flow diagram mapping handbook guidance and task data through the interface",
+  },
   intro:
     "The solution needed to make handbook-led guidance easier to use while keeping it connected to the work it informed. The most difficult part of the experience was the right-hand navigation and “Add Task flow”. This was where the soldiers needed to turn complex handbook guidance into practical tasks.",
   quote:
@@ -105,10 +116,16 @@ export const minervaMainPriority: MainPrioritySectionData = {
     "My key design move was to keep the operational timeline in constant view. My position was that soldiers needed to remain in the main planning-table context while adding a task.",
     "A task has timing, dependencies, resources, and consequences for the wider plan. Moving someone away from that view risked making a high-stakes planning task harder, not easier.",
   ],
-  image: { src: "https://placehold.co/596x727", alt: "Add Task flow placeholder" },
+  image: {
+    src: "/images/Case_studies/Minerva/Main%20priority.jpg",
+    alt: "Annotated Add Task panel design with stakeholder notes on activity, assets, and timing",
+  },
   pushback: {
     eyebrow: "Managing Design Pushback",
-    image: { src: "https://placehold.co/732x494", alt: "Design pushback prototype placeholder" },
+    image: {
+      src: "/images/Case_studies/Minerva/Pushback.png",
+      alt: "Alternative Add New Obstacle form prototype proposed by the IBM stakeholder",
+    },
     paragraphs: [
       "An internal IBM stakeholder proposed an alternative approach. Rather than simply reject it, I prototyped both directions and made the usability trade-off visible to the soldiers.",
       "The soldiers could then make an informed decision. We retained my design direction, with the left-hand navigation.",
@@ -127,11 +144,32 @@ export const minervaCoCreation: CoCreationSectionData = {
     "Throughout delivery, I worked closely with product, engineering, and Defence stakeholders to ensure the experience reflected real planning practice while working within the constraints of the technology and handbook guidance.",
   ],
   images: [
-    { src: "https://placehold.co/737x512?text=Image+1", alt: "Design gallery placeholder 1" },
-    { src: "https://placehold.co/737x512?text=Image+2", alt: "Design gallery placeholder 2" },
-    { src: "https://placehold.co/737x512?text=Image+3", alt: "Design gallery placeholder 3" },
-    { src: "https://placehold.co/737x512?text=Image+4", alt: "Design gallery placeholder 4" },
-    { src: "https://placehold.co/737x512?text=Image+5", alt: "Design gallery placeholder 5" },
+    {
+      src: "/images/Case_studies/Minerva/Image%20Gallery/MOD%20Gallery1.png",
+      alt: "Collage of existing planning and Gantt-chart tools reviewed as inspiration",
+    },
+    {
+      src: "/images/Case_studies/Minerva/Image%20Gallery/MOD%20Gallery2.jpg",
+      alt: "Whiteboard sketch mapping the equipment and obstacle selection flow from doctrine",
+    },
+    {
+      src: "/images/Case_studies/Minerva/Image%20Gallery/MOD%20Gallery3.jpg",
+      alt: "Whiteboard sketch of the MVP form and info panel layout",
+    },
+    {
+      src: "/images/Case_studies/Minerva/Image%20Gallery/MOD%20Gallery4.jpg",
+      alt: "Workshop session agenda for a data-creation design workshop",
+    },
+    {
+      src: "/images/Case_studies/Minerva/Image%20Gallery/MOD%20Gallery5.mov",
+      alt: "Screen recording panning across Gantt timeline design explorations",
+      type: "video",
+    },
+    {
+      src: "/images/Case_studies/Minerva/Image%20Gallery/MOD%20Gallery6.mov",
+      alt: "Screen recording of the dark-mode obstacle and mission timeline UI",
+      type: "video",
+    },
   ],
 };
 
@@ -150,7 +188,10 @@ export const minervaOutcomes: OutcomesSectionData = {
     "These results validated more than the interface. They showed that a product designed around operational context could help engineers work faster and with greater confidence.",
   quote:
     "The measure of success was not whether the tool looked simpler. It was whether engineers could learn it quickly, use it confidently, and keep pace with live operational work.",
-  image: { src: "https://placehold.co/533x688", alt: "Outcomes placeholder" },
+  image: {
+    src: "/images/Case_studies/Minerva/results.png",
+    alt: "Engineers using the tool on laptops during live field testing",
+  },
 };
 
 export const minervaWhatsNext: WhatsNextSectionData = {
@@ -164,7 +205,7 @@ export const minervaWhatsNext: WhatsNextSectionData = {
 };
 
 export const minervaReflections: ReflectionsSectionData = {
-  image: { src: "https://placehold.co/1169x732", alt: "Reflections placeholder" },
+  video: { src: "/images/Case_studies/Minerva/Header%20Hero.mov" },
   label: "Reflection",
   quote:
     "This project reinforced that even in a highly structured, rule-bound environment, empathy, facilitation, and co-creation remain essential design tools.",

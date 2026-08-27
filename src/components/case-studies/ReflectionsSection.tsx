@@ -17,6 +17,7 @@ export type ReflectionsSectionData = {
   // this section (WhatsNextSection's), so its Reflection omits this one
   // rather than stacking two placeholders back to back.
   image?: { src: string; alt: string };
+  video?: { src: string };
   label: string;
   quote: string;
   supporting: string;
@@ -35,7 +36,7 @@ function QuoteIcon() {
 
 export default function ReflectionsSection({ data }: { data: ReflectionsSectionData }) {
   const reduceMotion = useReducedMotion();
-  const { image, label, quote, supporting } = data;
+  const { image, video, label, quote, supporting } = data;
 
   return (
     <section
@@ -43,7 +44,7 @@ export default function ReflectionsSection({ data }: { data: ReflectionsSectionD
       style={{ marginTop: CASE_STUDY_SECTION_GAP_PX }}
     >
       <div className={`mx-auto flex w-full max-w-[1227px] flex-col ${CASE_STUDY_GAP_BLOCK}`}>
-        {image && (
+        {(video || image) && (
           <motion.div
             initial={reduceMotion ? undefined : CASE_STUDY_REVEAL_HIDDEN}
             whileInView={reduceMotion ? undefined : CASE_STUDY_REVEAL_VISIBLE}
@@ -52,7 +53,18 @@ export default function ReflectionsSection({ data }: { data: ReflectionsSectionD
             className={`${CASE_STUDY_IMAGE_FRAME} max-w-[960px]`}
             style={{ aspectRatio: "1169 / 732" }}
           >
-            <Image src={image.src} alt={image.alt} fill className="object-cover" unoptimized />
+            {video ? (
+              <video
+                src={video.src}
+                className="absolute inset-0 h-full w-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <Image src={image!.src} alt={image!.alt} fill className="object-cover" unoptimized />
+            )}
           </motion.div>
         )}
 

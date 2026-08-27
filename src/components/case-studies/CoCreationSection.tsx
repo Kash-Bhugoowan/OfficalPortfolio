@@ -17,11 +17,13 @@ import {
   CASE_STUDY_REVEAL_TRANSITION,
 } from "@/lib/case-studies/styles";
 
+export type CoCreationMedia = { src: string; alt: string; type?: "image" | "video" };
+
 export type CoCreationSectionData = {
   eyebrow: string;
   title: string;
   paragraphs: string[];
-  images: { src: string; alt: string }[];
+  images: CoCreationMedia[];
 };
 
 function ArrowIcon({ direction }: { direction: "left" | "right" }) {
@@ -97,7 +99,18 @@ export default function CoCreationSection({ data }: { data: CoCreationSectionDat
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0"
               >
-                <Image src={current.src} alt={current.alt} fill className="object-cover" unoptimized />
+                {current.type === "video" ? (
+                  <video
+                    src={current.src}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <Image src={current.src} alt={current.alt} fill className="object-cover" unoptimized />
+                )}
               </motion.div>
             </AnimatePresence>
           </div>
