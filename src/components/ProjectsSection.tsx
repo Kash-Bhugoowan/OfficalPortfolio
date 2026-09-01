@@ -12,8 +12,8 @@ const projects: Project[] = [
     imageAspectRatio: "1643/957",
     tags: ["Automation", "Complex Systems", "UX & UI Design", "Workshop Facilitation"],
     stats: [
-      { label: "Reduced error", value: "20%" },
-      { label: "Increased efficiency", value: "80%" },
+      { label: "Time Reduced", value: "83%" },
+      { label: "Increased efficiency", value: "6x Faster" },
     ],
     // Mobile-only colors (base classes) override to the original desktop
     // ones at md+ — same pattern used elsewhere for mobile-vs-desktop
