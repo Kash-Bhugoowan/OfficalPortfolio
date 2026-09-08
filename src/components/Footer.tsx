@@ -51,8 +51,8 @@ function BackToTopButton({ className }: { className?: string }) {
 
 export default function Footer() {
   return (
-    <div className="relative mt-[140px] flex h-32 w-full flex-col justify-center border-t border-white/5 bg-bg-inverse px-6 md:block md:px-0">
-      <div className="flex flex-col items-start justify-start md:absolute md:top-[41px] md:left-[100px]">
+    <div className="relative mt-[140px] flex h-32 w-full flex-col justify-center border-t border-white/5 bg-bg-inverse px-6 lg:block lg:px-0">
+      <div className="flex flex-col items-start justify-start lg:absolute lg:top-[41px] lg:left-[100px]">
         <div className="flex flex-col items-start justify-start self-stretch">
           <div className="justify-start font-['Manrope'] text-lg leading-7 font-medium text-white/90">
             Karishma Bhugoowan
@@ -61,14 +61,21 @@ export default function Footer() {
         <div className="flex flex-col items-start justify-start pt-1">
           <div className="justify-start font-['DM_Sans'] text-xs leading-5 font-normal tracking-tight whitespace-nowrap text-white/40">
             Product Designer · London
-            <span className="hidden md:inline"> · </span>
-            <br className="md:hidden" />
+            <span className="hidden lg:inline"> · </span>
+            <br className="lg:hidden" />
             Vibe Coded by Me
           </div>
         </div>
       </div>
 
-      <div className="hidden items-center gap-14 md:absolute md:top-[51px] md:right-[100px] md:flex">
+      {/*
+        Two-column layout needs md:left-[100px]/right-[100px] absolute
+        blocks to clear each other, which measured safe only from ~950px —
+        below that (the 768-920px tablet range) they overlapped. Switched
+        the whole absolute layout to lg: (1024px) for a real margin instead
+        of the md: breakpoint's fixed 768px cutoff.
+      */}
+      <div className="hidden items-center gap-14 lg:absolute lg:top-[51px] lg:right-[100px] lg:flex">
         <div className="flex items-center gap-6">
           {footerLinks.map((link) =>
             link.href ? (
@@ -97,7 +104,7 @@ export default function Footer() {
         <BackToTopButton />
       </div>
 
-      <BackToTopButton className="absolute top-1/2 right-6 -translate-y-1/2 md:hidden" />
+      <BackToTopButton className="absolute top-1/2 right-6 -translate-y-1/2 lg:hidden" />
     </div>
   );
 }
