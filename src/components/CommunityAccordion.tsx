@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type MouseEvent, type ReactNode } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 
 function ChevronDown({ className = "" }: { className?: string }) {
   return <span className={`block size-1.5 rotate-45 border-r-2 border-b-2 ${className}`} />;
@@ -145,90 +145,94 @@ const items: AccordionItem[] = [
   },
 ];
 
-export default function CommunityAccordion() {
-  const [openIndexes, setOpenIndexes] = useState<Set<string>>(new Set());
+// Built on native <details>/<summary> rather than a div-plus-onClick, so
+// expand/collapse works with zero JavaScript (keyboard included — summary
+// is natively focusable and Enter/Space-activatable). <details> owns
+// visibility as the source of truth: without JS, clicking summary triggers
+// the browser's own instant toggle, no React involved at all.
+//
+// Crucially, the body below must be an ALWAYS-rendered child, never
+// `{isOpen && <body/>}` — the browser's native show/hide for <details>
+// only works on content that's actually there. Conditionally mounting it
+// on React state (as an AnimatePresence-only version would) means it's
+// simply absent from the server HTML until JS flips isOpen, which can
+// never happen without JS. So the height/opacity "closed" state also
+// can't be a declarative `initial`/`animate` prop baked into the SSR
+// markup (same trap) — it's applied imperatively, only once a click
+// handler actually runs, via useAnimation's controls.set()/.start(). That
+// keeps the server-rendered div unstyled (natural height, native <details>
+// hides it) while still giving JS users a real 0-to-auto height animation.
+function AccordionRow({ item }: { item: AccordionItem }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+  const controls = useAnimation();
 
-  const openRow = (index: string) =>
-    setOpenIndexes((prev) => new Set(prev).add(index));
-
-  const closeRow = (index: string) =>
-    setOpenIndexes((prev) => {
-      const next = new Set(prev);
-      next.delete(index);
-      return next;
-    });
+  const handleSummaryClick = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (isOpen) {
+      setIsOpen(false);
+      controls.start({ height: 0, opacity: 0, transition: { duration: DURATION, ease: EASE } }).then(() => {
+        if (detailsRef.current) detailsRef.current.open = false;
+      });
+    } else {
+      if (detailsRef.current) detailsRef.current.open = true;
+      controls.set({ height: 0, opacity: 0 });
+      controls.start({ height: "auto", opacity: 1, transition: { duration: DURATION, ease: EASE } });
+      setIsOpen(true);
+    }
+  };
 
   return (
-    <div className="mx-auto w-full max-w-[1227px]">
-      {items.map((item) => {
-        const isOpen = openIndexes.has(item.index);
-        return (
-          <div key={item.index} className="border-b border-gray-300">
-            <div
-              onClick={() => !isOpen && openRow(item.index)}
-              className={`group flex items-center justify-between gap-4 rounded-2xl px-4 py-6 -mx-4 ${colorTransitionClass} ${
-                isOpen ? "" : "cursor-pointer md:hover:bg-[#faf8ff]"
-              }`}
+    <details ref={detailsRef} className="border-b border-gray-300">
+      <summary
+        onClick={handleSummaryClick}
+        className={`group flex list-none items-center justify-between gap-4 rounded-2xl px-4 py-6 -mx-4 [&::-webkit-details-marker]:hidden ${colorTransitionClass} cursor-pointer md:hover:bg-[#faf8ff]`}
+      >
+        <div className="flex items-center gap-5">
+          <span className="text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]">
+            {item.index}
+          </span>
+          <div className="flex flex-col items-start gap-0.5">
+            <span
+              className={`text-2xl font-light text-foreground ${colorTransitionClass} md:group-hover:text-accent`}
             >
-              <div className="flex items-center gap-5">
-                <span className="text-xs font-semibold tracking-wider text-text-secondary uppercase font-[family-name:var(--font-dm-sans)]">
-                  {item.index}
-                </span>
-                <div className="flex flex-col items-start gap-0.5">
-                  <span
-                    className={`text-2xl font-light text-foreground ${colorTransitionClass} ${
-                      isOpen ? "" : "md:group-hover:text-accent"
-                    }`}
-                  >
-                    {item.title}
-                  </span>
-                  <span className="text-sm font-medium text-text-secondary">{item.tags}</span>
-                </div>
-              </div>
-
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (isOpen) closeRow(item.index);
-                  else openRow(item.index);
-                }}
-                className="flex cursor-pointer items-center gap-3"
-              >
-                <span
-                  className={`text-sm font-medium ${colorTransitionClass} ${isOpen ? "text-accent" : "text-text-secondary"}`}
-                >
-                  {isOpen ? "Collapse" : "Expand"}
-                </span>
-                <motion.span
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: DURATION, ease: EASE }}
-                  className={`flex size-8 items-center justify-center rounded-full ${colorTransitionClass} ${
-                    isOpen
-                      ? "bg-white"
-                      : "border-[1.5px] border-text-secondary"
-                  }`}
-                >
-                  <ChevronDown className={isOpen ? "border-accent" : "border-text-secondary"} />
-                </motion.span>
-              </div>
-            </div>
-
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: DURATION, ease: EASE }}
-                  className="overflow-hidden"
-                >
-                  <div className="pb-8">{item.body}</div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              {item.title}
+            </span>
+            <span className="text-sm font-medium text-text-secondary">{item.tags}</span>
           </div>
-        );
-      })}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span
+            className={`text-sm font-medium ${colorTransitionClass} ${isOpen ? "text-accent" : "text-text-secondary"}`}
+          >
+            {isOpen ? "Collapse" : "Expand"}
+          </span>
+          <motion.span
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: DURATION, ease: EASE }}
+            className={`flex size-8 items-center justify-center rounded-full ${colorTransitionClass} ${
+              isOpen ? "bg-white" : "border-[1.5px] border-text-secondary"
+            }`}
+          >
+            <ChevronDown className={isOpen ? "border-accent" : "border-text-secondary"} />
+          </motion.span>
+        </div>
+      </summary>
+
+      <motion.div initial={false} animate={controls} className="overflow-hidden">
+        <div className="pb-8">{item.body}</div>
+      </motion.div>
+    </details>
+  );
+}
+
+export default function CommunityAccordion() {
+  return (
+    <div className="mx-auto w-full max-w-[1227px]">
+      {items.map((item) => (
+        <AccordionRow key={item.index} item={item} />
+      ))}
     </div>
   );
 }

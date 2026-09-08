@@ -28,6 +28,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${manrope.variable} ${dmSans.variable} scroll-auto antialiased md:scroll-smooth`}
     >
       <body className="flex min-h-dvh flex-col">
+        {/*
+          Every mount/scroll-in animation on this site (PageTransition, the
+          per-section Framer Motion reveals, the sticky project cards) ships
+          its hidden state as an inline opacity:0 style on the server, and
+          only a client-side effect ever flips it to visible. Without JS
+          that effect never runs, so content stays invisible forever. This
+          block only takes effect when scripting is disabled, forcing any
+          such element back to visible.
+
+          A few elements aren't "not yet revealed" but a deliberately
+          hidden alternate state (a JS-only hover glow, one half of a
+          click-to-toggle cross-fade) — the generic rule above would wrongly
+          force those on too. The class overrides below come after it in
+          source order so they win the specificity tie and carve out the
+          correct exception for each. See dp-hover-glow/dp-diagram-face/
+          dp-photo-face in DesignPhilosophy.tsx.
+        */}
+        <noscript>
+          <style>{`[style*="opacity:0;"],[style$="opacity:0"]{opacity:1!important;transform:none!important}.dp-hover-glow,.dp-diagram-face{opacity:0!important}.dp-photo-face{opacity:1!important}`}</style>
+        </noscript>
         <RouteTransitionController />
         {children}
       </body>

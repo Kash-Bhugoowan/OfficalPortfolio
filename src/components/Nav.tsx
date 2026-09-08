@@ -278,7 +278,7 @@ export default function Nav() {
   }
 
   return (
-    <div className="px-4 pt-6 sm:px-6">
+    <div className="relative px-4 pt-6 sm:px-6">
       <nav className="mx-auto flex w-full max-w-[1528px] items-center justify-between rounded-full border-b border-white/60 bg-[rgba(239,244,249,0.85)] px-4 py-2.5 shadow-[0_4px_20px_0_rgba(36,31,43,0.03)] backdrop-blur-md sm:px-10 sm:py-3.5">
         <MotionLink
           href="/"
@@ -322,10 +322,57 @@ export default function Nav() {
             setIsOpen((v) => !v);
             setShowLinks(true);
           }}
-          className="inline-flex size-10 items-center justify-center rounded-full md:hidden"
+          className="nav-js-toggle inline-flex size-10 items-center justify-center rounded-full md:hidden"
         >
           <HamburgerIcon isOpen={isOpen} />
         </button>
+
+        {/*
+          This whole hamburger/overlay menu is built on isOpen state and
+          AnimatePresence-mounted content — without JS, isOpen can never
+          change and the overlay is never in the DOM at all, so the button
+          above is dead and there's no way to reach Work/Skills/Resume/
+          Contact on mobile. Rather than rework the curtain-nav/exit-
+          animation machinery to also serve a no-JS path, this is a fully
+          separate, static fallback living in the same nav-bar slot: real
+          <a href> links (work with zero JS) inside a native <details>,
+          same HamburgerIcon glyph as the real button (rendered statically
+          — no JS to animate it, which is exactly the resting frame a
+          static icon should show anyway) as the summary, expanding as a
+          dropdown via `relative`/`absolute` so opening it doesn't push the
+          pill-shaped nav bar's own layout around. `<noscript>` guarantees
+          browsers never parse this as real markup when scripting is
+          enabled, so it can't affect or duplicate the JS experience above.
+          The `nav-js-toggle` class on the real button is hidden here since
+          without JS it's inert.
+        */}
+        <noscript>
+          <style>{`.nav-js-toggle{display:none}`}</style>
+          <details open className="relative md:hidden">
+            <summary className="inline-flex size-10 cursor-pointer list-none items-center justify-center rounded-full [&::-webkit-details-marker]:hidden">
+              <HamburgerIcon isOpen={false} />
+            </summary>
+            {/*
+              fixed + inset-x-4/sm:inset-x-6, matching the outer page
+              wrapper's own px-4 sm:px-6 margin, so this spans the same
+              full screen width that page content does rather than sitting
+              in a small corner box. top-[85px] is the nav bar's measured
+              bottom edge (consistent 375-428px mobile widths) — flush
+              against it, no gap.
+            */}
+            <div className="fixed inset-x-4 top-[85px] z-50 flex flex-col gap-1 rounded-2xl border border-white/60 bg-[#FEFCFF] px-4 py-2 shadow-[0_4px_20px_0_rgba(36,31,43,0.08)] sm:inset-x-6">
+              {menuLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="border-b border-border py-3 text-base font-light text-foreground last:border-0"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </details>
+        </noscript>
       </nav>
 
       <AnimatePresence onExitComplete={handleOverlayExitComplete}>

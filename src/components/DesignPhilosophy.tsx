@@ -380,7 +380,10 @@ function PrincipleCard({
     >
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-10"
+        // dp-hover-glow: without JS this can never turn on (isHovered is
+        // JS state), so the global no-JS reveal rule in layout.tsx
+        // excludes this class rather than forcing the glow permanently on.
+        className="dp-hover-glow pointer-events-none absolute inset-0 z-10"
         style={{ background: spotlightBackground }}
         animate={{ opacity: isDesktop && isHovered ? 1 : 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
@@ -391,7 +394,14 @@ function PrincipleCard({
           style={{ backgroundColor: principle.fill }}
         >
           <motion.div
-            className="absolute inset-0"
+            // dp-diagram-face / dp-photo-face below: this pair cross-fades
+            // between two permanently-mounted layers rather than an
+            // entrance reveal, so the generic no-JS rule (which just forces
+            // opacity:0 elements visible) would show both stacked on top of
+            // each other. layout.tsx's noscript block instead forces this
+            // one hidden and the photo face visible, since the toggle
+            // button can't work without JS anyway.
+            className="dp-diagram-face absolute inset-0"
             animate={{ opacity: showPhoto ? 0 : 1 }}
             transition={{ duration: 0.38, ease: "easeInOut" }}
           >
@@ -415,7 +425,7 @@ function PrincipleCard({
             )}
           </motion.div>
           <motion.div
-            className="absolute inset-0"
+            className="dp-photo-face absolute inset-0"
             animate={{ opacity: showPhoto ? 1 : 0 }}
             transition={{ duration: 0.38, ease: "easeInOut" }}
           >
