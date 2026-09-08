@@ -17,7 +17,10 @@ test.describe("spacing invariants", () => {
     const photo = await page
       .locator('img[alt="Portrait of Karishma Bhugoowan"]')
       .boundingBox();
-    expect(photo!.y - (nav!.y + nav!.height)).toBe(37);
+    // Hero's top padding is responsive: 37px on mobile, 54px on desktop
+    // (see src/components/Hero.tsx's py-[37px] md:py-[54px]).
+    const expectedGap = page.viewportSize()!.width < 768 ? 37 : 54;
+    expect(photo!.y - (nav!.y + nav!.height)).toBe(expectedGap);
   });
 
   test("heading is 48px below the photo", async ({ page }) => {
@@ -109,7 +112,14 @@ test.describe("behavior invariants", () => {
   });
 
   test("nav link hover turns accent purple", async ({ page }) => {
-    const link = page.getByRole("link", { name: "Work", exact: true });
+    // Desktop-only: on mobile the nav's own links live inside the
+    // hamburger menu (closed by default, so not in the accessibility tree
+    // yet), and hover isn't a touch interaction anyway.
+    test.skip(page.viewportSize()!.width < 768, "hover nav link is desktop-only");
+    // Scoped to the nav specifically — the Footer also has a "Work" link
+    // (added later) that doesn't change color on hover, which made this
+    // locator ambiguous/wrong once it existed.
+    const link = page.locator("nav").getByRole("link", { name: "Work", exact: true });
     const before = await link.evaluate((el) => getComputedStyle(el).color);
     await link.hover();
     await page.waitForTimeout(1500); // let the spring settle past its asymptote
@@ -203,12 +213,23 @@ test.describe("projects sticky stack", () => {
   test("each card pins at its own configured offset (188, 220, 252px) while scrolling through its range", async ({
     page,
   }) => {
+    // Sticky card stack is desktop-only by design (mobile uses normal
+    // document flow instead — see "mobile cards scroll in normal document
+    // flow" below), so this has nothing to check on mobile.
+    test.skip(
+      page.viewportSize()!.width < 768,
+      "sticky card stack is desktop-only",
+    );
     // Checkpoints empirically correspond to each card's mid-pin window,
     // well before the synchronized release near the end of the section.
+    // Re-measured 2026-09-09: later sections (Community, Design
+    // Philosophy, Contact, Footer) added after these were last tuned made
+    // the page taller, which shifts what each fraction-of-page scrolls to
+    // — 0.5 now lands past the stack's release. 0.32 sits mid-plateau.
     const cases: [number, string, number][] = [
       [0.06, "0", 188],
       [0.3, "1", 220],
-      [0.5, "2", 252],
+      [0.32, "2", 252],
     ];
     for (const [fraction, index, expectedTop] of cases) {
       await scrollToProjectsCheckpoint(page, fraction);
@@ -220,6 +241,11 @@ test.describe("projects sticky stack", () => {
   test("covered card shrinks slightly but stays fully opaque (solid, no see-through)", async ({
     page,
   }) => {
+    // Sticky card stack is desktop-only by design.
+    test.skip(
+      page.viewportSize()!.width < 768,
+      "sticky card stack is desktop-only",
+    );
     // Card 1 has landed and is covering card 0 at this checkpoint.
     await scrollToProjectsCheckpoint(page, 0.3);
     await page.waitForTimeout(1500); // let the entrance fade-in fully settle
@@ -261,12 +287,20 @@ test.describe("projects sticky stack", () => {
   test("header pins through cards landing, then releases in sync with the whole stack", async ({
     page,
   }) => {
+    // Sticky card stack (and its pinned header) is desktop-only by design.
+    test.skip(
+      page.viewportSize()!.width < 768,
+      "sticky card stack is desktop-only",
+    );
     const header = () => page.locator("[data-sticky-header]").boundingBox();
     const card2 = () => page.locator('[data-sticky-card="2"]').boundingBox();
 
     // Pinned at a fixed, small offset through card 0, 1, and 2 all landing
-    // (not flush at 0 — there's a deliberate top offset).
-    for (const fraction of [0.06, 0.3, 0.55]) {
+    // (not flush at 0 — there's a deliberate top offset). Re-measured
+    // 2026-09-09 (see sibling test above for why 0.55 no longer applies):
+    // release now starts around fraction 0.35, so 0.34 is the latest
+    // point still safely inside the pinned plateau.
+    for (const fraction of [0.06, 0.3, 0.34]) {
       await scrollToProjectsCheckpoint(page, fraction);
       const box = await header();
       expect(box!.y).toBeGreaterThan(0);
@@ -287,8 +321,9 @@ test.describe("projects sticky stack", () => {
 
     // Once card 3 has landed and dwelled for a while, continuing to scroll
     // releases the header AND the cards together — neither is left behind,
-    // so there's no gap where the header used to sit.
-    await scrollToProjectsCheckpoint(page, 0.66);
+    // so there's no gap where the header used to sit. Re-measured
+    // 2026-09-09: 0.45 is well past the (now-earlier) release point.
+    await scrollToProjectsCheckpoint(page, 0.45);
     const releasedHeader = await header();
     const releasedCard2 = await card2();
     expect(releasedHeader!.y).toBeLessThan(32); // moved from its pinned offset

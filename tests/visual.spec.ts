@@ -21,14 +21,24 @@ test.describe("visual regression", () => {
   });
 
   test("projects heading", async ({ page }) => {
-    await page.evaluate(() => document.querySelector("h2")?.scrollIntoView());
+    // Scoped to the heading's own wrapper rather than a page-wide "h2"
+    // lookup — several more h2-headed sections (Capabilities, Design
+    // Principles, Community, Contact) have been added since this test was
+    // written, so an unscoped "h2" now matches 5 elements.
+    const heading = page.locator("[data-sticky-header]");
+    await heading.scrollIntoViewIfNeeded();
     await page.waitForTimeout(300);
-    await expect(page.locator("h2").locator("..").locator("..")).toHaveScreenshot(
-      "projects-heading.png",
-    );
+    await expect(heading).toHaveScreenshot("projects-heading.png");
   });
 
   test("projects card 1 pinned", async ({ page }) => {
+    // The sticky-card effect is desktop-only by design — mobile renders
+    // MobileProjectCard in normal document flow instead, so [data-sticky-card]
+    // is never visible to screenshot on mobile.
+    test.skip(
+      page.viewportSize()!.width < 768,
+      "sticky card stack is desktop-only",
+    );
     await scrollToProjectsCheckpoint(page, 0.18);
     await expect(page.locator('[data-sticky-card="0"]')).toHaveScreenshot(
       "projects-card1-pinned.png",
