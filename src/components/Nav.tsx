@@ -154,6 +154,9 @@ export default function Nav() {
   // again without the user having tapped anything.
   useEffect(() => {
     if (isDesktop) {
+      // Intentional: isOpen must persist as false so the overlay doesn't
+      // snap back open if the viewport later shrinks again on its own.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsOpen(false);
       pendingHrefRef.current = null;
     }

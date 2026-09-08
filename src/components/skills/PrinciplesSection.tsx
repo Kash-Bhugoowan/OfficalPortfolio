@@ -86,6 +86,9 @@ function PrincipleCard({ card, isDesktop }: { card: SkillPrincipleCard; isDeskto
   useEffect(() => {
     if (isDesktop) return;
     const initial = scrollYProgress.get();
+    // Intentional: syncs from the current scroll position, which render
+    // can't read synchronously on mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsActive(initial > 0.4 && initial < 0.6);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
