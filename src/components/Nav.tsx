@@ -345,10 +345,21 @@ export default function Nav() {
           enabled, so it can't affect or duplicate the JS experience above.
           The `nav-js-toggle` class on the real button is hidden here since
           without JS it's inert.
+
+          `md:hidden` sits on the <noscript> itself, not just the <details>:
+          with scripting off, <noscript> renders as a real box and becomes a
+          third flex item in the nav's `justify-between` row. Even empty
+          (its <details> child hidden at md+), that zero-width item still
+          claims the right-hand slot and pushes the desktop link row into
+          the middle. Hiding the wrapper too keeps desktop at two items —
+          name left, links right — exactly as with JS on.
+
+          No `open` attribute: the dropdown must start closed and only
+          expand on tap, matching the JS menu.
         */}
-        <noscript>
+        <noscript className="md:hidden">
           <style>{`.nav-js-toggle{display:none}`}</style>
-          <details open className="relative md:hidden">
+          <details className="relative">
             <summary className="inline-flex size-10 cursor-pointer list-none items-center justify-center rounded-full [&::-webkit-details-marker]:hidden">
               <HamburgerIcon isOpen={false} />
             </summary>
