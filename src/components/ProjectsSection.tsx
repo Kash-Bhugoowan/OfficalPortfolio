@@ -46,7 +46,7 @@ const projects: Project[] = [
     ],
     stats: [
       { label: "Time reduced", value: "20 mins" },
-      { label: "Improved workflow by", value: "99.8%" },
+      { label: "Designer satisfaction", value: "99.8%" },
     ],
     bgClass: "bg-[#FFD8A5] md:bg-orange-100",
     glowClass: "bg-[#FFD399] md:bg-orange-400",
