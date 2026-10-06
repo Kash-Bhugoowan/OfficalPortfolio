@@ -213,7 +213,7 @@ export const gailReflections: ReflectionsSectionData = {
   video: { src: "/images/Case_studies/GAiL/Reflection.mov" },
   label: "Reflection",
   quote:
-    "This project taught me that responsible generative AI is not principally about replacing a person's work. It is about designing the hand-offs between the technology and the person's judgement.",
+    "This project was a great example of human-centred design being applied to AI, and how thoughtfully planned user flows can keep the user in control, whilst transforming ambiguity into clarity, and complexity into simplicity. I was able to create a tool that automated the repetitive middle and left the judgement alone.",
   supporting:
     "For DWP, the most important product decision was not generation itself. It was making every output transparent enough for learning designers to remain accountable for what learners would eventually see.",
 };
