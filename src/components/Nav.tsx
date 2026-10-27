@@ -17,7 +17,7 @@ const MotionLink = motion.create(Link);
 
 const links = [
   { label: "Work", href: "/#work" },
-  { label: "Skills", href: "/#process" },
+  { label: "Skills", href: "/#skills" },
   { label: "Principles", href: "/#design-principles" },
   { label: "Resume", href: "/resume" },
   { label: "Contact", href: "/#contact" },
