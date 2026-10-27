@@ -62,7 +62,20 @@ export default function RouteTransitionController() {
 
       const here = window.location;
       const samePath = url.pathname === here.pathname && url.search === here.search;
-      if (samePath) return; // same-page hash scroll (or a no-op link) — leave to default Link behavior
+      if (samePath) {
+        // Same-page hash link (e.g. Nav's "Work" while already on /#work):
+        // scroll ourselves rather than leaving it to Link, which treats a
+        // click on the URL you're already at as a no-op — so after scrolling
+        // away, re-clicking the same section link would do nothing. No
+        // explicit behavior, so it still honors the CSS scroll-smooth and
+        // each section's scroll-mt offset, same as a native hash jump.
+        const section = url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
+        if (!section) return; // no hash (or no matching section) — leave to default Link behavior
+        e.preventDefault();
+        section.scrollIntoView({ block: "start" });
+        router.replace(url.pathname + url.search + url.hash, { scroll: false });
+        return;
+      }
 
       // Real cross-route navigation from here on.
       e.preventDefault();
