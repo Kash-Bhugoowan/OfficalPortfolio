@@ -18,7 +18,7 @@ const MotionLink = motion.create(Link);
 const links = [
   { label: "Work", href: "/#work" },
   { label: "Skills", href: "/#process" },
-  { label: "Process", href: "/#design-principles" },
+  { label: "Principles", href: "/#design-principles" },
   { label: "Resume", href: "/resume" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -204,7 +204,7 @@ export default function Nav() {
     const samePath = !!url && url.pathname === here.pathname && url.search === here.search;
 
     if (url && samePath && url.hash) {
-      // In-page hash target (Work/Skills/Process/Contact) — curtain, not a
+      // In-page hash target (Work/Skills/Principles/Contact) — curtain, not a
       // native/router scroll. Deliberately doesn't touch pendingHrefRef or
       // isOpen yet; runCurtainNav closes the overlay itself once the jump
       // is safely hidden behind it.
