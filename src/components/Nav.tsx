@@ -289,7 +289,7 @@ export default function Nav() {
         >
           Karishma Bhugoowan
         </MotionLink>
-        <div className="hidden items-center gap-3 md:flex md:gap-[42px]">
+        <div className="hidden items-center gap-3 md:flex md:gap-[32px]">
           {links.map((link) =>
             link.href ? (
               <MotionLink
