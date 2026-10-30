@@ -4,8 +4,8 @@ import type { ResumeListSectionData } from "@/components/resume/ResumeListSectio
 
 export const resumeHeader: ResumeHeaderData = {
   title: "My Resume",
-  eyebrowRole: "Senior Product Designer",
-  eyebrowMeta: "7+ Years ・ IBM",
+  eyebrowRole: "Product Designer",
+  eyebrowMeta: "7 Years ・ IBM",
   description:
     "I turn ambiguous, complex problems into clear, intuitive solutions through rapid prototyping and deep user insight. My most recent position is design lead for IBM's Public & Defence client engineering squad.",
   primaryCta: { label: "Download CV", href: "/resume/karishma-bhugoowan-cv.pdf" },
@@ -13,7 +13,7 @@ export const resumeHeader: ResumeHeaderData = {
   stats: [
     {
       label: "Experience",
-      value: "7+ years",
+      value: "7 years",
       description: "across defence, healthcare & telecoms",
       bgClass: "bg-yellow-100",
     },

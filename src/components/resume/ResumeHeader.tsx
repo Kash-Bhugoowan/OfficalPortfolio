@@ -23,8 +23,8 @@ export type ResumeStat = {
 
 export type ResumeHeaderData = {
   title: string;
-  // Split so mobile can force "Senior Product Designer" onto its own
-  // line and keep "7+ Years ・ IBM" together on the next, instead of
+  // Split so mobile can force "Product Designer" onto its own
+  // line and keep "7 Years ・ IBM" together on the next, instead of
   // letting a single long string wrap wherever it happens to run out
   // of room. Desktop rejoins both into one line with a "・" between.
   eyebrowRole: string;
